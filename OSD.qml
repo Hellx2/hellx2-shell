@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -11,7 +12,7 @@ Scope {
 
     // Bind the pipewire node so its volume will be tracked
     PwObjectTracker {
-        objects: [ Pipewire.defaultAudioSink ]
+        objects: [Pipewire.defaultAudioSink]
     }
 
     // None = 0, Brightness = 1, Player = 2, PlayerNext = 3, PlayerPrev = 4, Volume = 5
@@ -19,9 +20,9 @@ Scope {
 
     property string setBrightnessTo: "50%"
     property int currentBrightness: 50
-    property bool isPlaying: false;
-   
-	// Delay to allow Pipewire time to initialise
+    property bool isPlaying: false
+
+    // Delay to allow Pipewire time to initialise
     Timer {
         running: true
         repeat: false
@@ -31,14 +32,14 @@ Scope {
 
     property bool loaderActive: false
     LazyLoader {
-        active: loaderActive
+        active: root.loaderActive
         Loader {
             sourceComponent: Item {
                 id: sourceComponent
 
                 IpcHandler {
                     function playPause() {
-                        Mpris.players.values[0].isPlaying = root.isPlaying = !Mpris.players.values[0].isPlaying
+                        Mpris.players.values[0].isPlaying = root.isPlaying = !Mpris.players.values[0].isPlaying;
                         root.currentOsd = 2; // Player
                         hideTimer.restart();
                     }
@@ -62,31 +63,30 @@ Scope {
                     target: Pipewire.defaultAudioSink?.audio
 
                     function onVolumeChanged() {
-                        root.currentOsd = 5 //Player
+                        root.currentOsd = 5; //Player
                         hideTimer.restart();
                     }
 
                     function onMutedChanged() {
-                        root.currentOsd = 5 //Player
+                        root.currentOsd = 5; //Player
                         hideTimer.restart();
                     }
                 }
 
                 Process {
                     id: setBrightnessProc
-                    command: ["sh", "-c", `brightnessctl set ${setBrightnessTo} &>/dev/null; brightnessctl get -P` ]
+                    command: ["sh", "-c", `brightnessctl set ${setBrightnessTo} &>/dev/null; brightnessctl get -P`]
 
                     running: false
 
                     stdout: StdioCollector {
                         onStreamFinished: {
-                            root.currentBrightness = this.text
-                            root.currentOsd = 1 // Brightness
+                            root.currentBrightness = this.text;
+                            root.currentOsd = 1; // Brightness
                             hideTimer.restart();
                         }
                     }
                 }
-
 
                 IpcHandler {
                     function set(brightness: string) {
@@ -100,7 +100,7 @@ Scope {
                     id: hideTimer
                     interval: 1000
                     onTriggered: {
-                        root.currentOsd = 0
+                        root.currentOsd = 0;
                     }
                 }
 
@@ -134,13 +134,11 @@ Scope {
                                 Image {
                                     width: 30
                                     height: 30
-                                    source: root.currentOsd == 5 ? ("/usr/share/icons/Papirus/24x24/symbolic/status/audio-volume-" +
-                                            (Pipewire.defaultAudioSink?.audio.muted ?? true ? "muted" : "high") +"-symbolic.svg")
-                                            : "/usr/share/icons/Papirus/64x64/apps/brightness.svg"
+                                    source: root.currentOsd == 5 ? ("/usr/share/icons/Papirus/24x24/symbolic/status/audio-volume-" + (Pipewire.defaultAudioSink?.audio.muted ?? true ? "muted" : "high") + "-symbolic.svg") : "/usr/share/icons/Papirus/64x64/apps/brightness.svg"
                                 }
 
                                 Rectangle {
-                                	anchors.verticalCenter: parent.verticalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
                                     width: parent.width - parent.children[0].width - parent.spacing
 
                                     height: 10

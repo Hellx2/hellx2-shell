@@ -1,5 +1,6 @@
 import QtQuick
 import qs.modules
+import qs.common
 
 Bar {
 	id: root
@@ -11,14 +12,8 @@ Bar {
     	anchors.verticalCenter: parent.verticalCenter
     	height: 20
     	spacing: 10
-        Rectangle {
-        	color: Styles.grey5
-        	width: ws.width
-        	height: 20
-        	radius: height / 2
-
-        	Workspaces { id: ws; anchors.left: parent.left; output: root.screen.name }
-        }
+        
+        Workspaces { id: ws; output: root.screen.name }
         CurrentWindow {}
     }
     Row {

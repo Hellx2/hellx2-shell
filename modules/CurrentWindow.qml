@@ -1,7 +1,6 @@
 import QtQuick
 import Quickshell
 
-import qs
 import qs.common
 
 Row {

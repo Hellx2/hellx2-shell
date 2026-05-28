@@ -33,61 +33,70 @@ Scope {
         onTriggered: root.loadApp = true
     }
 
-	// "home" | "school" | "game"
+    // "home" | "school" | "game"
     property string mode: "school"
     Settings {
-    	property alias mode: root.mode
+        property alias mode: root.mode
     }
 
     IpcHandler {
-    	target: "shell"
-    	function setMode(mode: string) {
-    		if (["home", "school", "game"].includes(mode))
-    			root.mode = mode
-    		else console.error(`Unknown mode '${mode}', ignoring.`)
-    	}
-    	function getMode(): string {
-    		return root.mode
-    	}
+        target: "shell"
+        function setMode(mode: string) {
+            if (["home", "school", "game"].includes(mode))
+                root.mode = mode;
+            else
+                console.error(`Unknown mode '${mode}', ignoring.`);
+        }
+        function getMode(): string {
+            return root.mode;
+        }
     }
     LazyLoader {
         active: root.loadApp
         Scope {
-	        Loader {
-	        	active: root.mode == "school"
-	            sourceComponent: Variants {
-                	model: Quickshell.screens
-                	delegate: BottomBar {
-                		required property var modelData
-                		screen: modelData
-                	}
+            Loader {
+                active: root.mode == "school"
+                sourceComponent: Variants {
+                    model: Quickshell.screens
+                    delegate: BottomBar {
+                        required property var modelData
+                        screen: modelData
+                    }
                 }
-	        }
-	        Loader {
-	        	active: root.mode == "home"
-	        	sourceComponent: Scope {
-	        		Dock {}
-	        		Variants {
-	        			model: Quickshell.screens
-		        		delegate: TopBar {
-		        			required property var modelData
-		        			screen: modelData
-		        		}
-	        		}
-	        	}
-	        }
-	        Loader {
-	        	active: root.mode == "game"
-	        	sourceComponent: Variants {
-        			model: Quickshell.screens
-        			delegate: GameBar {
-        				required property var modelData
-        				screen: modelData
-        			}
-	        	}
-	        }
-	        OSD {}
-	        PKAgent {}
-	    }
+            }
+            Loader {
+                active: root.mode == "home"
+                sourceComponent: Scope {
+                    Dock {}
+                    Variants {
+                        model: Quickshell.screens
+                        delegate: TopBar {
+                            required property var modelData
+                            screen: modelData
+                        }
+                    }
+                }
+            }
+            Loader {
+                active: root.mode == "game"
+                sourceComponent: Variants {
+                    model: Quickshell.screens
+                    delegate: GameBar {
+                        required property var modelData
+                        screen: modelData
+                    }
+                }
+            }
+            OSD {}
+            PKAgent {}
+            NotifyDaemon {}
+            Variants {
+                model: Quickshell.screens
+                delegate: Wallpaper {
+                    required property var modelData
+                    screen: modelData
+                }
+            }
+        }
     }
 }
