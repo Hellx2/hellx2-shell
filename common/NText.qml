@@ -1,14 +1,15 @@
 import QtQuick
+import qs
 
 Text {
     id: root
 
-    property int fontSize: Styles.text_size
+    property int fontSize: Globals.settings.text_size
 
     property bool bold: false
-    property string fontFamily: Styles.text_font
+    property string fontFamily: Globals.settings.text_font
 
-    color: Styles.text_fg
+    color: Globals.settings.text_fg
 
     font {
         family: root.fontFamily

@@ -3,6 +3,7 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Services.Polkit
 import qs.common
+import qs
 
 PanelWindow {
     id: root
@@ -28,10 +29,8 @@ PanelWindow {
         id: agent
         onFlowChanged: {
             //root.visible = true
-            console.warn("Testing");
             if (flow) {
                 message.text = flow.message;
-                console.warn(JSON.stringify(agent.flow.identities));
             } else {
                 passwordInput.text = "";
             }
@@ -49,7 +48,7 @@ PanelWindow {
         color: "#ffffff"
         wrapMode: Text.WordWrap
     }
-    QCombo {
+    NCombo {
         id: userPicker
         anchors.top: message.bottom
         anchors.topMargin: 10
@@ -62,7 +61,6 @@ PanelWindow {
     Connections {
         target: agent.flow
         function onIsResponseRequiredChanged() {
-            console.warn("HI");
             if (root.isAuthenticating)
                 root.isAuthenticating = false;
             if (agent.flow.isResponseRequired && agent.flow.failed) {
@@ -70,7 +68,6 @@ PanelWindow {
             }
         }
     }
-    // TODO: Make this hide the password
     NInput {
         id: passwordInput
         focus: true
@@ -91,6 +88,7 @@ PanelWindow {
         }
         echoMode: agent.flow && agent.flow.responseVisible ? TextInput.Normal : TextInput.Password
         font.letterSpacing: 2.5
+        Keys.onEscapePressed: agent.flow.cancelAuthenticationRequest()
     }
     NText {
         id: resultText
@@ -98,7 +96,7 @@ PanelWindow {
         anchors.topMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
         text: isAuthenticating ? "..." : "Invalid password!"
-        color: isAuthenticating ? Styles.blue : Styles.red
+        color: isAuthenticating ? Globals.settings.blue : Globals.settings.red
         visible: isAuthenticating || (agent.flow && agent.flow.failed && !agent.flow.isCompleted)
     }
 }

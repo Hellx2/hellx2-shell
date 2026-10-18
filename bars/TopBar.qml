@@ -3,17 +3,24 @@ import qs.modules
 import qs.common
 
 Bar {
-	id: root
-	topOfScreen: true
+    id: root
+    topOfScreen: true
 
     Row {
-    	anchors.leftMargin: 10
-    	anchors.left: parent.left
-    	anchors.verticalCenter: parent.verticalCenter
-    	height: 20
-    	spacing: 10
-        
-        Workspaces { id: ws; output: root.screen.name }
+        anchors.leftMargin: 10
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        height: 20
+        spacing: 10
+
+        Launcher {
+            anchors.verticalCenter: parent.verticalCenter
+            useLaunchpad: true
+        }
+        Workspaces {
+            id: ws
+            output: root.screen
+        }
         CurrentWindow {}
     }
     Row {
@@ -29,13 +36,33 @@ Bar {
             color: "transparent"
 
             Row {
-                spacing: 6
                 id: mainrow
+                spacing: 6
+
+                //ModeSwitcher {}
+                //Spacer {}
 
                 Tray {}
-                Pomodoro { onTopBar: true }
+                PomodoroButton {
+                    onTopBar: true
+                }
                 Volume {}
+
+                Spacer {}
+
+                Tailscale {}
+                BluetoothButton {
+                    x1: mainrect.width - mainrect.mapFromItem(this, this.x, 0).x
+                }
+                Network {
+                    x1: mainrow.width
+                }
+
+                Spacer {}
+
                 Battery {}
+
+                Spacer {}
                 Clock {}
             }
         }

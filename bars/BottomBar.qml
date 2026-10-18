@@ -1,8 +1,11 @@
 import QtQuick
+import Quickshell
+import Quickshell.Services.Mpris
 import qs.modules
+import qs.common
 
 Bar {
-	id: root
+    id: root
 
     Row {
         anchors.verticalCenter: parent.verticalCenter
@@ -13,10 +16,14 @@ Bar {
         Launcher {}
 
         Row {
-        	anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenter: parent.verticalCenter
             spacing: 5
-            Workspaces { output: root.screen.name }
-            Windows { screen: root.screen.name }
+            Workspaces {
+                output: root.screen
+            }
+            Windows {
+                screen: root.screen.name
+            }
         }
     }
     Row {
@@ -31,13 +38,32 @@ Bar {
             color: "transparent"
 
             Row {
-                spacing: 6
                 id: mainrow
+                spacing: 6
 
+                PlayerWidget {}
+
+                Spacer { visible: !!Mpris.players.values[0] }
+
+				UpdateChecker {}
                 Tray {}
-                Pomodoro {}
+                PomodoroButton {}
                 Volume {}
+
+                //Spacer {}
+                //ModeSwitcher {}
+                Spacer {}
+                Tailscale {}
+                BluetoothButton {
+                    x1: () => QsWindow.itemPosition(this).x
+                }
+                Network {
+                    x1: () => QsWindow.itemPosition(this).x
+                }
+
+				Spacer {}
                 Battery {}
+                Spacer {}
                 Clock {}
             }
         }

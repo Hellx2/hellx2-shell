@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import qs
+
 Row {
 	id: root
 	property string label: "Value: "
@@ -23,7 +25,7 @@ Row {
 		height: 30
 		Text {
 			anchors.verticalCenter: parent.verticalCenter
-			color: Styles.text_fg
+			color: Globals.settings.text_fg
 			text: root.label
 		}
 	}
@@ -32,18 +34,18 @@ Row {
 		model: haveNA ? ["N/A", ...root.model] : root.model
 		background: Rectangle {
 			implicitWidth: 120
-			color: combo.hovered ? Styles.grey3 : Styles.grey0
+			color: combo.hovered ? Globals.settings.grey3 : Globals.settings.grey0
 			radius: height / 4
 		}
 		delegate: ItemDelegate {
 			width: combo.width
 			contentItem: Text {
 				text: modelData
-				color: Styles.text_fg
+				color: Globals.settings.text_fg
 			}
 			background: Rectangle {
 				radius: 10
-				color: combo.highlightedIndex == index ? Styles.grey3 : "transparent"
+				color: combo.highlightedIndex == index ? Globals.settings.grey3 : "transparent"
 			}
 		}
 		popup: Popup {
@@ -62,7 +64,7 @@ Row {
 			padding: 0
 
 			background: Rectangle {
-				color: Styles.grey0
+				color: Globals.settings.grey0
 				radius: 10
 				border {
 					width: 1

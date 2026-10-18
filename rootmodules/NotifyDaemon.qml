@@ -1,8 +1,10 @@
 import QtQuick
+import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.Notifications
 import qs.common
+import qs
 
 Scope {
     id: root
@@ -44,6 +46,7 @@ Scope {
     }
 
     PanelWindow {
+    	screen: Globals.settings.getPrimaryScreen()
         anchors {
             top: true
             right: true
@@ -81,7 +84,7 @@ Scope {
                             close()
                         }
                     }
-                    height: text1.height + text2.height + text3.height + 20 + (row1.visible ? row1.height : 0)
+                    height: mainItem.height + (col2.visible ? col2.height : 0)
                     width: parent.width
                     Rectangle {
                         color: "#1c1c1c"
@@ -89,7 +92,7 @@ Scope {
                             width: 1
                             color: "#3c3c3c"
                         }
-                        radius: 5
+                        radius: 10
                         width: parent.width
                         height: parent.height
 
@@ -99,14 +102,35 @@ Scope {
                                 width: parent.width
                                 id: mainItem
                                 height: Math.max(icon.height, text1.height + text2.height + text3.height + 20)
-                                IconImage {
-                                    id: icon
-                                    source: modelData.image
-                                    implicitSize: modelData.image == "" ? 0 : 100
+                                Rectangle {
+                                	id: icon
+                                	color: "transparent"
+                                	anchors.margins: 10
                                     anchors.verticalCenter: parent.verticalCenter
+                                    radius: 5
+                                    width: 100
+                                    height: 100
+                                    Image {
+                                    	id: img
+	                                    source: modelData.image
+	                                    width: parent.width - 20
+	                                    height: parent.height - 20
+	                                    anchors.centerIn: parent
+	                                    mipmap: true
+	                                    layer.enabled: true
+	                                    layer.effect: OpacityMask {
+		                                	maskSource: Rectangle {
+		                                		width: img.width
+		                                		height: img.height
+		                                		radius: 10
+		                                	}
+		                                }
+	                                }
                                 }
                                 Column {
-                                    anchors.margins: 10
+                                    anchors.leftMargin: 10
+                                    anchors.rightMargin: 10
+                                    anchors.topMargin: 10
                                     anchors.left: icon.right
                                     anchors.top: parent.top
                                     width: parent.width - icon.width - 20
@@ -122,6 +146,8 @@ Scope {
                                         text: modelData.summary
                                         bold: true
                                         fontSize: 17
+                                        width: parent.width
+                                        elide: Text.ElideRight
                                     }
                                     NText {
                                         id: text3
@@ -133,7 +159,58 @@ Scope {
                                     }
                                 }
                             }
-                            Grid {
+                            Column {
+                            	id: col2
+                            	leftPadding: 10
+                            	rightPadding: 10
+                            	spacing: 5
+                            	anchors.top: mainItem.bottom
+                            	visible: modelData.actions.length > 0
+                            	width: parent.width - 20
+                            	height: mainRepeater.count * 35 - 5
+
+                            	function getRows(model) {
+                            		let rows = [[]];
+                            		let index = 0;
+                            		for (let i of model) {
+                            			let temp = 0;
+                            			if (rows[index].length == 0) {
+                            				rows[index].push(i);
+                            				continue;
+                            			}
+                            			// This ratio was calculated for JetBrains Mono and only that font, others will need to be implemented somehow
+                            			for (let j of [...rows[index], i]) temp += j.text.length * Styles.text_size / 1.6 + 5 + 2 * Styles.button_sidepad;
+                            			if (temp - 5 > col2.width) index++;
+                            			if (index == rows.length) rows.push([]);
+                            			rows[index].push(i);
+                            		}
+                            		return rows;
+                            	}
+
+                            	Repeater {
+                            		id: mainRepeater
+                            		model: col2.getRows(modelData.actions)
+                            		Row {
+                            			spacing: 5
+                            			anchors.horizontalCenter: parent.horizontalCenter
+                            			required property var modelData
+                            			Repeater {
+                            				model: modelData
+                            				NButton {
+                            					elide: Text.ElideRight
+                            					width: Math.min(implicitWidth, col2.width - 20)
+		                                        required property var modelData
+		                                        content: modelData.text
+		                                        onClicked: {
+		                                            modelData.invoke()
+		                                            if (mouse1.modelData && !mouse1.modelData.resident) mouse1.close()
+		                                        }
+		                                    }
+                            			}
+                            		}
+                            	}
+                            }
+                            /*Grid {
                                 columns: 2
                                 id: row1
                                 anchors.top: mainItem.bottom
@@ -152,7 +229,7 @@ Scope {
                                         }
                                     }
                                 }
-                            }
+                            }*/
                         }
                     }
                 }

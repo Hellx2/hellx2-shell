@@ -338,4 +338,14 @@ Singleton {
             }
         });
     }
+
+    function closeWindow(windowId) {
+        return send({
+            "Action": {
+                "CloseWindow": {
+                    "id": windowId
+                }
+            }
+        });
+    }
 }

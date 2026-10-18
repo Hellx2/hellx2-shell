@@ -4,6 +4,8 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
+import Quickshell.Wayland
+import Quickshell.Widgets
 
 import qs.common
 
@@ -19,7 +21,7 @@ Scope {
     property int currentOsd: 0
 
     property string setBrightnessTo: "50%"
-    property int currentBrightness: 50
+    property var currentBrightness: 50
     property bool isPlaying: false
 
     // Delay to allow Pipewire time to initialise
@@ -39,7 +41,7 @@ Scope {
 
                 IpcHandler {
                     function playPause() {
-                        Mpris.players.values[0].isPlaying = root.isPlaying = !Mpris.players.values[0].isPlaying;
+                        Mpris.players.values[0].togglePlaying()
                         root.currentOsd = 2; // Player
                         hideTimer.restart();
                     }
@@ -75,13 +77,13 @@ Scope {
 
                 Process {
                     id: setBrightnessProc
-                    command: ["sh", "-c", `brightnessctl set ${setBrightnessTo} &>/dev/null; brightnessctl get -P`]
+                    command: ["fish", "-c", `brightnessctl s ${setBrightnessTo} &>/dev/null; math "$(brightnessctl g)/$(brightnessctl m)*100"`]
 
                     running: false
 
                     stdout: StdioCollector {
                         onStreamFinished: {
-                            root.currentBrightness = this.text;
+                            root.currentBrightness = Number(this.text);
                             root.currentOsd = 1; // Brightness
                             hideTimer.restart();
                         }
@@ -108,6 +110,8 @@ Scope {
                     active: root.currentOsd == 5 || root.currentOsd == 1 // Volume or Brightness OSD
 
                     PanelWindow {
+                    	WlrLayershell.layer: WlrLayer.Overlay
+                    	screen: Data.getPrimaryScreen()
                         anchors.bottom: true
                         margins.bottom: screen.height / 5
                         exclusiveZone: 0
@@ -154,7 +158,7 @@ Scope {
 
                                         color: root.currentOsd == 5 ? (Pipewire.defaultAudioSink?.audio.muted ?? true ? "#3c3c3c" : "#3399ff") : "#3399ff"
 
-                                        width: parent.width * (root.currentOsd == 5 ? Pipewire.defaultAudioSink?.audio.volume ?? 0 : currentBrightness / 100)
+                                        width: parent.width * (root.currentOsd == 5 ? Pipewire.defaultAudioSink?.audio.volume ?? 0 : root.currentBrightness / 100)
                                         radius: parent.radius
                                     }
                                 }
@@ -169,18 +173,40 @@ Scope {
                         anchors.bottom: true
                         margins.bottom: screen.height / 5
                         exclusiveZone: 0
-                        implicitWidth: 75
-                        implicitHeight: 75
+                        implicitWidth: 400
+                        implicitHeight: 50
                         color: "transparent"
 
                         Rectangle {
                             anchors.fill: parent
-                            color: "#2c2c2c"
+                            color: Styles.grey1
+                            border {
+                            	width: 1
+                            	color: Styles.grey3
+                            }
                             radius: height / 2
-                            NText {
-                                anchors.centerIn: parent
-                                fontSize: root.currentOsd == 2 ? (root.isPlaying ? 35 : 50) : 50
-                                text: root.currentOsd == 2 ? (root.isPlaying ? "▶" : "⏸") : (root.currentOsd == 3 ? "⇥" : "⇤")
+                            Row {
+                            	anchors.fill: parent
+                            	spacing: 10
+                            	anchors.leftMargin: 20
+                            	anchors.rightMargin: 20
+	                            NText {
+   	                            	anchors.verticalCenter: parent.verticalCenter
+	                                fontSize: root.currentOsd == 2 ? (Mpris.players.values[0].isPlaying ? 25 : 30) : 30
+	                                width: 20
+	                                horizontalAlignment: Text.AlignHCenter
+	                                text: root.currentOsd == 2 ? (Mpris.players.values[0].isPlaying ? "▶" : "⏸") : (root.currentOsd == 3 ? "⇥" : "⇤")
+	                            }
+                                IconImage {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    source: Quickshell.iconPath(DesktopEntries.byId(Mpris.players.values[0].desktopEntry)?.icon, true)
+                                    implicitSize: 25
+                                }
+	                            NText {
+	                            	anchors.verticalCenter: parent.verticalCenter
+	                            	fontSize: 16
+	                            	text: (Mpris.players.values[0].trackTitle || "Unknown")
+	                            }
                             }
                         }
                     }

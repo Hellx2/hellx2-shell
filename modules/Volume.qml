@@ -1,21 +1,56 @@
 import QtQuick
 import Quickshell.Services.Pipewire
+import Quickshell
+import Quickshell.Widgets
 import qs.common
+import qs
 
-NButton {
+MouseArea {
+	height: 30
+	id: root
+   	hoverEnabled: true
+    width: (containsMouse ? 30 + txt1.width : 30)
+    clip: true
+
+    onClicked: Pipewire.defaultAudioSink.audio.muted = !Pipewire.defaultAudioSink?.audio.muted
+    onWheel: (m) => Pipewire.defaultAudioSink.audio.volume = Math.min(Pipewire.defaultAudioSink.audio.volume + Math.sign(m.angleDelta.y) / 100, 1)
+
     PwObjectTracker {
-   	    objects: [Pipewire.defaultAudioSink]
-   	}
-    contentItem: Row {
+        objects: [Pipewire.defaultAudioSink]
+    }
+
+	Rectangle {
+		anchors.fill: parent
+		color: Globals.settings.button_bg
+		radius: height / 2
+	}
+
+    Row {
+    	anchors.left: parent.left
+    	anchors.leftMargin: 5
+        anchors.verticalCenter: parent.verticalCenter
         spacing: 0
-        Image {
-            source: "/usr/share/icons/Papirus/24x24/symbolic/status/audio-volume-" + (Pipewire.defaultAudioSink?.audio.muted ? "muted" : "high") + "-symbolic.svg"
-            width: 20
-            height: 20
+        height: 20
+        width: parent.width - 10
+        clip: true
+        IconImage {
+        	source: Quickshell.iconPath("audio-volume-" + (Pipewire.defaultAudioSink?.audio.muted ? "muted" : "high") + "-symbolic", true)
+            implicitSize: 20
+            anchors.verticalCenter: parent.verticalCenter
         }
         NText {
-            color: Pipewire.defaultAudioSink?.audio.muted ? "#7c7c7c" : "#ffffff"
+        	anchors.verticalCenter: parent.verticalCenter
+        	id: txt1
+        	visible: root.containsMouse
+            color: Pipewire.defaultAudioSink?.audio.muted ? "#9c9c9c" : "#ffffff"
             text: Math.round(Pipewire.defaultAudioSink?.audio.volume * 100) + "%"
         }
     }
+    
+    Behavior on width {
+    	SmoothedAnimation {
+    		duration: 200
+    	}
+    }
+
 }

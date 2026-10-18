@@ -1,19 +1,21 @@
 import QtQuick
 import QtQuick.Controls
+import qs
 
 TextField {
     id: root
 
-    property string bgcolor: Styles.input_bg
-    property string fgcolor: Styles.text_fg
+    property string bgcolor: Globals.settings.input_bg
+    property string fgcolor: Globals.settings.text_fg
     // Placeholder colour
-    property string fontFamily: Styles.text_font
+    property string fontFamily: Globals.settings.text_font
 
-    property int bgradius: Styles.input_radius
-    property int fontSize: Styles.input_text_size
+    property int bgradius: Globals.settings.input_radius
+    property int fontSize: Globals.settings.input_text_size
 
     verticalAlignment: Text.AlignVCenter
     padding: 0
+    color: fgcolor
 
     font {
         family: root.fontFamily

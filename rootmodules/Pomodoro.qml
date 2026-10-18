@@ -1,4 +1,5 @@
-pragma ComponentBehavior: Bound
+pragma Singleton
+
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
@@ -7,42 +8,37 @@ import QtQuick.Shapes
 import QtCore
 
 import qs.common
+import qs
 
-Row {
+Singleton {
     id: root
     property bool showPomodoro: false
 
     IpcHandler {
         function toggle() {
-            root.showPomodoro = !root.showPomodoro
+            root.showPomodoro = !root.showPomodoro;
         }
         target: "pomodoro"
     }
 
-    NButton {
-        content: "🕑 " + root.countdown.map(a => String(a).padStart(2, 0)).join(":")
-        fgcolor: root.col
-        onClicked: root.showPomodoro = !root.pomodoro.showPomodoro
-    }
-
-    property var defaultCountdown: [0, 25, 0]
-    property var shortBreak: [0, 5, 0]
-    property var longBreak: [0, 15, 0]
-    property var countdown: defaultCountdown
+    property list<int> defaultCountdown: [0, 25, 0]
+    property list<int> shortBreak: [0, 5, 0]
+    property list<int> longBreak: [0, 15, 0]
+    property list<int> countdown: defaultCountdown
 
     property bool isBreak: false
     property int breakNumber: 0
     property int longBreakOn: 4
 
-    property var col: isBreak ? Styles.red : Styles.blue
+    property string col: isBreak ? Globals.settings.red : Globals.settings.blue
 
     property bool onTopBar: false
-
 
     Settings {
         property alias countdown: root.countdown
         property alias isBreak: root.isBreak
         property alias breakNumber: root.breakNumber
+        property alias countingDown: countdownTimer.running
     }
 
     property string notificationText: ""
@@ -68,16 +64,16 @@ Row {
                         if (root.breakNumber % root.longBreakOn == 0) {
                             root.notificationText = "Take a long break!";
                             pomodoroNotification.running = true;
-                            root.countdown = [...root.longBreak]
+                            root.countdown = [...root.longBreak];
                         } else {
                             root.notificationText = "Take a short break!";
                             pomodoroNotification.running = true;
-                            root.countdown = [...root.shortBreak]
+                            root.countdown = [...root.shortBreak];
                         }
                     } else {
                         root.notificationText = "Back to work!";
                         pomodoroNotification.running = true;
-                        root.countdown = [...root.defaultCountdown]
+                        root.countdown = [...root.defaultCountdown];
                     }
                 } else {
                     root.countdown[2] = 59;
@@ -99,9 +95,12 @@ Row {
     function getArcWidth() {
         let current = Number(root.countdown[0] * 3600) + Number(root.countdown[1] * 60) + Number(root.countdown[2]);
         if (root.isBreak)
-            if (root.breakNumber % root.longBreakOn == 0) return Math.min(current / (root.longBreak[0] * 3600 + root.longBreak[1] * 60 + root.longBreak[2]) * 100, 100);
-            else return Math.min(current / (root.shortBreak[0] * 3600 + root.shortBreak[1] * 60 + root.shortBreak[2]) * 100, 100);
-        else return Math.min(current / (root.defaultCountdown[0] * 3600 + root.defaultCountdown[1] * 60 + root.defaultCountdown[2]) * 100, 100);
+            if (root.breakNumber % root.longBreakOn == 0)
+                return Math.min(current / (root.longBreak[0] * 3600 + root.longBreak[1] * 60 + root.longBreak[2]) * 100, 100);
+            else
+                return Math.min(current / (root.shortBreak[0] * 3600 + root.shortBreak[1] * 60 + root.shortBreak[2]) * 100, 100);
+        else
+            return Math.min(current / (root.defaultCountdown[0] * 3600 + root.defaultCountdown[1] * 60 + root.defaultCountdown[2]) * 100, 100);
     }
 
     property var arcWidth: getArcWidth()
@@ -122,8 +121,12 @@ Row {
             }
             Rectangle {
                 anchors.fill: parent
-                color: Styles.bgcol
+                color: Globals.settings.bgcol
                 radius: 15
+                border {
+                    width: 1
+                    color: "#3c3c3c"
+                }
             }
             anchors {
                 bottom: !root.onTopBar
@@ -140,7 +143,7 @@ Row {
                     height: 200
 
                     ShapePath {
-                        fillColor: Styles.grey3
+                        fillColor: Globals.settings.grey3
                         strokeWidth: 0
 
                         PathAngleArc {
@@ -175,8 +178,8 @@ Row {
                     }
                 }
                 Row {
-                    anchors.horizontalCenter: parent.horizontalCenter
                     id: timeRow
+                    anchors.horizontalCenter: parent.horizontalCenter
                     x: 6 / 20 * panel1.width
                     y: 7 / 8 * Math.min(panel1.width / 2, panel1.height / 2)
 
@@ -250,10 +253,20 @@ Row {
                             id: path1
                             strokeColor: root.col
                             fillColor: root.col
-                            startX: playPauseBtn.width * 5 / 16; startY: playPauseBtn.width * 1 / 4;
-                            PathLine { x: playPauseBtn.width * 5 / 16; y: playPauseBtn.width * 3 / 4 }
-                            PathLine { x: playPauseBtn.width * 3 / 4; y: playPauseBtn.width * 1 / 2 }
-                            PathLine { x: playPauseBtn.width * 5 / 16; y: playPauseBtn.width * 1 / 4 }
+                            startX: playPauseBtn.width * 5 / 16
+                            startY: playPauseBtn.width * 1 / 4
+                            PathLine {
+                                x: playPauseBtn.width * 5 / 16
+                                y: playPauseBtn.width * 3 / 4
+                            }
+                            PathLine {
+                                x: playPauseBtn.width * 3 / 4
+                                y: playPauseBtn.width * 1 / 2
+                            }
+                            PathLine {
+                                x: playPauseBtn.width * 5 / 16
+                                y: playPauseBtn.width * 1 / 4
+                            }
                         }
 
                         // Pause Button pt. 1
@@ -261,7 +274,8 @@ Row {
                             id: path2
                             strokeColor: root.col
                             fillColor: root.col
-                            startX: playPauseBtn.width * 6 / 16; startY: playPauseBtn.width * 5 / 16
+                            startX: playPauseBtn.width * 6 / 16
+                            startY: playPauseBtn.width * 5 / 16
                             strokeWidth: playPauseBtn.width * 1 / 8
                             PathLine {
                                 x: playPauseBtn.width * 3 / 8
@@ -273,7 +287,8 @@ Row {
                             id: path3
                             strokeColor: root.col
                             fillColor: root.col
-                            startX: playPauseBtn.width * 5 / 8; startY: playPauseBtn.width * 5 / 16
+                            startX: playPauseBtn.width * 5 / 8
+                            startY: playPauseBtn.width * 5 / 16
                             strokeWidth: playPauseBtn.width * 1 / 8
                             PathLine {
                                 x: playPauseBtn.width * 5 / 8
@@ -286,7 +301,7 @@ Row {
                         }
                     }
                     background: Rectangle {
-                        color: Styles.grey4
+                        color: Globals.settings.grey4
                         radius: parent.height / 2
                     }
                     onClicked: countdownTimer.running = !countdownTimer.running
@@ -304,14 +319,15 @@ Row {
                         fontSize: 1 / 10 * Math.min(panel1.width, panel1.height)
                     }
                     background: Rectangle {
-                        color: Styles.grey4
+                        color: Globals.settings.grey4
                         radius: parent.height / 2
                     }
                     onClicked: {
                         countdownTimer.running = false;
                         root.isBreak = false;
                         root.breakNumber = 0;
-                        root.countdown = [...root.defaultCountdown]
+                        root.countdown = [...root.defaultCountdown];
+                        root.arcWidth = root.getArcWidth();
                         root.countdownChanged();
                     }
                 }
