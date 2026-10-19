@@ -33,11 +33,26 @@ Singleton {
         }
         color: "#aa000000"
         MouseArea {
+            id: keysArea
             focus: true
             Keys.onEscapePressed: mainwin.showConfirmation = root.showPowerMenu = false
             anchors.fill: parent
             propagateComposedEvents: false
             onClicked: mainwin.showConfirmation = root.showPowerMenu = false
+            property var menuKeyFunctions: []
+            property var confirmKeyFunction: (ev) => {
+                if (ev.key == Qt.Key_Return || ev.key == Qt.Key_Enter) {
+                    root.showPowerMenu = mainwin.showConfirmation = false
+                    Quickshell.execDetached(mainwin.cmd)
+                }
+                if (ev.key == Qt.Key_Backspace) {
+                    mainwin.showConfirmation = false
+                }
+            }
+            Keys.onPressed: (ev) => {
+                if(!mainwin.showConfirmation) for (let i of menuKeyFunctions) i(ev);
+                else confirmKeyFunction(ev)
+            }
         }
         visible: root.showPowerMenu
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
@@ -116,6 +131,7 @@ Singleton {
                 Column {
                     anchors.centerIn: parent
                     spacing: 12.5
+                    id: col
                     NText {
                         text: "Power Menu"
                         fontSize: 16
@@ -134,19 +150,31 @@ Singleton {
                         spacing: 10
                         acceptedButtons: Qt.NoButton
                         id: rep1
-                        model: parent.model
+                        model: parent.model.length
+                        focus: true
+                        Component.onCompleted: {
+                            for (let i = 0; i < col.model.length; i++) {
+                                keysArea.menuKeyFunctions.push((ev) => {
+                                    if (ev.key == 0x30 + i + 1) {
+                                        rep1.run(i)
+                                    }
+                                })
+                            }
+                        }
+                        function run(i: int) {
+                            mainwin.showConfirmation = true
+                            mainwin.action = col.model[i][0].toLowerCase()
+                            mainwin.cmd = col.model[i][1]
+                        }
                         delegate: MouseArea {
                             id: ma
                             required property var modelData
                             width: mainrect.width - 40
                             height: 50
                             hoverEnabled: true
-                            onClicked: {
-                                //root.showPowerMenu = false
-                                mainwin.showConfirmation = true
-                                mainwin.action = modelData[0].toLowerCase()
-                                mainwin.cmd = modelData[1]
-                            }
+                            onClicked: rep1.run(modelData) 
+                            Component.onCompleted: {
+                                                            }
                             Rectangle {
                                 anchors.fill: parent
                                 radius: 10
@@ -157,19 +185,25 @@ Singleton {
                                     anchors.leftMargin: 5
                                     anchors.verticalCenter: parent.verticalCenter
                                     spacing: 10
+                                    NText {
+                                        text: modelData + 1
+                                        fontSize: 16
+                                        anchors.verticalCenter: parent.verticalCenter
+                                    }
                                     Rectangle {
                                         width: 40
                                         height: 40
                                         radius: height / 2
                                         color: "#fff"
                                         IconImage {
-                                            source: Quickshell.iconPath(modelData[2])
-                                            implicitSize: 40
+                                            source: Quickshell.iconPath(col.model[modelData][2])
+                                            implicitSize: 35
+                                            anchors.centerIn: parent
                                         }
                                     }
                                     NText {
                                         anchors.verticalCenter: parent.verticalCenter
-                                        text: modelData[0]
+                                        text: col.model[modelData][0]
                                         fontSize: 16
                                     }
                                 }
