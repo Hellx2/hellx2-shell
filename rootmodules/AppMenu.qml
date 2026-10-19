@@ -7,7 +7,6 @@ import Quickshell.Widgets
 import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Shapes
 import QtCore
 import qs.common
 import qs
@@ -52,7 +51,6 @@ Singleton {
         let hist = JSON.parse(history)
         if (!!hist[entry.id]) hist[entry.id] += 1
         else hist[entry.id] = 1
-        // settings.sync()
         history = JSON.stringify(hist)
 
         Quickshell.execDetached(entry.command);
@@ -85,15 +83,15 @@ Singleton {
         Rectangle {
             anchors.fill: parent
             radius: 10
-            color: "#1c1c1c"
+            color: Globals.settings.bgcol
             opacity: 0.8
             border {
                 width: 1
-                color: "#2c2c2c"
+                color: Globals.settings.border
             }
         }
 
-        Column {            
+        Column {
             width: parent.width - 2
             height: parent.height - 2
             anchors.centerIn: parent
@@ -112,21 +110,6 @@ Singleton {
                 anchors.left: parent.left
                 anchors.leftMargin: 5
                 spacing: 5
-                /*Shape {
-					layer.enabled: true
-					layer.samples: 5
-                    width: parent.height * 5 / 8
-                    height: parent.height
-                    	ShapePath {
-                           id: path1
-                           strokeColor: Globals.settings.white
-                           fillColor: Globals.settings.white
-                           startX: topRow.height * 4 / 16; startY: topRow.height * 6 / 16
-                           PathLine { x: topRow.height * 15 / 32; y: topRow.height * 8 / 16 }
-                           PathLine { x: topRow.height * 4 / 16; y: topRow.height * 10 / 16 }
-                           PathLine { x: topRow.height * 4 / 16; y: topRow.height * 6 / 16 }
-                       }
-                }*/
                 IconImage {
                     source: Quickshell.iconPath("edit-find", true)
                     implicitSize: 24
@@ -143,7 +126,7 @@ Singleton {
                     Keys.onDownPressed: lv.incrementCurrentIndex()
                     Keys.onUpPressed: lv.decrementCurrentIndex()
                     Keys.onEscapePressed: root.showAppMenu = false
-                    font.family: "Red Hat Display"
+                    font.family: Globals.settings.text_font
 
                     onAccepted: root.run(lv.model.values[lv.currentIndex])
                 }
@@ -169,7 +152,6 @@ Singleton {
                     model: ScriptModel {
                         values: root.model.sort((a, b) => {
                             let hist = JSON.parse(root.history)
-                            //root.history.forEach(x => hist[x[0]] = x[1])
                             let A = a.name.toUpperCase();
                             let B = b.name.toUpperCase();
                             let tmp = ((a, b) => {
@@ -178,13 +160,8 @@ Singleton {
                                 return rv
                             })(a, b)
                             if (tmp != 0) return tmp
-                            if (A < B)
-                                return -1;
-                            else if (A > B)
-                                return 1;
-                            return 0;
-                        }).filter(x => x.id.toLowerCase().includes(mainInput.text.toLowerCase())
-                                                  || x.name.toLowerCase().includes(mainInput.text.toLowerCase()))
+                            return A < B ? -1 : (A > B ? 1 : 0)
+                        }).filter(x => [x.id, x.name].filter(a => a.toLowerCase().includes(mainInput.text.toLowerCase())).length > 0)
                         onValuesChanged: lv.currentIndex = 0
                     }
                     keyNavigationEnabled: true
@@ -198,7 +175,7 @@ Singleton {
                             topLeftRadius: index == 0 ? 10 : 0
                             bottomRightRadius: index == lv.count - 1 ? 10 : 0
                             bottomLeftRadius: index == lv.count - 1 ? 10 : 0
-                            color: parent.ListView.isCurrentItem ? /*"#5c77aa"*/ Globals.settings.accent : (parent.hovered ? Globals.settings.button_bg_hover : Globals.settings.button_bg)
+                            color: parent.ListView.isCurrentItem ? Globals.settings.accent : (parent.hovered ? Globals.settings.button_bg_hover : Globals.settings.button_bg)
                         }
                         onClicked: lv.currentIndex = index
                         onDoubleClicked: root.run(modelData)
@@ -208,9 +185,7 @@ Singleton {
                                 source: Quickshell.iconPath(modelData.icon, true)
                                 implicitSize: 20
                             }
-                            NText {
-                                text: `${modelData?.name}`
-                            }
+                            NText { text: `${modelData?.name}` }
                             NText {
                                 text: modelData.genericName != "" ? `(${modelData.genericName})` : ""
                                 font.italic: true
@@ -262,7 +237,7 @@ Singleton {
                                 topLeftRadius: index == 0 ? 10 : 0
                                 bottomRightRadius: index == lv.count - 1 ? 10 : 0
                                 bottomLeftRadius: index == lv.count - 1 ? 10 : 0
-                                color: parent.ListView.isCurrentItem ? /*"#5c77aa"*/ Globals.settings.accent : (parent.hovered ? Globals.settings.button_bg_hover : Globals.settings.button_bg)
+                                color: parent.ListView.isCurrentItem ? Globals.settings.accent : (parent.hovered ? Globals.settings.button_bg_hover : Globals.settings.button_bg)
                             }
                             contentItem: Row {
                                 spacing: 5

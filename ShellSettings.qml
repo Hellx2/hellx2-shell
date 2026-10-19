@@ -23,7 +23,8 @@ QtObject {
 	property string grey5: "#505050"
 	property string grey6: "#656565"
 
-	property string bgcol: grey1
+    property string bgcol: grey1
+    property string border: grey2
 
 	property string button_bg: grey4
 	property string button_bg_down: grey1
