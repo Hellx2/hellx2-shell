@@ -6,7 +6,8 @@ import qs
 MouseArea {
 	id: btn1
 	property bool onTopBar: false
-	hoverEnabled: true
+    hoverEnabled: true
+    enabled: Pomodoro.buttonEnabled
 	clip: true
 	height: 30
 	width: 30 + (containsMouse ? txt2.width : 0)
@@ -33,7 +34,9 @@ MouseArea {
     		id: txt2
     		color: Pomodoro.col
     		visible: btn1.containsMouse
-    		text: " " + Pomodoro.countdown.map(a => String(a).padStart(2, 0)).join(":")
+            text: " " + String((Pomodoro.countdown - Pomodoro.countdown % 3600) / 3600).padStart(2, 0) + ":"
+            + String((Pomodoro.countdown % 3600 - Pomodoro.countdown % 60) / 60).padStart(2, 0) + ":"
+            + String(Pomodoro.countdown % 60).padStart(2, 0)
     	}
     }
 

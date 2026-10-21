@@ -13,6 +13,7 @@ import qs
 Singleton {
     id: root
     property bool showPomodoro: false
+    property bool buttonEnabled: true
 
     IpcHandler {
         function toggle() {
@@ -21,10 +22,10 @@ Singleton {
         target: "pomodoro"
     }
 
-    property list<int> defaultCountdown: [0, 25, 0]
-    property list<int> shortBreak: [0, 5, 0]
-    property list<int> longBreak: [0, 15, 0]
-    property list<int> countdown: defaultCountdown
+    property int defaultCountdown: 25 * 60
+    property int shortBreak: 5 * 60
+    property int longBreak: 15 * 60
+    property int countdown: defaultCountdown
 
     property bool isBreak: false
     property int breakNumber: 0
@@ -45,8 +46,16 @@ Singleton {
 
     Process {
         id: pomodoroNotification
-        command: ["notify-send", root.notificationText]
+        command: ["notify-send", root.isBreak
+        ? `Take a ${root.breakNumber % root.longBreakOn == 0 ? "long" : "short"} break!`
+        : "Back to work!"]
         running: false
+    }
+
+    Timer {
+        id: enabledTimer
+        interval: 100
+        onTriggered: root.buttonEnabled = true
     }
 
     Timer {
@@ -54,62 +63,41 @@ Singleton {
         running: false
         repeat: true
         onTriggered: {
-            if (root.countdown[2] == 0) {
-                if (root.countdown[1] == 0 && root.countdown[0] == 0) {
-                    root.isBreak = !root.isBreak;
-                    root.isBreakChanged();
-                    if (root.isBreak) {
-                        root.breakNumber += 1;
-                        root.breakNumberChanged();
-                        if (root.breakNumber % root.longBreakOn == 0) {
-                            root.notificationText = "Take a long break!";
-                            pomodoroNotification.running = true;
-                            root.countdown = [...root.longBreak];
-                        } else {
-                            root.notificationText = "Take a short break!";
-                            pomodoroNotification.running = true;
-                            root.countdown = [...root.shortBreak];
-                        }
-                    } else {
-                        root.notificationText = "Back to work!";
-                        pomodoroNotification.running = true;
-                        root.countdown = [...root.defaultCountdown];
-                    }
-                } else {
-                    root.countdown[2] = 59;
-                    if (root.countdown[1] == 0) {
-                        root.countdown[1] = 59;
-                        root.countdown[0] -= 1;
-                    } else {
-                        root.countdown[1] -= 1;
-                    }
-                }
-            } else {
-                root.countdown[2] -= 1;
+            root.countdown -= 1;
+            if (root.countdown == 0) {
+                root.isBreak = !root.isBreak;
+                root.isBreakChanged();
+                if (root.isBreak) {
+                    root.breakNumber += 1;
+                    root.breakNumberChanged();
+                    root.countdown = root.breakNumber % root.longBreakOn == 0 ? root.longBreak : root.shortBreak;
+                } else root.countdown = root.defaultCountdown;
+                pomodoroNotification.running = true;
             }
-            root.arcWidth = root.getArcWidth();
 
             root.countdownChanged();
         }
     }
-    function getArcWidth() {
-        let current = Number(root.countdown[0] * 3600) + Number(root.countdown[1] * 60) + Number(root.countdown[2]);
-        if (root.isBreak)
-            if (root.breakNumber % root.longBreakOn == 0)
-                return Math.min(current / (root.longBreak[0] * 3600 + root.longBreak[1] * 60 + root.longBreak[2]) * 100, 100);
-            else
-                return Math.min(current / (root.shortBreak[0] * 3600 + root.shortBreak[1] * 60 + root.shortBreak[2]) * 100, 100);
-        else
-            return Math.min(current / (root.defaultCountdown[0] * 3600 + root.defaultCountdown[1] * 60 + root.defaultCountdown[2]) * 100, 100);
-    }
 
-    property var arcWidth: getArcWidth()
+    property var arcWidth: Math.min(root.countdown / (!root.isBreak ? root.defaultCountdown :
+        (root.breakNumber % root.longBreakOn == 0 ? root.longBreak : root.shortBreak)) * 100, 100)
+
 
     LazyLoader {
         active: root.showPomodoro
         PanelWindow {
             id: panel1
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+            Connections {
+                target: ToplevelManager
+                function onActiveToplevelChanged() {
+                    if (!!ToplevelManager.activeToplevel) {
+                        root.showPomodoro = false;
+                        root.buttonEnabled = false
+                        enabledTimer.running = true;
+                    }
+			    }
+			}
 
             implicitWidth: 400
             implicitHeight: 500
@@ -148,9 +136,9 @@ Singleton {
 
                         PathAngleArc {
                             centerX: panel1.width / 2
-                            centerY: Math.min(panel1.width / 2, panel1.height / 2)
-                            radiusX: Math.min(panel1.width * 5 / 16, panel1.height * 5 / 16)
-                            radiusY: Math.min(panel1.width * 5 / 16, panel1.height * 5 / 16)
+                            centerY: Math.min(panel1.width, panel1.height) / 2
+                            radiusX: Math.min(panel1.width, panel1.height) * 5 / 16
+                            radiusY: radiusX
 
                             startAngle: -225
                             sweepAngle: 270
@@ -169,9 +157,9 @@ Singleton {
 
                         PathAngleArc {
                             centerX: panel1.width / 2
-                            centerY: Math.min(panel1.width / 2, panel1.height / 2)
-                            radiusX: Math.min(panel1.width * 5 / 16, panel1.height * 5 / 16)
-                            radiusY: Math.min(panel1.width * 5 / 16, panel1.height * 5 / 16)
+                            centerY: Math.min(panel1.width, panel1.height) / 2
+                            radiusX: Math.min(panel1.width, panel1.width) * 5 / 16
+                            radiusY: radiusX
                             startAngle: -225
                             sweepAngle: root.arcWidth / 100 * 270
                         }
@@ -185,12 +173,8 @@ Singleton {
 
                     width: 4 / 10 * panel1.width
                     NInput {
-                        text: String(root.countdown[0]).padStart(2, 0)
-                        onTextEdited: {
-                            root.countdown[0] = Number(text);
-                            root.countdownChanged();
-                            root.arcWidth = root.getArcWidth();
-                        }
+                        text: String(Math.floor(root.countdown / 3600)).padStart(2, 0)
+                        onTextEdited: root.countdown = Number(text) * 3600 + (root.countdown % 3600);
                         color: root.col
                         fontSize: 2 / 40 * Math.min(panel1.width, panel1.height)
                         horizontalAlignment: Text.AlignHCenter
@@ -204,12 +188,9 @@ Singleton {
                         width: timeRow.width / 8
                     }
                     NInput {
-                        text: String(root.countdown[1]).padStart(2, 0)
-                        onTextEdited: {
-                            root.countdown[1] = Number(text);
-                            root.countdownChanged();
-                            root.arcWidth = root.getArcWidth();
-                        }
+                        text: String(Math.floor((root.countdown % 3600) / 60)).padStart(2, 0)
+                        onTextEdited: root.countdown = root.countdown - (root.countdown % 3600)
+                            + Number(text) * 60 + (root.countdown % 60);
                         color: root.col
                         fontSize: 2 / 40 * Math.min(panel1.width, panel1.height)
                         horizontalAlignment: Text.AlignHCenter
@@ -223,16 +204,8 @@ Singleton {
                         width: timeRow.width / 8
                     }
                     NInput {
-                        property bool alternateSwitch: false
-                        text: String(root.countdown[2]).padStart(2, 0)
-                        onTextEdited: {
-                            if (!alternateSwitch) {
-                                root.countdown[2] = Number(text);
-                                root.countdownChanged();
-                                root.arcWidth = root.getArcWidth();
-                            }
-                            alternateSwitch = !alternateSwitch;
-                        }
+                        text: String(root.countdown % 60).padStart(2, 0)
+                        onTextEdited: root.countdown = root.countdown - (root.countdown % 60) + Number(text);
                         color: root.col
                         fontSize: 2 / 40 * Math.min(panel1.width, panel1.height)
                         horizontalAlignment: Text.AlignHCenter
@@ -270,31 +243,21 @@ Singleton {
                         }
 
                         // Pause Button pt. 1
-                        ShapePath {
-                            id: path2
+                        component PauseLine : ShapePath {
+                            required property int index
                             strokeColor: root.col
                             fillColor: root.col
-                            startX: playPauseBtn.width * 6 / 16
+                            startX: playPauseBtn.width * (1 + index * 2) / 8
                             startY: playPauseBtn.width * 5 / 16
                             strokeWidth: playPauseBtn.width * 1 / 8
                             PathLine {
-                                x: playPauseBtn.width * 3 / 8
+                                x: playPauseBtn.width * (1 + index * 2) / 8
                                 y: playPauseBtn.width * 3 / 8 + playPauseBtn.width * 5 / 16
                             }
                         }
-                        // Pause Button pt. 2
-                        ShapePath {
-                            id: path3
-                            strokeColor: root.col
-                            fillColor: root.col
-                            startX: playPauseBtn.width * 5 / 8
-                            startY: playPauseBtn.width * 5 / 16
-                            strokeWidth: playPauseBtn.width * 1 / 8
-                            PathLine {
-                                x: playPauseBtn.width * 5 / 8
-                                y: playPauseBtn.width * 3 / 8 + playPauseBtn.width * 5 / 16
-                            }
-                        }
+
+                        PauseLine { id: path2; index: 1 }
+                        PauseLine { id: path3; index: 2 }
 
                         Shape {
                             data: countdownTimer.running ? [path2, path3] : [path1]
@@ -326,8 +289,8 @@ Singleton {
                         countdownTimer.running = false;
                         root.isBreak = false;
                         root.breakNumber = 0;
-                        root.countdown = [...root.defaultCountdown];
-                        root.arcWidth = root.getArcWidth();
+                        //root.countdown = [...root.defaultCountdown];
+                        root.countdown = root.defaultCountdown;
                         root.countdownChanged();
                     }
                 }

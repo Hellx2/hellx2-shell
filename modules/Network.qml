@@ -25,7 +25,13 @@ MouseArea {
     onClicked: (m) => {
 		if (m.button & Qt.LeftButton) mainDevice.scannerEnabled = showWindow = !showWindow
 		else Networking.wifiEnabled = !Networking.wifiEnabled
-	}
+    }
+
+    Timer {
+        id: enabledTimer
+        interval: 100
+        onTriggered: root.enabled = true
+    }
 
 	Process {
 		id: networksProc
@@ -81,7 +87,18 @@ MouseArea {
 		active: root.showWindow
 		PanelWindow {
 			implicitHeight: 500
-			implicitWidth: 400
+            implicitWidth: 400
+
+            Connections {
+			    target: ToplevelManager
+                function onActiveToplevelChanged() {
+			        if (!!ToplevelManager.activeToplevel) root.showWindow = false;
+                    root.enabled = false
+                    enabledTimer.running = true
+			    }
+			}
+			WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+
 			anchors {
 				top: root.QsWindow.window.anchors.top
 				bottom: root.QsWindow.window.anchors.bottom

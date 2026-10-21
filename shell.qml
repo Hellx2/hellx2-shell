@@ -38,7 +38,6 @@ Scope {
 
     Component.onCompleted: {
         let a = DesktopEntries.applications;
-        //console.warn(JSON.parse(JSON.stringify(Globals.settings)))
         let settings = JSON.parse(persistentSettings.settings);
         for (let i of Object.entries(settings)) {
             if (Globals.settings[i[0]]) Globals.settings[i[0]] = i[1]

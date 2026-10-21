@@ -3,6 +3,7 @@ import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Io
 import Quickshell.Widgets
+import Quickshell.Wayland
 import qs.common
 import qs
 
@@ -30,7 +31,13 @@ MouseArea {
 		running: true
 		command: ["tailscale", "status"]
 		onExited: (c) => root.tailscaleOn = !c
-	}
+    }
+
+    Timer {
+        id: enabledTimer
+        interval: 100
+        onTriggered: root.enabled = true
+    }
 
 	acceptedButtons: Qt.MiddleButton | Qt.LeftButton
 
@@ -59,6 +66,19 @@ MouseArea {
 			id: mainwin
 			implicitWidth: 400
 			implicitHeight: 500
+
+            Connections {
+			    target: ToplevelManager
+                function onActiveToplevelChanged() {
+                    if (!!ToplevelManager.activeToplevel) {
+                        root.showMenu = false;
+                        root.enabled = false
+                        enabledTimer.running = true;
+                    }
+			    }
+			}
+			WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+
 			anchors {
 				top: root.QsWindow.window.anchors.top
 				bottom: root.QsWindow.window.anchors.bottom

@@ -47,7 +47,14 @@ MouseArea {
 			if (root.adapter.state == BluetoothAdapterState.Enabled)
 				if (loader1.active) root.adapter.discovering = true
 		}
-	}
+    }
+
+    Timer {
+        id: enabledTimer
+        interval: 100
+        onTriggered: root.enabled = true
+    }
+
 
 	LazyLoader {
 		id: loader1
@@ -57,6 +64,16 @@ MouseArea {
 		PanelWindow {
 			implicitWidth: 400
 			implicitHeight: 500
+
+			Connections {
+			    target: ToplevelManager
+			    function onActiveToplevelChanged() {
+                    if (!!ToplevelManager.activeToplevel) root.loaderActive = false;
+                    root.enabled = false
+                    enabledTimer.running = true
+			    }
+			}
+			WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 			anchors {
 				top: root.QsWindow.window.anchors.top
 				bottom: root.QsWindow.window.anchors.bottom

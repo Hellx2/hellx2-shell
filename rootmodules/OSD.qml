@@ -8,6 +8,7 @@ import Quickshell.Wayland
 import Quickshell.Widgets
 
 import qs.common
+import qs
 
 Scope {
     id: root
@@ -179,10 +180,10 @@ Scope {
 
                         Rectangle {
                             anchors.fill: parent
-                            color: Styles.grey1
+                            color: Globals.settings.grey1
                             border {
                             	width: 1
-                            	color: Styles.grey3
+                            	color: Globals.settings.grey3
                             }
                             radius: height / 2
                             Row {

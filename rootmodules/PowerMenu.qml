@@ -140,9 +140,9 @@ Singleton {
                     property var model: [
                         ["Lock", ["loginctl", "lock-session"], "system-lock-screen-symbolic"],
                         ["Suspend", ["systemctl", "suspend", "-i"], "system-suspend-symbolic"],
+                        ["Log Out", ["niri", "msg", "action", "quit", "-s"], "system-log-out-symbolic"],
                         ["Reboot", ["systemctl", "reboot", "-i"], "system-reboot-symbolic"],
                         ["Shutdown", ["systemctl", "poweroff", "-i"], "system-shutdown-symbolic"],
-                        ["Log Out", ["niri", "msg", "action", "quit", "-s"], "system-log-out-symbolic"],
                     ]
                     ListView {
                         height: parent.model.length * 60 - 10
