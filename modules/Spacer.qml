@@ -5,11 +5,12 @@ import qs
 
 Shape {
     id: root
+    property color strokeColor: Globals.settings.grey4
     width: 5
     height: 30
     data: ShapePath {
         fillColor: "transparent"
-        strokeColor: Globals.settings.grey4
+        strokeColor: root.strokeColor
         strokeWidth: 1.0
         startX: root.width / 2
         startY: root.height * 1 / 8

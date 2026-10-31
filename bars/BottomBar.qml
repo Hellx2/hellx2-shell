@@ -3,6 +3,7 @@ import Quickshell
 import Quickshell.Services.Mpris
 import qs.modules
 import qs.common
+import qs
 
 Bar {
     id: root
@@ -21,6 +22,17 @@ Bar {
             Workspaces {
                 output: root.screen
             }
+            Rectangle {
+                height: 27.5
+                width: children[0].width + 10
+                radius: 10
+                anchors.verticalCenter: parent.verticalCenter
+                color: Globals.settings.grey6
+                CurrentWindow {
+                    anchors.centerIn: parent
+                }
+            }
+            Spacer {}
             Windows {
                 screen: root.screen.name
             }

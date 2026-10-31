@@ -21,7 +21,7 @@ Row {
         color: Globals.settings.text_fg
         font.family: "JetBrainsMono Nerd Font"
         font.pixelSize: 14
-        width: 500
+        width: 200
         elide: Text.ElideRight
     }
     visible: currwin != null

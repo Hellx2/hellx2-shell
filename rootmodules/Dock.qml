@@ -60,7 +60,7 @@ PanelWindow {
                     if (m.button & Qt.LeftButton)
                         if (windows.length > 0) windows[activeWin + 1 == windows.length ? 0 : activeWin + 1].activate()
                         else Quickshell.execDetached(DesktopEntries.byId(modelData).command)
-                    else if (m.button & Qt.RightButton && windows.length > 0) windows[0].close();
+                    else if (m.button & Qt.RightButton && windows.length > 0) windows[Math.max(activeWin, 0)].close();
                     else if (m.button & Qt.MiddleButton) Globals.settings._pinnedApps.splice(Globals.settings._pinnedApps.indexOf(modelData), 1)
                 }
                 Behavior on y { NumberAnimation { duration: 100 } }
