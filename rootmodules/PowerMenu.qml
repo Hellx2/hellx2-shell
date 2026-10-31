@@ -10,18 +10,6 @@ import qs
 Singleton {
     id: root
     property bool showPowerMenu: false
-    IpcHandler {
-        function show() {
-            root.showPowerMenu = true
-        }
-        function hide() {
-            root.showPowerMenu = false
-        }
-        function toggle() {
-            root.showPowerMenu = !root.showPowerMenu
-        }
-        target: "powermenu"
-    }
 
     PanelWindow {
         id: mainwin

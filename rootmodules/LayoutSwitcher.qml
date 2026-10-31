@@ -12,19 +12,6 @@ PanelWindow {
     color: "transparent"
     visible: false
 
-    IpcHandler {
-        target: "layoutSwitcher"
-        function open() {
-            root.visible = true
-        }
-        function close() {
-            root.visible = false
-        }
-        function toggle() {
-            root.visible = !root.visible
-        }
-    }
-
     Rectangle {
         radius: 20
         color: Globals.settings.bgcol

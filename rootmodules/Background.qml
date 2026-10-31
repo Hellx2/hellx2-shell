@@ -47,13 +47,6 @@ Scope {
         }
     }
 
-    IpcHandler {
-        target: "wallpaper"
-        function set(path: string) {
-            root.backgroundPath = path;
-        }
-    }
-
     Variants {
         model: Quickshell.screens
         delegate: Scope {

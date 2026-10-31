@@ -21,7 +21,6 @@ Scope {
     // None = 0, Brightness = 1, Player = 2, PlayerNext = 3, PlayerPrev = 4, Volume = 5
     property int currentOsd: 0
 
-    property string setBrightnessTo: "50%"
     property var currentBrightness: 50
     property bool isPlaying: false
 
@@ -33,6 +32,14 @@ Scope {
         onTriggered: root.loaderActive = true
     }
 
+    Timer {
+        id: hideTimer
+        interval: 1000
+        onTriggered: {
+            root.currentOsd = 0;
+        }
+    }
+
     property bool loaderActive: false
     LazyLoader {
         active: root.loaderActive
@@ -40,28 +47,6 @@ Scope {
             sourceComponent: Item {
                 id: sourceComponent
 
-                IpcHandler {
-                    function playPause() {
-                        Mpris.players.values[0].togglePlaying()
-                        root.currentOsd = 2; // Player
-                        hideTimer.restart();
-                    }
-                    function next() {
-                        if (Mpris.players.values[0].canGoNext) {
-                            Mpris.players.values[0].next();
-                            root.currentOsd = 3; // PlayerNext
-                            hideTimer.restart();
-                        }
-                    }
-                    function prev() {
-                        if (Mpris.players.values[0].canGoPrevious) {
-                            Mpris.players.values[0].previous();
-                            root.currentOsd = 4; // PlayerPrev
-                            hideTimer.restart();
-                        }
-                    }
-                    target: "players"
-                }
                 Connections {
                     target: Pipewire.defaultAudioSink?.audio
 
@@ -73,37 +58,6 @@ Scope {
                     function onMutedChanged() {
                         root.currentOsd = 5; //Player
                         hideTimer.restart();
-                    }
-                }
-
-                Process {
-                    id: setBrightnessProc
-                    command: ["fish", "-c", `brightnessctl s ${setBrightnessTo} &>/dev/null; math "$(brightnessctl g)/$(brightnessctl m)*100"`]
-
-                    running: false
-
-                    stdout: StdioCollector {
-                        onStreamFinished: {
-                            root.currentBrightness = Number(this.text);
-                            root.currentOsd = 1; // Brightness
-                            hideTimer.restart();
-                        }
-                    }
-                }
-
-                IpcHandler {
-                    function set(brightness: string) {
-                        root.setBrightnessTo = brightness;
-                        setBrightnessProc.running = true;
-                    }
-                    target: "brightness"
-                }
-
-                Timer {
-                    id: hideTimer
-                    interval: 1000
-                    onTriggered: {
-                        root.currentOsd = 0;
                     }
                 }
 

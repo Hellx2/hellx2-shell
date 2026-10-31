@@ -37,6 +37,8 @@ Scope {
     }
 
     Component.onCompleted: {
+        IPC.initialize = true;
+        IPC.root = root;
         let a = DesktopEntries.applications;
         let settings = JSON.parse(persistentSettings.settings);
         for (let i of Object.entries(settings)) {
@@ -60,56 +62,16 @@ Scope {
         }
     }
 
-    ShellSettings {
-        id: defaultSettings
-    }
+    ShellSettings { id: defaultSettings }
+    SettingsUI { id: settingsui }
+    LayoutSwitcher { id: layoutSwitcher }
+    Background { id: bg }
+    OSD { id: osd1 }
 
-    SettingsUI {
-        id: settingsui
-    }
-
-    IpcHandler {
-        function settingsToggle() {
-            settingsui.visible = !settingsui.visible
-        }
-        target: "ui"
-    }
-
-    IpcHandler {
-		function setPrimaryScreen(value: string) {
-			Globals.settings.primaryScreen = value;
-		}
-		function getPrimaryScreen(): string {
-			return Globals.settings.primaryScreen;
-        }
-        function set(prop: string, value: string): string  {
-            if (Globals.settings.hasOwnProperty(prop)) {
-                if (!prop.startsWith("_") && !prop.endsWith("Changed")
-                && prop != "objectName" && typeof Globals.settings[prop] !== "function")
-                    Globals.settings[prop] = value;
-                else return `Error: Cannot change value ${prop}`
-            } else return `Error: Invalid setting '${prop}'!`;
-        }
-        function get(prop: string): string {
-            return Globals.settings[prop];
-        }
-        function reset(prop: string) {
-            if (Globals.settings.hasOwnProperty(prop)) {
-                Globals.settings[prop] = defaultSettings[prop];
-                return "Success";
-            } else return `Error: Invalid setting '${prop}'!`
-        }
-		/*function setMode(mode: string) {
-			if (["home", "school", "game"].includes(mode))
-				Globals.settings.mode = mode;
-			else
-				console.error(`Unknown mode '${mode}', ignoring.`);
-		}
-		function getMode(): string {
-			return Globals.settings.mode;
-        }*/
-		target: "settings"
-    }
+    property var settings_ui: settingsui
+    property var layout_switcher: layoutSwitcher
+    property var background: bg
+    property var osd: osd1
 
 
     LazyLoader {
@@ -147,11 +109,8 @@ Scope {
                     delegate: GameBar {}
                 }
             }
-            OSD {}
             PKAgent {}
             NotifyDaemon {}
-            Background {}
-            LayoutSwitcher {}
         }
     }
 }

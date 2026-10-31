@@ -15,13 +15,6 @@ Singleton {
     property bool showPomodoro: false
     property bool buttonEnabled: true
 
-    IpcHandler {
-        function toggle() {
-            root.showPomodoro = !root.showPomodoro;
-        }
-        target: "pomodoro"
-    }
-
     property int defaultCountdown: 25 * 60
     property int shortBreak: 5 * 60
     property int longBreak: 15 * 60

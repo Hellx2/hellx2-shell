@@ -24,18 +24,6 @@ Singleton {
         return 0;
     })
 
-    IpcHandler {
-        function toggle() {
-            root.showLaunchpad = !root.showLaunchpad;
-        }
-        function open() {
-            root.showLaunchpad = true;
-        }
-        function close() {
-            root.showLaunchpad = false;
-        }
-        target: "launchpad"
-    }
     property var x: 20
     property var y: 20
     function run(command) {

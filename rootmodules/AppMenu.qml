@@ -27,18 +27,6 @@ Singleton {
 
     property var model: [...DesktopEntries.applications.values]
 
-    IpcHandler {
-        function toggle() {
-            root.showAppMenu = !root.showAppMenu;
-        }
-        function open() {
-            root.showAppMenu = true;
-        }
-        function close() {
-            root.showAppMenu = false;
-        }
-        target: "apps"
-    }
     Connections {
         target: ToplevelManager
         function onActiveToplevelChanged() {
