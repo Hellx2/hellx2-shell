@@ -28,9 +28,11 @@ NButton {
             implicitSize: 20
         }
         NText {
+            width: Math.min(implicitWidth, 200)
             anchors.verticalCenter: parent.verticalCenter
             text: (Mpris.players.values[0]?.trackArtist != "" ? Mpris.players.values[0]?.trackArtist + " - " : "")
-                + (Mpris.players.values[0]?.trackTitle || "Unknown Track")
+            + (Mpris.players.values[0]?.trackTitle || "Unknown Track")
+            elide: Text.ElideRight
         }
     }
 }

@@ -8,8 +8,8 @@ import qs
 MouseArea {
 	height: 30
 	id: root
-   	hoverEnabled: true
-    width: (containsMouse ? 30 + txt1.width : 30)
+    hoverEnabled: true
+    width: (containsMouse ? 30 + txt1.width + 5 : 30)
     clip: true
 
     onClicked: Pipewire.defaultAudioSink.audio.muted = !Pipewire.defaultAudioSink?.audio.muted
@@ -29,7 +29,7 @@ MouseArea {
     	anchors.left: parent.left
     	anchors.leftMargin: 5
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 0
+        spacing: 5
         height: 20
         width: parent.width - 10
         clip: true

@@ -1,10 +1,11 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Shapes
 import Qt5Compat.GraphicalEffects
 import Quickshell
+import Quickshell.Widgets
 import Quickshell.Bluetooth
 import Quickshell.Wayland
-import Quickshell.Widgets
 
 import qs.common
 import qs
@@ -33,13 +34,26 @@ MouseArea {
 		color: (!!adapter && adapter.enabled) ? Globals.settings.accent : Globals.settings.grey4
 		radius: height / 2
 	}
-
-	IconImage {
-		anchors.centerIn: parent
-		source: Quickshell.iconPath((!!adapter && adapter.enabled)
-			? "network-bluetooth-symbolic" : "network-bluetooth-inactive-symbolic", true)
-		implicitSize: 20
-	}
+    ShapePath {
+        id: bticon
+        strokeColor: root.adapter.enabled ? Globals.settings.white : "#7c7c7c"
+        fillColor: "transparent"
+        strokeWidth: 2
+        startX: 6; startY: 6;
+        PathLine { x: 15; y: 14 }
+        PathLine { x: 10; y: 18 }
+        PathLine { x: 10; y: 2 }
+        PathLine { x: 15; y: 6 }
+        PathLine { x: 6; y: 14 }
+    }
+    Shape {
+        width: 20
+        height: 20
+        anchors.centerIn: parent
+        layer.enabled: true
+        layer.samples: 5
+        data: bticon
+    }
 
 	Connections {
 		target: root.adapter
@@ -107,10 +121,6 @@ MouseArea {
 						id: btn1
 						isSwitched: root.adapter.enabled
 
-						function timer() {
-						    return Qt.createQmlObject("import QtQuick 2.0; Timer {}", root);
-						}
-						
 						onIsSwitchedChanged: {
 							if (root.adapter.state == BluetoothAdapterState.Blocked) Quickshell.execDetached(["rfkill", "unblock", "bluetooth"])
 							root.adapter.enabled = isSwitched
@@ -147,7 +157,6 @@ MouseArea {
 						color: lv.currentIndex == index ? Globals.settings.grey5 : Globals.settings.grey3
 						Item {
 							anchors.fill: parent
-							//spacing: 5
 							anchors.leftMargin: 5
 							anchors.rightMargin: 5
 							Rectangle {
@@ -159,7 +168,6 @@ MouseArea {
 								anchors.left: parent.left
 								color: Globals.settings.grey0
 								IconImage {
-									//id: icon
 									anchors.centerIn: parent
 									source: Quickshell.iconPath(modelData.icon, true)
 									implicitSize: 20
@@ -168,14 +176,12 @@ MouseArea {
 							Button {
 								id: icon1
 								padding: 1.25
-								//width: contentItem.width + 2.5
-								//height: children[0].height + 2.5
 								anchors.verticalCenter: parent.verticalCenter
 								anchors.left: icon.right
 								anchors.leftMargin: 5
 								background: Rectangle {
 									radius: height / 2
-									color: modelData.paired ? /*(icon1.hovered ? "#00aaff" : "#0077cc")*/ Globals.settings.accent : Globals.settings.grey0
+                                    color: modelData.paired ? Globals.settings.accent : Globals.settings.grey0
 								}
 								contentItem: IconImage {
 									source: Quickshell.iconPath("link", true)

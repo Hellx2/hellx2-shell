@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Shapes
 import qs.common
 import qs.rootmodules
 import qs
@@ -24,12 +25,51 @@ MouseArea {
     	anchors.left: parent.left
     	anchors.leftMargin: 5
     	width: parent.width - 10
-    	clip: true
-    	NText {
+        clip: true
+        layer.enabled: true
+        layer.samples: 5
+        Shape {
+            width: 20
+            height: 20
+
+            ShapePath {
+                strokeColor: Pomodoro.col
+                strokeWidth: 3
+                fillColor: "transparent"
+                PathAngleArc {
+                    centerX: 10; centerY: 10
+                    radiusX: 8; radiusY: 8
+                    startAngle: 0; sweepAngle: 360;
+                }
+            }
+            ShapePath {
+                startX: 10; startY: 2
+                strokeColor: Pomodoro.col
+                //strokeWidth: 2
+                fillColor: Pomodoro.col
+                PathLine { x: 10; y: 10 }
+                PathAngleArc {
+                    moveToStart: false
+                    radiusX: 8; radiusY: 8;
+                    centerX: 10; centerY: 10;
+                    // Start at top rather than 90 degrees after top.
+                    startAngle: -90;
+                    // Invert arc width as arc width reduces rather than increases
+                    // over time.
+                    sweepAngle: (1 - Pomodoro.arcWidth / 100) * 360;
+                }
+                PathLine { x: 10; y: 10 }
+                /*PathLine {
+                    x: 10 + 10 * Math.cos(2 * Math.PI * (1 - Pomodoro.arcWidth / 100) - Math.PI / 2);
+                    y: 10 + 10 * Math.sin(2 * Math.PI * (1 - Pomodoro.arcWidth / 100) - Math.PI / 2);
+                }*/
+             }
+         }
+    	/*NText {
     		text: "🕑"
     		fontSize: 16
     		anchors.verticalCenter: parent.verticalCenter
-    	}
+        }*/
     	NText {
     		id: txt2
     		color: Pomodoro.col

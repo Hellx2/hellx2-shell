@@ -10,8 +10,8 @@ QtObject {
 	property string blue: "#66bbdd"
 	property string white: "#ffffff"
 
-	property string accent: "#55aa77"
-	property string accent1: "#55aa77"
+	property color accent: "#55aa77"
+	property color accent1: "#55aa77"
 	//property string alternate: "#ffffff"
 	//property string accent: "#5232b7"
 	
