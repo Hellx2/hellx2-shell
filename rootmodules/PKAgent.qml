@@ -96,7 +96,7 @@ PanelWindow {
         anchors.topMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
         text: isAuthenticating ? "..." : "Invalid password!"
-        color: isAuthenticating ? Globals.settings.blue : Globals.settings.red
+        color: isAuthenticating ? Globals.theme.blue : Globals.theme.red
         visible: isAuthenticating || (agent.flow && agent.flow.failed && !agent.flow.isCompleted)
     }
 }

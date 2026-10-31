@@ -34,7 +34,7 @@ PanelWindow {
     Rectangle {
         id: rect
         anchors.horizontalCenter: root.horizontalCenter
-        color: Globals.settings.grey2
+        color: Globals.theme.grey2
         radius: height / 2
         anchors.fill: parent
     }
@@ -101,7 +101,7 @@ PanelWindow {
                 Rectangle {
                     anchors.top: img.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
-                    color: visible && ma2.activeWin != -1 ? Globals.settings.blue : (ma2.containsMouse ? "#ffffff" : "#888888")
+                    color: visible && ma2.activeWin != -1 ? Globals.theme.blue : (ma2.containsMouse ? "#ffffff" : "#888888")
                     width: (ma2.activeWin != -1 ? 20 : 7.5) * (ma2.containsMouse ? 1.5 : 1)
                     height: 4
                     radius: height / 2
@@ -119,7 +119,7 @@ PanelWindow {
             anchors.verticalCenter: parent.verticalCenter
             data: ShapePath {
                 fillColor: "transparent"
-                strokeColor: Globals.settings.grey6
+                strokeColor: Globals.theme.grey6
                 strokeWidth: 1.0
                 startX: spacer.width / 2 - 0.5; startY: spacer.height * 1 / 8
                 PathLine { x: spacer.width / 2 - 0.5; y: spacer.height * 7 / 8 }
@@ -154,7 +154,7 @@ PanelWindow {
                 Rectangle {
                     anchors.top: img.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
-                    color: modelData.activated ? Globals.settings.blue : (ma1.containsMouse ? "#ffffff" : "#888888")
+                    color: modelData.activated ? Globals.theme.blue : (ma1.containsMouse ? "#ffffff" : "#888888")
                     width: (modelData.activated ? 20 : 7.5) * (ma1.containsMouse ? 1.5 : 1)
                     height: 4
                     radius: height / 2

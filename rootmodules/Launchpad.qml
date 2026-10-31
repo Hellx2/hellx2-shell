@@ -78,10 +78,10 @@ Singleton {
                 height: 50
                 width: parent.width / 4
                 radius: height / 2
-                color: Globals.settings.grey2
+                color: Globals.theme.grey2
                 border {
                     width: 1
-                    color: Globals.settings.grey3
+                    color: Globals.theme.grey3
                 }
                 anchors.horizontalCenter: parent.horizontalCenter
                 Row {
@@ -153,7 +153,7 @@ Singleton {
                             radius: 20
                             color: col.GridView.isCurrentItem
                                 ? (parent.hovered ? "#8c8c8c": "#7c7c7c")
-                                : (parent.hovered ? Globals.settings.button_bg_hover : Globals.settings.button_bg)
+                                : (parent.hovered ? Globals.theme.button_bg_hover : Globals.theme.button_bg)
                             opacity: 0.7
                         }
                         onClicked: root.run(modelData.command)

@@ -5,13 +5,13 @@ import qs
 TextField {
     id: root
 
-    property string bgcolor: Globals.settings.input_bg
-    property string fgcolor: Globals.settings.text_fg
+    property string bgcolor: Globals.theme.input_bg
+    property string fgcolor: Globals.theme.text_fg
     // Placeholder colour
-    property string fontFamily: Globals.settings.text_font
+    property string fontFamily: Globals.theme.text_font
 
-    property int bgradius: Globals.settings.input_radius
-    property int fontSize: Globals.settings.input_text_size
+    property int bgradius: Globals.theme.input_radius
+    property int fontSize: Globals.theme.input_text_size
 
     verticalAlignment: Text.AlignVCenter
     padding: 0

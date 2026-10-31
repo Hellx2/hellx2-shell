@@ -10,8 +10,8 @@ NButton {
     onClicked: Mpris.players.values[0].togglePlaying()
     height: 30
     bgcolor: Mpris.players.values[0]?.isPlaying
-        ? (hovered ? Qt.lighter(Globals.settings.accent, 1.3) : Globals.settings.accent)
-        : (hovered ? Globals.settings.button_bg_hover : Globals.settings.button_bg)
+        ? (hovered ? Qt.lighter(Globals.theme.accent, 1.3) : Globals.theme.accent)
+        : (hovered ? Globals.theme.button_bg_hover : Globals.theme.button_bg)
     contentItem: Row {
         leftPadding: 2.5
         rightPadding: 2.5

@@ -16,7 +16,7 @@ PanelWindow {
     required property var modelData
     screen: modelData
 	
-    property var bgcolor: Globals.settings.bgcol
+    property var bgcolor: Globals.theme.bgcol
     property bool fillWidth: true
     property bool topOfScreen: false
 

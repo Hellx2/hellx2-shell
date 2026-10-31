@@ -16,7 +16,7 @@ MouseArea {
 	Component.onCompleted: Pomodoro.onTopBar = onTopBar
 	Rectangle {
 		anchors.fill: parent
-		color: Globals.settings.button_bg
+		color: Globals.theme.button_bg
 		radius: height / 2
 	}
 

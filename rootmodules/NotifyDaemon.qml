@@ -179,7 +179,7 @@ Scope {
                             				continue;
                             			}
                             			// This ratio was calculated for JetBrains Mono and only that font, others will need to be implemented somehow
-                            			for (let j of [...rows[index], i]) temp += j.text.length * Styles.text_size / 1.6 + 5 + 2 * Styles.button_sidepad;
+                            			for (let j of [...rows[index], i]) temp += j.text.length * Globals.theme.text_size / 1.6 + 5 + 2 * Globals.theme.button_sidepad;
                             			if (temp - 5 > col2.width) index++;
                             			if (index == rows.length) rows.push([]);
                             			rows[index].push(i);

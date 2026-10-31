@@ -19,7 +19,7 @@ MouseArea {
 	Rectangle {
 		anchors.fill: parent
 		radius: height / 2
-		color: root.tailscaleOn ? Globals.settings.accent : Globals.settings.grey4
+		color: root.tailscaleOn ? Globals.theme.accent : Globals.theme.grey4
 	}
 	IconImage {
 		source: Quickshell.iconPath("pgp-keys", true)
@@ -93,10 +93,10 @@ MouseArea {
 			Rectangle {
 				radius: 10
 				anchors.fill: parent
-				color: Globals.settings.grey1
+				color: Globals.theme.grey1
 				border {
 					width: 1
-					color: Globals.settings.grey4
+					color: Globals.theme.grey4
 				}
 			}
 			Process {
@@ -157,10 +157,10 @@ MouseArea {
 					width: parent.width - 20
 					anchors.horizontalCenter: parent.horizontalCenter
 					radius: 15
-					color: Globals.settings.grey2
+					color: Globals.theme.grey2
 					border {
 						width: 1
-						color: Globals.settings.grey4
+						color: Globals.theme.grey4
 					}
 					ListView {
 						anchors.fill: parent
@@ -181,7 +181,7 @@ MouseArea {
 							width: lv1.width
 							anchors.horizontalCenter: parent.horizontalCenter
 							height: 30
-							color: Globals.settings.grey3
+							color: Globals.theme.grey3
 							radius: height / 2
 							Row {
 								anchors.left: parent.left
@@ -237,10 +237,10 @@ MouseArea {
 					width: parent.width - 20
 					anchors.horizontalCenter: parent.horizontalCenter
 					radius: 15
-					color: Globals.settings.grey2
+					color: Globals.theme.grey2
 					border {
 						width: 1
-						color: Globals.settings.grey4
+						color: Globals.theme.grey4
 					}
 					ListView {
 						anchors.fill: parent
@@ -263,7 +263,7 @@ MouseArea {
 							width: lv.width
 							anchors.horizontalCenter: parent.horizontalCenter
 							height: 30
-							color: Globals.settings.grey3
+							color: Globals.theme.grey3
 							radius: height / 2
 							Row {
 								anchors.left: parent.left
@@ -301,7 +301,7 @@ MouseArea {
 									width: 25
 									height: 25
 									radius: height / 2 
-									color: Globals.settings.grey1
+									color: Globals.theme.grey1
 
 									IconImage {
 										anchors.centerIn: parent

@@ -35,7 +35,7 @@ NButton {
 
             ShapePath {
                 strokeColor: "transparent"
-                fillColor: Globals.settings.grey2
+                fillColor: Globals.theme.grey2
                 startX: 5; startY: 18
 
                 PathLine { x: 15; y: 18 }
@@ -48,7 +48,7 @@ NButton {
             }
             ShapePath {
                 strokeColor: "transparent"
-                fillColor: Qt.darker(Globals.settings.accent1, 1.2)
+                fillColor: Qt.darker(Globals.theme.accent1, 1.2)
                 startX: 5; startY: 18
 
                 PathLine { x: 15; y: 18 }
@@ -57,7 +57,7 @@ NButton {
             }
             ShapePath {
                 strokeColor: "transparent"
-                fillColor: Qt.darker(Globals.settings.accent1, 1.2)
+                fillColor: Qt.darker(Globals.theme.accent1, 1.2)
                 startX: 7; startY: 4
                 PathLine { x: 13; y: 4 }
                 PathLine { x: 13; y: 2 + (1 - Math.max(root.device.percentage - 0.875, 0) / 0.125) * 2 }

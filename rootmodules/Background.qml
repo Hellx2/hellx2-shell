@@ -41,9 +41,9 @@ Scope {
             }
 
             let a1 = Qt.lighter(a, 1.5);
-            Globals.settings.accent = a;
-            Globals.settings.accent1 = a1;
-            //Globals.settings.alternate = colors[4]
+            Globals.theme.accent = a;
+            Globals.theme.accent1 = a1;
+            //Globals.theme.alternate = colors[4]
         }
     }
 

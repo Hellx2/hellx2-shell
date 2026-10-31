@@ -59,7 +59,7 @@ MouseArea {
 	Rectangle {
 		anchors.fill: parent
 		radius: height / 2
-		color: Networking.wifiEnabled ? Globals.settings.accent : Globals.settings.grey4
+		color: Networking.wifiEnabled ? Globals.theme.accent : Globals.theme.grey4
 
 		IconImage {
 			anchors.centerIn: parent
@@ -118,7 +118,7 @@ MouseArea {
 			color: "transparent"
 			Rectangle {
 				anchors.fill: parent
-				color: Globals.settings.bgcol
+				color: Globals.theme.bgcol
 				radius: 10
 				border {
 					width: 1
@@ -172,7 +172,7 @@ MouseArea {
 							height: 27.5
 							width: parent.width
 							radius: 10
-							color: modelData.connected ? Globals.settings.grey6 : Globals.settings.grey3
+							color: modelData.connected ? Globals.theme.grey6 : Globals.theme.grey3
 
 							Row {
 								height: parent.height
@@ -186,7 +186,7 @@ MouseArea {
 									anchors.verticalCenter: parent.verticalCenter
 									background: Rectangle {
 										radius: height / 2
-										color: modelData.connected ? Globals.settings.accent : Globals.settings.grey0
+										color: modelData.connected ? Globals.theme.accent : Globals.theme.grey0
 									}
 									contentItem: IconImage {
 										anchors.centerIn: parent

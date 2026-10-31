@@ -5,7 +5,7 @@ import qs
 
 Rectangle {
 	id: root
-    color: Globals.settings.grey5
+    color: Globals.theme.grey5
     width: ws.width + 10
     height: 20
     radius: height / 2
@@ -30,8 +30,8 @@ Rectangle {
 		        height: parent.height
 		        Rectangle {
 					width: parent.width
-		            color: modelData.active ? Globals.settings.accent1 : 
-		            	(modelData.coordinates[1] < WindowManager.screenProjection(root.output).windowsets.length - 1 ? Globals.settings.white : Globals.settings.grey3)
+		            color: modelData.active ? Globals.theme.accent1 : 
+		            	(modelData.coordinates[1] < WindowManager.screenProjection(root.output).windowsets.length - 1 ? Globals.theme.white : Globals.theme.grey3)
 		            radius: height / 2
 		        	y: parent.height / 2 - height / 2
 		            height: 11

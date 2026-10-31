@@ -18,7 +18,7 @@ MouseArea {
 
     Rectangle {
         radius: height / 2
-        color: root.containsMouse ? Globals.settings.button_bg_hover : Globals.settings.button_bg
+        color: root.containsMouse ? Globals.theme.button_bg_hover : Globals.theme.button_bg
         anchors.fill: parent
 
         ShapePath {
@@ -85,8 +85,8 @@ MouseArea {
                     "school": homePath
                 })[Globals.settings.mode]
                 if (Globals.settings.mode != "school") {
-                    a.fillColor = Qt.lighter(Globals.settings.accent)
-                    a.strokeColor = Qt.lighter(Globals.settings.accent)
+                    a.fillColor = Qt.lighter(Globals.theme.accent)
+                    a.strokeColor = Qt.lighter(Globals.theme.accent)
                 }
                 return a
             }

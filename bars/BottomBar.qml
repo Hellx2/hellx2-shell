@@ -27,7 +27,7 @@ Bar {
                 width: children[0].width + 10
                 radius: 10
                 anchors.verticalCenter: parent.verticalCenter
-                color: Globals.settings.grey6
+                color: Globals.theme.grey6
                 CurrentWindow {
                     anchors.centerIn: parent
                 }

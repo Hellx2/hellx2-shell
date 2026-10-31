@@ -14,7 +14,7 @@ PanelWindow {
 
     Rectangle {
         radius: 20
-        color: Globals.settings.bgcol
+        color: Globals.theme.bgcol
         anchors.fill: parent
         border {
             color: Qt.lighter(color, 2.0)
@@ -30,7 +30,7 @@ PanelWindow {
         radius: 10
         width: 192
         height: 108
-        color: Qt.lighter(Globals.settings.bgcol, 1.5)
+        color: Qt.lighter(Globals.theme.bgcol, 1.5)
         border {
             color: Qt.lighter(color)
             width: 1
@@ -38,7 +38,7 @@ PanelWindow {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                if (!!mode.layout) Globals.settings.mode = mode.layout
+                if (!!mode.layout) Globals.theme.mode = mode.layout
                 root.visible = false
             }
         }

@@ -14,7 +14,7 @@ MouseArea {
 		width: 25
 		radius: height / 2
 
-		color: root.isSwitched ? Globals.settings.accent : "#3c3c3c"
+		color: root.isSwitched ? Globals.theme.accent : "#3c3c3c"
 		Behavior on color {
 			ColorAnimation { duration: 200 }
 		}

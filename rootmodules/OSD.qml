@@ -66,7 +66,7 @@ Scope {
 
                     PanelWindow {
                     	WlrLayershell.layer: WlrLayer.Overlay
-                    	screen: Globals.settings.getPrimaryScreen()
+                    	screen: Globals.theme.getPrimaryScreen()
                         anchors.bottom: true
                         margins.bottom: screen.height / 5
                         exclusiveZone: 0
@@ -134,10 +134,10 @@ Scope {
 
                         Rectangle {
                             anchors.fill: parent
-                            color: Globals.settings.grey1
+                            color: Globals.theme.grey1
                             border {
                             	width: 1
-                            	color: Globals.settings.grey3
+                            	color: Globals.theme.grey3
                             }
                             radius: height / 2
                             Row {

@@ -57,11 +57,11 @@ Singleton {
             Rectangle {
                 implicitWidth: 200
                 implicitHeight: 100
-                color: Globals.settings.grey2
+                color: Globals.theme.grey2
                 radius: 10
                 border {
                     width: 1
-                    color: Globals.settings.grey4
+                    color: Globals.theme.grey4
                 }
 
                 Column {
@@ -110,10 +110,10 @@ Singleton {
                 implicitWidth: 400
                 implicitHeight: 50 * rep1.count + 125
                 radius: 10
-                color: Globals.settings.grey2
+                color: Globals.theme.grey2
                 border {
                     width: 1
-                    color: Globals.settings.grey4
+                    color: Globals.theme.grey4
                 }
 
                 Column {
@@ -166,7 +166,7 @@ Singleton {
                             Rectangle {
                                 anchors.fill: parent
                                 radius: 10
-                                color: ma.containsMouse ? Globals.settings.grey6 : Globals.settings.grey4
+                                color: ma.containsMouse ? Globals.theme.grey6 : Globals.theme.grey4
 
                                 Row {
                                     anchors.left: parent.left

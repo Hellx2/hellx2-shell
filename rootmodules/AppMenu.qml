@@ -71,11 +71,11 @@ Singleton {
         Rectangle {
             anchors.fill: parent
             radius: 10
-            color: Globals.settings.bgcol
+            color: Globals.theme.bgcol
             opacity: 0.8
             border {
                 width: 1
-                color: Globals.settings.border
+                color: Globals.theme.border
             }
         }
 
@@ -114,7 +114,7 @@ Singleton {
                     Keys.onDownPressed: lv.incrementCurrentIndex()
                     Keys.onUpPressed: lv.decrementCurrentIndex()
                     Keys.onEscapePressed: root.showAppMenu = false
-                    font.family: Globals.settings.text_font
+                    font.family: Globals.theme.text_font
 
                     onAccepted: root.run(lv.model.values[lv.currentIndex])
                 }
@@ -163,7 +163,7 @@ Singleton {
                             topLeftRadius: index == 0 ? 10 : 0
                             bottomRightRadius: index == lv.count - 1 ? 10 : 0
                             bottomLeftRadius: index == lv.count - 1 ? 10 : 0
-                            color: parent.ListView.isCurrentItem ? Globals.settings.accent : (parent.hovered ? Globals.settings.button_bg_hover : Globals.settings.button_bg)
+                            color: parent.ListView.isCurrentItem ? Globals.theme.accent : (parent.hovered ? Globals.theme.button_bg_hover : Globals.theme.button_bg)
                         }
                         onClicked: lv.currentIndex = index
                         onDoubleClicked: root.run(modelData)
@@ -225,7 +225,7 @@ Singleton {
                                 topLeftRadius: index == 0 ? 10 : 0
                                 bottomRightRadius: index == lv.count - 1 ? 10 : 0
                                 bottomLeftRadius: index == lv.count - 1 ? 10 : 0
-                                color: parent.ListView.isCurrentItem ? Globals.settings.accent : (parent.hovered ? Globals.settings.button_bg_hover : Globals.settings.button_bg)
+                                color: parent.ListView.isCurrentItem ? Globals.theme.accent : (parent.hovered ? Globals.theme.button_bg_hover : Globals.theme.button_bg)
                             }
                             contentItem: Row {
                                 spacing: 5

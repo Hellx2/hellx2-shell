@@ -24,7 +24,7 @@ Singleton {
     property int breakNumber: 0
     property int longBreakOn: 4
 
-    property string col: isBreak ? Globals.settings.red : Globals.settings.blue
+    property string col: isBreak ? Globals.theme.red : Globals.theme.blue
 
     property bool onTopBar: false
 
@@ -102,7 +102,7 @@ Singleton {
             }
             Rectangle {
                 anchors.fill: parent
-                color: Globals.settings.bgcol
+                color: Globals.theme.bgcol
                 radius: 15
                 border {
                     width: 1
@@ -124,7 +124,7 @@ Singleton {
                     height: 200
 
                     ShapePath {
-                        fillColor: Globals.settings.grey3
+                        fillColor: Globals.theme.grey3
                         strokeWidth: 0
 
                         PathAngleArc {
@@ -257,7 +257,7 @@ Singleton {
                         }
                     }
                     background: Rectangle {
-                        color: Globals.settings.grey4
+                        color: Globals.theme.grey4
                         radius: parent.height / 2
                     }
                     onClicked: countdownTimer.running = !countdownTimer.running
@@ -275,7 +275,7 @@ Singleton {
                         fontSize: 1 / 10 * Math.min(panel1.width, panel1.height)
                     }
                     background: Rectangle {
-                        color: Globals.settings.grey4
+                        color: Globals.theme.grey4
                         radius: parent.height / 2
                     }
                     onClicked: {

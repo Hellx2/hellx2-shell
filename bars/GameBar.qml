@@ -17,7 +17,7 @@ Bar {
     color: "transparent"
 
     Rectangle {
-        color: Globals.settings.bgcol
+        color: Globals.theme.bgcol
         height: parent.height
         width: parent.width
         radius: height / 2

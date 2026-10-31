@@ -39,6 +39,7 @@ Scope {
     Component.onCompleted: {
         IPC.initialize = true;
         IPC.root = root;
+        //Globals.mainSettings = JSON.parse(Globals.settingsInst.mainSettings)
         let a = DesktopEntries.applications;
         let settings = JSON.parse(persistentSettings.settings);
         for (let i of Object.entries(settings)) {

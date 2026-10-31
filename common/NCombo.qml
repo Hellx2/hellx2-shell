@@ -25,7 +25,7 @@ Row {
 		height: 30
 		Text {
 			anchors.verticalCenter: parent.verticalCenter
-			color: Globals.settings.text_fg
+			color: Globals.theme.text_fg
 			text: root.label
 		}
 	}
@@ -34,18 +34,18 @@ Row {
 		model: haveNA ? ["N/A", ...root.model] : root.model
 		background: Rectangle {
 			implicitWidth: 120
-			color: combo.hovered ? Globals.settings.grey3 : Globals.settings.grey0
+			color: combo.hovered ? Globals.theme.grey3 : Globals.theme.grey0
 			radius: height / 4
 		}
 		delegate: ItemDelegate {
 			width: combo.width
 			contentItem: Text {
 				text: modelData
-				color: Globals.settings.text_fg
+				color: Globals.theme.text_fg
 			}
 			background: Rectangle {
 				radius: 10
-				color: combo.highlightedIndex == index ? Globals.settings.grey3 : "transparent"
+				color: combo.highlightedIndex == index ? Globals.theme.grey3 : "transparent"
 			}
 		}
 		popup: Popup {
@@ -64,7 +64,7 @@ Row {
 			padding: 0
 
 			background: Rectangle {
-				color: Globals.settings.grey0
+				color: Globals.theme.grey0
 				radius: 10
 				border {
 					width: 1

@@ -18,7 +18,7 @@ Row {
         rightPadding: 2.5
         leftPadding: 2.5
         text: currwin?.title || "Unknown"
-        color: Globals.settings.text_fg
+        color: Globals.theme.text_fg
         font.family: "JetBrainsMono Nerd Font"
         font.pixelSize: 14
         width: 200

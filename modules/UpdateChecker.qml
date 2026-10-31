@@ -18,7 +18,7 @@ NButton {
 	width: 30
 	bgradius: height / 2
 	visible: SystemUpdater.needsUpdate
-	bgcolor: hovered ? Qt.lighter(Globals.settings.accent, 1.25) : Globals.settings.accent
+	bgcolor: hovered ? Qt.lighter(Globals.theme.accent, 1.25) : Globals.theme.accent
 
 	contentItem: IconImage {
 		source: Quickshell.iconPath("software-update-available")

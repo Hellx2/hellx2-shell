@@ -10,7 +10,7 @@ FloatingWindow {
 
     visible: false
 
-    color: Globals.settings.bgcol
+    color: Globals.theme.bgcol
     title: "Hellx2 Shell - Settings"
 
     ListView {
@@ -33,7 +33,7 @@ FloatingWindow {
             NInput {
                 id: input1
                 width: 300
-                bgcolor: Globals.settings.grey3
+                bgcolor: Globals.theme.grey3
                 text: Globals.settings[modelData]
                 validator: RegularExpressionValidator {
                     regularExpression: {
