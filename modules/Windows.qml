@@ -93,7 +93,8 @@ Row {
         id: rep1
         model: ScriptModel {
             values: NiriService.windows.filter(w => NiriService.workspaces[w.workspace_id].is_active
-            && NiriService.workspaces[w.workspace_id].output == root.screen) //&& !Globals.settings._pinnedApps.includes(w.app_id))
+            && NiriService.workspaces[w.workspace_id].output == root.screen)
+            //&& !Globals.settings._pinnedApps.includes(w.app_id))
         }
 
         MouseArea {
@@ -115,8 +116,6 @@ Row {
                 }
             }
 
-            //bgcolor: modelData.is_focused ? Globals.settings.grey6 : Globals.settings.grey4
-
             Image {
                 anchors.centerIn: parent
                 source: Quickshell.iconPath(DesktopEntries.byId(modelData.app_id)?.icon, true)
@@ -124,15 +123,14 @@ Row {
                 height: 20
                 mipmap: true
             }
-                /*NText {
-                    rightPadding: 2.5
-                    leftPadding: 2.5
-                    text: modelData.title
-                    visible: modelData.is_focused
-                    width: Math.min(implicitWidth, 200)
-                    elide: Text.ElideRight
-                }*/
-            //onClicked: NiriService.focusWindow(modelData.id)
+            /*NText {
+                 rightPadding: 2.5
+                 leftPadding: 2.5
+                 text: modelData.title
+                 visible: modelData.is_focused
+                 width: Math.min(implicitWidth, 200)
+                 elide: Text.ElideRight
+             }*/
         }
     }
 }

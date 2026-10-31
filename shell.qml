@@ -151,6 +151,7 @@ Scope {
             PKAgent {}
             NotifyDaemon {}
             Background {}
+            LayoutSwitcher {}
         }
     }
 }

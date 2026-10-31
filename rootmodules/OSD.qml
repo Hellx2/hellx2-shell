@@ -112,7 +112,7 @@ Scope {
 
                     PanelWindow {
                     	WlrLayershell.layer: WlrLayer.Overlay
-                    	screen: Data.getPrimaryScreen()
+                    	screen: Globals.settings.getPrimaryScreen()
                         anchors.bottom: true
                         margins.bottom: screen.height / 5
                         exclusiveZone: 0
