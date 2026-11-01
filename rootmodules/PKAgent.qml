@@ -45,7 +45,7 @@ PanelWindow {
         width: parent.width - 20
         anchors.top: parent.top
         anchors.topMargin: 10
-        color: Globals.settings.text_fg
+        color: Globals.theme.text_fg
         wrapMode: Text.WordWrap
     }
     NCombo {

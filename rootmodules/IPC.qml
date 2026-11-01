@@ -175,4 +175,17 @@ Singleton {
         }
         target: "brightness"
     }
+
+    IpcHandler {
+        target: "themeSwitcher"
+        function open() {
+            root.theme_switcher.visible = true
+        }
+        function close() {
+            root.theme_switcher.visible = false
+        }
+        function toggle() {
+            root.theme_switcher.visible = !root.theme_switcher.visible
+        }
+    }
 }

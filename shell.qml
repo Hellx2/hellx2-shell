@@ -68,9 +68,11 @@ Scope {
     LayoutSwitcher { id: layoutSwitcher }
     Background { id: bg }
     OSD { id: osd1 }
+    ThemeSwitcher { id: themeSwitcher }
 
     property var settings_ui: settingsui
     property var layout_switcher: layoutSwitcher
+    property var theme_switcher: themeSwitcher
     property var background: bg
     property var osd: osd1
 
