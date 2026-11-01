@@ -70,7 +70,10 @@ PanelWindow {
             property bool active: Globals.settings.theme == Quickshell.shellPath("themes/") + modelData
             width: root.width - 10
             height: 30
-            onClicked: Globals.settings.theme = Quickshell.shellPath("themes/") + modelData
+            onClicked: {
+                root.visible = false
+                Globals.settings.theme = Quickshell.shellPath("themes/") + modelData
+            }
             Rectangle {
                 anchors.fill: parent
                 color: active ? Globals.theme.active_item : Globals.theme.inactive_item
