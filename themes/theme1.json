@@ -28,6 +28,6 @@
     "spacer": "#656565",
     "pomodoro_break": "#ff7777",
     "pomodoro_normal": "#66bbdd",
-    "active_item": "#505050",
-    "inactive_item": "#7c7c7c"
+    "inactive_item": "#505050",
+    "active_item": "#7c7c7c"
 }

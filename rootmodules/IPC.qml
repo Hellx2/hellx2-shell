@@ -106,7 +106,6 @@ Singleton {
         }
         target: "pomodoro"
     }
-
     IpcHandler {
         function show() {
             PowerMenu.showPowerMenu = true

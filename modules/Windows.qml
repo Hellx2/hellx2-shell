@@ -36,7 +36,7 @@ Row {
             Rectangle {
                 radius: height / 2
                 anchors.fill: parent
-                color: activeWin != -1 ? Globals.theme.inactive_item : Globals.theme.active_item
+                color: activeWin != -1 ? Globals.theme.active_item : Globals.theme.inactive_item
             }
             onClicked: m => {
                 if (m.button & Qt.LeftButton)
@@ -105,7 +105,7 @@ Row {
             Rectangle {
                 radius: height / 2
                 anchors.fill: parent
-                color: modelData.is_focused ? Globals.theme.inactive_item : Globals.theme.active_item
+                color: modelData.is_focused ? Globals.theme.active_item : Globals.theme.inactive_item
             }
             onClicked: m => {
                 if (m.button & Qt.LeftButton) NiriService.focusWindow(modelData.id)
