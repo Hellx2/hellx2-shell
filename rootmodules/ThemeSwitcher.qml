@@ -27,9 +27,7 @@ PanelWindow {
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
-                console.warn("hi: ", this.text)
                 root.themes = this.text.trim().split("\n")
-                console.warn("themes: ", root.themes)
             }
         }
     }
@@ -85,9 +83,6 @@ PanelWindow {
                     anchors.leftMargin: 5
                     width: parent.width
                     elide: Text.ElideLeft
-                }
-                Component.onCompleted: {
-                    console.warn("ModelData:", modelData)
                 }
             }
         }
