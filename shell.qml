@@ -86,6 +86,24 @@ Scope {
                 SystemUpdater.updateChecking = true;
             }
 
+            FileView {
+                path: Qt.resolvedUrl(Globals.settings.theme)
+                blockLoading: true
+                watchChanges: true
+                onLoaded: {
+                    let a = JSON.parse(this.text());
+                    for (let i of Object.entries(a)) {
+                        if (Globals.theme.hasOwnProperty(i[0])) Globals.theme[i[0]] = i[1]
+                    }
+                }
+                onFileChanged: {
+                    let a = JSON.parse(this.text());
+                    for (let i of Object.entries(a)) {
+                        if (Globals.theme.hasOwnProperty(i[0])) Globals.theme[i[0]] = i[1]
+                    }
+                }
+            }
+
             Loader {
                 active: Globals.settings.mode == "school"
                 sourceComponent: Variants {

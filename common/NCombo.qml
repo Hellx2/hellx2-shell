@@ -8,9 +8,9 @@ Row {
 	property string label: "Value: "
 	property var model: ["true", "false"]
 	property bool haveNA: true
-	property Component delegate: Text {
-		color: "#ffffff"
-	}
+	/*property Component delegate: Text {
+		color: Globals.theme.text_fg
+    }*/
 
 
 	function value() {
@@ -31,12 +31,12 @@ Row {
 	}
 	ComboBox {
 		id: combo
-		model: haveNA ? ["N/A", ...root.model] : root.model
+        model: haveNA ? ["N/A", ...root.model] : root.model
 		background: Rectangle {
 			implicitWidth: 120
-			color: combo.hovered ? Globals.theme.grey3 : Globals.theme.grey0
+			color: combo.hovered ? Globals.theme.active_item : Globals.theme.inactive_item
 			radius: height / 4
-		}
+        }
 		delegate: ItemDelegate {
 			width: combo.width
 			contentItem: Text {
@@ -45,7 +45,7 @@ Row {
 			}
 			background: Rectangle {
 				radius: 10
-				color: combo.highlightedIndex == index ? Globals.theme.grey3 : "transparent"
+				color: combo.highlightedIndex == index ? Globals.theme.active_item : "transparent"
 			}
 		}
 		popup: Popup {
@@ -64,11 +64,11 @@ Row {
 			padding: 0
 
 			background: Rectangle {
-				color: Globals.theme.grey0
+				color: Globals.theme.bgcol
 				radius: 10
 				border {
 					width: 1
-					color: "#1c1c1c"
+					color: Globals.theme.dark ? Qt.lighter(color) : Qt.darker(color)
 				}
 			}
 		}

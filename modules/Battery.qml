@@ -35,7 +35,7 @@ NButton {
 
             ShapePath {
                 strokeColor: "transparent"
-                fillColor: Globals.theme.grey2
+                fillColor: Globals.theme.dark ? Qt.lighter(root.bgcolor) : Qt.darker(root.bgcolor)
                 startX: 5; startY: 18
 
                 PathLine { x: 15; y: 18 }

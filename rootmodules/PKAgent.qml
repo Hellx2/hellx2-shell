@@ -15,11 +15,11 @@ PanelWindow {
     visible: agent.flow && !agent.flow?.isCompleted && !agent.flow?.isCancelled
     Rectangle {
         anchors.fill: parent
-        color: "#1c1c1c"
+        color: Globals.theme.bgcol
         radius: 12
         border {
             width: 1
-            color: "#3c3c3c"
+            color: Globals.theme.border
         }
     }
 
@@ -45,7 +45,7 @@ PanelWindow {
         width: parent.width - 20
         anchors.top: parent.top
         anchors.topMargin: 10
-        color: "#ffffff"
+        color: Globals.settings.text_fg
         wrapMode: Text.WordWrap
     }
     NCombo {
@@ -68,6 +68,7 @@ PanelWindow {
             }
         }
     }
+
     NInput {
         id: passwordInput
         focus: true
@@ -79,7 +80,7 @@ PanelWindow {
         bottomPadding: 2.5
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - 20
-        bgcolor: "#4c4c4c"
+        bgcolor: (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.bgcol, 1.2)
         readOnly: agent.flow && !agent.flow.isResponseRequired
         horizontalAlignment: TextInput.AlignHCenter
         onAccepted: {
@@ -96,7 +97,7 @@ PanelWindow {
         anchors.topMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
         text: isAuthenticating ? "..." : "Invalid password!"
-        color: isAuthenticating ? Globals.theme.blue : Globals.theme.red
+        color: isAuthenticating ? Globals.theme.success : Globals.theme.fail
         visible: isAuthenticating || (agent.flow && agent.flow.failed && !agent.flow.isCompleted)
     }
 }

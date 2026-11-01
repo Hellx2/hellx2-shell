@@ -53,7 +53,7 @@ Singleton {
         color: "transparent"
         Rectangle {
             id: bg
-            color: "#dd000000"
+            color: Globals.theme.dark ? "#dd000000" : "#99cccccc"
             anchors.fill: parent
         }
 
@@ -78,10 +78,10 @@ Singleton {
                 height: 50
                 width: parent.width / 4
                 radius: height / 2
-                color: Globals.theme.grey2
+                color: Globals.theme.input_bg
                 border {
                     width: 1
-                    color: Globals.theme.grey3
+                    color: Globals.theme.dark ? Qt.lighter(color) : Qt.darker(color)
                 }
                 anchors.horizontalCenter: parent.horizontalCenter
                 Row {
@@ -147,12 +147,12 @@ Singleton {
                         anchors.horizontalCenter: parent.horizontalCenter
                         background: Rectangle {
                             border {
-                                color: "#5c5c5c"
+                                color: (Globals.theme.dark ? Qt.lighter : Qt.darker)(color)
                                 width: 1
                             }
                             radius: 20
                             color: col.GridView.isCurrentItem
-                                ? (parent.hovered ? "#8c8c8c": "#7c7c7c")
+                            ? (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.active_item, parent.hovered ? 1.8 : 1.5)
                                 : (parent.hovered ? Globals.theme.button_bg_hover : Globals.theme.button_bg)
                             opacity: 0.7
                         }

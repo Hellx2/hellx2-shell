@@ -16,7 +16,9 @@ QtObject {
 	property list<string> _pinnedApps: []
 
 	property string _lastMode: "school"
-	property string mode: "school"
+    property string mode: "school"
+
+    property string theme: Quickshell.shellPath("themes/theme1.json")
 
 	function getPrimaryScreen() {
 		return Quickshell.screens.find(x => x.name == root.primaryScreen) || Quickshell.screens[Quickshell.screens.length - 1];

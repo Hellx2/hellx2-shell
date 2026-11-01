@@ -34,7 +34,7 @@ PanelWindow {
     Rectangle {
         id: rect
         anchors.horizontalCenter: root.horizontalCenter
-        color: Globals.theme.grey2
+        color: Globals.theme.bgcol
         radius: height / 2
         anchors.fill: parent
     }
@@ -78,7 +78,7 @@ PanelWindow {
                             source: indicator
                             horizontalOffset: -2; verticalOffset: 2
                             radius: 8.0
-                            color: "#90000000"
+                            color: Globals.theme.dark ? "#90000000" : "#90ffffff"
                         }
                         id: indicator
                         visible: ma2.windows.length > 0
@@ -101,7 +101,8 @@ PanelWindow {
                 Rectangle {
                     anchors.top: img.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
-                    color: visible && ma2.activeWin != -1 ? Globals.theme.blue : (ma2.containsMouse ? "#ffffff" : "#888888")
+                    color: visible && ma2.activeWin != -1 ? Globals.theme.accent :
+                        (ma2.containsMouse ? Globals.theme.extreme : "#888888")
                     width: (ma2.activeWin != -1 ? 20 : 7.5) * (ma2.containsMouse ? 1.5 : 1)
                     height: 4
                     radius: height / 2
@@ -119,7 +120,7 @@ PanelWindow {
             anchors.verticalCenter: parent.verticalCenter
             data: ShapePath {
                 fillColor: "transparent"
-                strokeColor: Globals.theme.grey6
+                strokeColor: Globals.theme.spacer
                 strokeWidth: 1.0
                 startX: spacer.width / 2 - 0.5; startY: spacer.height * 1 / 8
                 PathLine { x: spacer.width / 2 - 0.5; y: spacer.height * 7 / 8 }
@@ -154,7 +155,8 @@ PanelWindow {
                 Rectangle {
                     anchors.top: img.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
-                    color: modelData.activated ? Globals.theme.blue : (ma1.containsMouse ? "#ffffff" : "#888888")
+                    color: modelData.activated ? Globals.theme.accent : (ma1.containsMouse ?
+                        Globals.theme.extreme : "#888888")
                     width: (modelData.activated ? 20 : 7.5) * (ma1.containsMouse ? 1.5 : 1)
                     height: 4
                     radius: height / 2

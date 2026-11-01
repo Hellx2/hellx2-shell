@@ -31,15 +31,15 @@ MouseArea {
 
 	Rectangle {
 		anchors.fill: parent
-		color: (!!adapter && adapter.enabled) ? Globals.theme.accent : Globals.theme.grey4
+		color: (!!adapter && adapter.enabled) ? Globals.theme.accent : Globals.theme.button_bg
 		radius: height / 2
 	}
     ShapePath {
         id: bticon
-        strokeColor: root.adapter.enabled ? Globals.theme.white : "#7c7c7c"
+        strokeColor: (!!adapter && adapter.enabled) ? (Globals.theme.extreme) : Globals.theme.inactive_item
         fillColor: "transparent"
         strokeWidth: 2
-        startX: 6; startY: 6;
+        startX: 6; startY: 6
         PathLine { x: 15; y: 14 }
         PathLine { x: 10; y: 18 }
         PathLine { x: 10; y: 2 }
@@ -105,7 +105,7 @@ MouseArea {
 				radius: 10
 				border {
 					width: 1
-					color: Globals.theme.grey4
+					color: Globals.theme.dark ? Qt.lighter(color) : Qt.darker(color)
 				}
 			}
 			Column {
@@ -154,7 +154,7 @@ MouseArea {
 						width: lv.width
 						height: 30
 						radius: 10
-						color: lv.currentIndex == index ? Globals.theme.grey5 : Globals.theme.grey3
+						color: lv.currentIndex == index ? Globals.theme.active_item : Globals.theme.inactive_item
 						Item {
 							anchors.fill: parent
 							anchors.leftMargin: 5
@@ -166,7 +166,7 @@ MouseArea {
 								radius: height / 2
 								anchors.verticalCenter: parent.verticalCenter
 								anchors.left: parent.left
-								color: Globals.theme.grey0
+								color: Globals.theme.bgcol
 								IconImage {
 									anchors.centerIn: parent
 									source: Quickshell.iconPath(modelData.icon, true)
@@ -181,7 +181,7 @@ MouseArea {
 								anchors.leftMargin: 5
 								background: Rectangle {
 									radius: height / 2
-                                    color: modelData.paired ? Globals.theme.accent : Globals.theme.grey0
+                                    color: modelData.paired ? Globals.theme.accent : Globals.theme.bgcol
 								}
 								contentItem: IconImage {
 									source: Quickshell.iconPath("link", true)
@@ -208,7 +208,7 @@ MouseArea {
 									id: btn2
 									background: Rectangle {
 										radius: height / 2
-										color: btn2.hovered ? "#7c7c7c" : Globals.theme.grey0
+										color: btn2.hovered ? Globals.theme.button_bg_hover : Globals.theme.button_bg_down
 									}
 									contentItem: IconImage {
 										source: Quickshell.iconPath(modelData.state == BluetoothDeviceState.Connected

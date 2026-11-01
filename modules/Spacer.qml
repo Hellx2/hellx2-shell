@@ -5,7 +5,7 @@ import qs
 
 Shape {
     id: root
-    property color strokeColor: Globals.theme.grey4
+    property color strokeColor: Globals.theme.spacer
     width: 5
     height: 30
     data: ShapePath {

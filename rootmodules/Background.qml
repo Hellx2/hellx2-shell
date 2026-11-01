@@ -152,6 +152,7 @@ Scope {
                                             NText {
                                                 id: text1
                                                 text: desktopIcon.name
+                                                color: "#fff"
                                                 fontFamily: "Red Hat Display"
                                                 width: 64
                                                 wrapMode: Text.Wrap

@@ -42,7 +42,7 @@ MouseArea {
         	anchors.verticalCenter: parent.verticalCenter
         	id: txt1
         	visible: root.containsMouse
-            color: Pipewire.defaultAudioSink?.audio.muted ? "#9c9c9c" : "#ffffff"
+            color: Pipewire.defaultAudioSink?.audio.muted ? Globals.theme.inactive_item : Globals.theme.text_fg
             text: Math.round(Pipewire.defaultAudioSink?.audio.volume * 100) + "%"
         }
     }

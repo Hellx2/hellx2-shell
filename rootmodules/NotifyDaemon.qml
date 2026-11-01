@@ -87,10 +87,10 @@ Scope {
                     height: mainItem.height + (col2.visible ? col2.height : 0)
                     width: parent.width
                     Rectangle {
-                        color: "#1c1c1c"
+                        color: Globals.theme.bgcol
                         border {
                             width: 1
-                            color: "#3c3c3c"
+                            color: Globals.theme.border
                         }
                         radius: 10
                         width: parent.width
@@ -138,7 +138,7 @@ Scope {
                                     NText {
                                         id: text1
                                         text: modelData.appName.toUpperCase()
-                                        color: "#cccccc"
+                                        color: (Globals.theme.dark ? Qt.darker : Qt.lighter)(Globals.theme.text_fg, 1.2)
                                         fontSize: 13
                                     }
                                     NText {

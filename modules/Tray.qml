@@ -31,7 +31,7 @@ Row {
 			id: mainrect
 			height: 28
 			width: SystemTray.items.values.length * (30 + 2.5) - 2.5
-			color: Globals.theme.grey3
+			color: Globals.theme.inactive_item
 			radius: height / 2
 			
 			Row {
@@ -56,7 +56,7 @@ Row {
 				        }
 				        Rectangle {
 				            anchors.fill: parent
-				            color: parent.containsMouse ? Globals.theme.grey5 : "transparent"
+				            color: parent.containsMouse ? Globals.theme.active_item : "transparent"
 				            radius: height / 2
 				        }
 				        Image {

@@ -5,6 +5,8 @@ import qs
 import qs.common
 
 FloatingWindow {
+    id: root
+
     implicitWidth: 800
     implicitHeight: 600
 
@@ -33,7 +35,7 @@ FloatingWindow {
             NInput {
                 id: input1
                 width: 300
-                bgcolor: Globals.theme.grey3
+                bgcolor: Globals.theme.dark ? Qt.lighter(root.color, 1.5) : Qt.darker(root.color, 1.2)
                 text: Globals.settings[modelData]
                 validator: RegularExpressionValidator {
                     regularExpression: {

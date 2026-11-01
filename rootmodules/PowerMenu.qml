@@ -19,7 +19,7 @@ Singleton {
             bottom: true
             top: true
         }
-        color: "#aa000000"
+        color: Globals.theme.dark ? "#aa000000" : "#99cccccc"
         MouseArea {
             id: keysArea
             focus: true
@@ -57,11 +57,11 @@ Singleton {
             Rectangle {
                 implicitWidth: 200
                 implicitHeight: 100
-                color: Globals.theme.grey2
+                color: Globals.theme.bgcol
                 radius: 10
                 border {
                     width: 1
-                    color: Globals.theme.grey4
+                    color: Globals.theme.border
                 }
 
                 Column {
@@ -110,10 +110,10 @@ Singleton {
                 implicitWidth: 400
                 implicitHeight: 50 * rep1.count + 125
                 radius: 10
-                color: Globals.theme.grey2
+                color: Globals.theme.bgcol
                 border {
                     width: 1
-                    color: Globals.theme.grey4
+                    color: Globals.theme.border
                 }
 
                 Column {
@@ -166,7 +166,7 @@ Singleton {
                             Rectangle {
                                 anchors.fill: parent
                                 radius: 10
-                                color: ma.containsMouse ? Globals.theme.grey6 : Globals.theme.grey4
+                                color: ma.containsMouse ? Globals.theme.button_bg_hover : Globals.theme.button_bg
 
                                 Row {
                                     anchors.left: parent.left

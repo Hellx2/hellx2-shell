@@ -36,7 +36,7 @@ Row {
             Rectangle {
                 radius: height / 2
                 anchors.fill: parent
-                color: activeWin != -1 ? Globals.theme.grey6 : Globals.theme.grey4
+                color: activeWin != -1 ? Globals.theme.active_item : Globals.theme.inactive_item
             }
             onClicked: m => {
                 if (m.button & Qt.LeftButton)
@@ -87,7 +87,7 @@ Row {
         }
     }
 
-    Spacer { strokeColor: rep1.model.values.length > 0 ? Globals.theme.grey4 : "transparent"} //visible: rep1.model.values.length > 0 }
+    Spacer { strokeColor: rep1.model.values.length > 0 ? Globals.theme.spacer : "transparent"} //visible: rep1.model.values.length > 0 }
 
     Repeater {
         id: rep1
@@ -105,7 +105,7 @@ Row {
             Rectangle {
                 radius: height / 2
                 anchors.fill: parent
-                color: modelData.is_focused ? Globals.theme.grey6 : Globals.theme.grey4
+                color: modelData.is_focused ? Globals.theme.active_item : Globals.theme.inactive_item
             }
             onClicked: m => {
                 if (m.button & Qt.LeftButton) NiriService.focusWindow(modelData.id)

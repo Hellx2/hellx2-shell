@@ -79,7 +79,7 @@ Scope {
                         Rectangle {
                             anchors.fill: parent
                             radius: height / 2
-                            color: '#ff000000'
+                            color: Globals.theme.bgcol
 
                             Row {
                                 width: parent.width - 25
@@ -102,7 +102,7 @@ Scope {
 
                                     height: 10
                                     radius: 20
-                                    color: "#60ffffff"
+                                    color: (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.bgcol)
 
                                     Rectangle {
                                         anchors {
@@ -111,7 +111,7 @@ Scope {
                                             bottom: parent.bottom
                                         }
 
-                                        color: root.currentOsd == 5 ? (Pipewire.defaultAudioSink?.audio.muted ?? true ? "#3c3c3c" : "#3399ff") : "#3399ff"
+                                        color: root.currentOsd == 5 ? (Pipewire.defaultAudioSink?.audio.muted ?? true ? Globals.theme.inactive_item : Globals.theme.accent) : Globals.theme.accent
 
                                         width: parent.width * (root.currentOsd == 5 ? Pipewire.defaultAudioSink?.audio.volume ?? 0 : root.currentBrightness / 100)
                                         radius: parent.radius
@@ -134,10 +134,10 @@ Scope {
 
                         Rectangle {
                             anchors.fill: parent
-                            color: Globals.theme.grey1
+                            color: Globals.theme.bgcol
                             border {
                             	width: 1
-                            	color: Globals.theme.grey3
+                            	color: (Globals.theme.dark ? Qt.lighter : Qt.darker)(color)
                             }
                             radius: height / 2
                             Row {

@@ -189,9 +189,9 @@ Singleton {
                     radius: 10
                     border {
                         width: 1
-                        color: "#2c2c2c"
+                        color: (Globals.theme.dark ? Qt.darker : Qt.lighter)(color)
                     }
-                    color: "#4c4c4c"
+                    color: Qt.lighter(Globals.theme.bgcol)
                     ListView {
                         id: lv1
                         layer.enabled: true

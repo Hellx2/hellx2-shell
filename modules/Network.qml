@@ -59,7 +59,7 @@ MouseArea {
 	Rectangle {
 		anchors.fill: parent
 		radius: height / 2
-		color: Networking.wifiEnabled ? Globals.theme.accent : Globals.theme.grey4
+		color: Networking.wifiEnabled ? Globals.theme.accent : Globals.theme.button_bg
 
 		IconImage {
 			anchors.centerIn: parent
@@ -122,7 +122,7 @@ MouseArea {
 				radius: 10
 				border {
 					width: 1
-					color: "#3c3c3c"
+					color: Globals.theme.dark ? Qt.lighter(color) : Qt.darker(color)
 				}
 			}
 			Column {
@@ -172,7 +172,7 @@ MouseArea {
 							height: 27.5
 							width: parent.width
 							radius: 10
-							color: modelData.connected ? Globals.theme.grey6 : Globals.theme.grey3
+							color: modelData.connected ? Globals.theme.active_item : Globals.theme.inactive_item
 
 							Row {
 								height: parent.height
@@ -186,7 +186,7 @@ MouseArea {
 									anchors.verticalCenter: parent.verticalCenter
 									background: Rectangle {
 										radius: height / 2
-										color: modelData.connected ? Globals.theme.accent : Globals.theme.grey0
+										color: modelData.connected ? Globals.theme.accent : Globals.theme.bgcol
 									}
 									contentItem: IconImage {
 										anchors.centerIn: parent

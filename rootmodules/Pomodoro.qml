@@ -24,7 +24,7 @@ Singleton {
     property int breakNumber: 0
     property int longBreakOn: 4
 
-    property string col: isBreak ? Globals.theme.red : Globals.theme.blue
+    property string col: isBreak ? Globals.theme.pomodoro_break : Globals.theme.pomodoro_normal
 
     property bool onTopBar: false
 
@@ -106,7 +106,7 @@ Singleton {
                 radius: 15
                 border {
                     width: 1
-                    color: "#3c3c3c"
+                    color: Globals.theme.border
                 }
             }
             anchors {
@@ -124,7 +124,7 @@ Singleton {
                     height: 200
 
                     ShapePath {
-                        fillColor: Globals.theme.grey3
+                        fillColor: Globals.theme.dark ? Qt.lighter(Globals.theme.bgcol, 1.2) : Qt.darker(Globals.theme.bgcol, 1.2)
                         strokeWidth: 0
 
                         PathAngleArc {
@@ -257,7 +257,7 @@ Singleton {
                         }
                     }
                     background: Rectangle {
-                        color: Globals.theme.grey4
+                        color: Globals.theme.button_bg
                         radius: parent.height / 2
                     }
                     onClicked: countdownTimer.running = !countdownTimer.running
@@ -275,7 +275,7 @@ Singleton {
                         fontSize: 1 / 10 * Math.min(panel1.width, panel1.height)
                     }
                     background: Rectangle {
-                        color: Globals.theme.grey4
+                        color: Globals.theme.button_bg
                         radius: parent.height / 2
                     }
                     onClicked: {
