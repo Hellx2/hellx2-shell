@@ -14,7 +14,10 @@ Singleton {
 
     IpcHandler {
         function settingsToggle() {
-            root.settings_ui.visible = !root.settings_ui.visible
+            root.settings_ui.visible = !root.settings_ui.visible;
+        }
+        function autostartEditToggle() {
+            root.autostartEditor.visible = !root.autostartEditor.visible;
         }
         target: "ui"
     }
@@ -22,30 +25,31 @@ Singleton {
     IpcHandler {
         target: "layoutSwitcher"
         function open() {
-            root.layout_switcher.visible = true
+            root.layout_switcher.visible = true;
         }
         function close() {
-            root.layout_switcher.visible = false
+            root.layout_switcher.visible = false;
         }
         function toggle() {
-            root.layout_switcher.visible = !root.layout_switcher.visible
+            root.layout_switcher.visible = !root.layout_switcher.visible;
         }
     }
 
     IpcHandler {
-		function setPrimaryScreen(value: string) {
-			Globals.settings.primaryScreen = value;
-		}
-		function getPrimaryScreen(): string {
-			return Globals.settings.primaryScreen;
+        function setPrimaryScreen(value: string) {
+            Globals.settings.primaryScreen = value;
         }
-        function set(prop: string, value: string): string  {
+        function getPrimaryScreen(): string {
+            return Globals.settings.primaryScreen;
+        }
+        function set(prop: string, value: string): string {
             if (Globals.settings.hasOwnProperty(prop)) {
-                if (!prop.startsWith("_") && !prop.endsWith("Changed")
-                && prop != "objectName" && typeof Globals.settings[prop] !== "function")
+                if (!prop.startsWith("_") && !prop.endsWith("Changed") && prop != "objectName" && typeof Globals.settings[prop] !== "function")
                     Globals.settings[prop] = value;
-                else return `Error: Cannot change value ${prop}`
-            } else return `Error: Invalid setting '${prop}'!`;
+                else
+                    return `Error: Cannot change value ${prop}`;
+            } else
+                return `Error: Invalid setting '${prop}'!`;
         }
         function get(prop: string): string {
             return Globals.settings[prop];
@@ -54,9 +58,10 @@ Singleton {
             if (Globals.settings.hasOwnProperty(prop)) {
                 Globals.settings[prop] = defaultSettings[prop];
                 return "Success";
-            } else return `Error: Invalid setting '${prop}'!`
+            } else
+                return `Error: Invalid setting '${prop}'!`;
         }
-		/*function setMode(mode: string) {
+        /*function setMode(mode: string) {
 			if (["home", "school", "game"].includes(mode))
 				Globals.settings.mode = mode;
 			else
@@ -65,7 +70,7 @@ Singleton {
 		function getMode(): string {
 			return Globals.settings.mode;
         }*/
-		target: "settings"
+        target: "settings"
     }
 
     IpcHandler {
@@ -108,13 +113,13 @@ Singleton {
     }
     IpcHandler {
         function show() {
-            PowerMenu.showPowerMenu = true
+            PowerMenu.showPowerMenu = true;
         }
         function hide() {
-            PowerMenu.showPowerMenu = false
+            PowerMenu.showPowerMenu = false;
         }
         function toggle() {
-            PowerMenu.showPowerMenu = !PowerMenu.showPowerMenu
+            PowerMenu.showPowerMenu = !PowerMenu.showPowerMenu;
         }
         target: "powermenu"
     }
@@ -129,7 +134,7 @@ Singleton {
 
     IpcHandler {
         function playPause() {
-            Mpris.players.values[0].togglePlaying()
+            Mpris.players.values[0].togglePlaying();
             root.osd.currentOsd = 2; // Player
             osd_hidetimer.restart();
         }
@@ -166,7 +171,6 @@ Singleton {
         }
     }
 
-
     IpcHandler {
         function set(brightness: string) {
             setBrightnessProc.setBrightnessTo = brightness;
@@ -178,13 +182,13 @@ Singleton {
     IpcHandler {
         target: "themeSwitcher"
         function open() {
-            root.theme_switcher.visible = true
+            root.theme_switcher.visible = true;
         }
         function close() {
-            root.theme_switcher.visible = false
+            root.theme_switcher.visible = false;
         }
         function toggle() {
-            root.theme_switcher.visible = !root.theme_switcher.visible
+            root.theme_switcher.visible = !root.theme_switcher.visible;
         }
     }
 }

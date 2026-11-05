@@ -43,7 +43,8 @@ Scope {
         let a = DesktopEntries.applications;
         let settings = JSON.parse(persistentSettings.settings);
         for (let i of Object.entries(settings)) {
-            if (Globals.settings[i[0]]) Globals.settings[i[0]] = i[1]
+            if (Globals.settings[i[0]])
+                Globals.settings[i[0]] = i[1];
         }
     }
 
@@ -51,31 +52,46 @@ Scope {
         id: persistentSettings
         property string settings: {
             let a = Object.getOwnPropertyNames(Globals.settings).filter(x => {
-                return !x.endsWith("Changed") && x != "objectName" && typeof Globals.settings[x] !== "function"
-            })
+                return !x.endsWith("Changed") && x != "objectName" && typeof Globals.settings[x] !== "function";
+            });
 
             let x = {};
             for (let i of a) {
                 x[i] = Globals.settings[i];
             }
 
-            return JSON.stringify(x)
+            return JSON.stringify(x);
         }
     }
 
-    ShellSettings { id: defaultSettings }
-    SettingsUI { id: settingsui }
-    LayoutSwitcher { id: layoutSwitcher }
-    Background { id: bg }
-    OSD { id: osd1 }
-    ThemeSwitcher { id: themeSwitcher }
+    ShellSettings {
+        id: defaultSettings
+    }
+    SettingsUI {
+        id: settingsui
+    }
+    LayoutSwitcher {
+        id: layoutSwitcher
+    }
+    Background {
+        id: bg
+    }
+    OSD {
+        id: osd1
+    }
+    ThemeSwitcher {
+        id: themeSwitcher
+    }
+    AutostartApps {
+        id: autostart
+    }
 
     property var settings_ui: settingsui
     property var layout_switcher: layoutSwitcher
     property var theme_switcher: themeSwitcher
     property var background: bg
     property var osd: osd1
-
+    property var autostartEditor: autostart
 
     LazyLoader {
         active: root.loadApp
@@ -95,13 +111,15 @@ Scope {
                 onLoaded: {
                     let a = JSON.parse(this.text());
                     for (let i of Object.entries(a)) {
-                        if (Globals.theme.hasOwnProperty(i[0])) Globals.theme[i[0]] = i[1]
+                        if (Globals.theme.hasOwnProperty(i[0]))
+                            Globals.theme[i[0]] = i[1];
                     }
                 }
                 onFileChanged: {
                     let a = JSON.parse(this.text());
                     for (let i of Object.entries(a)) {
-                        if (Globals.theme.hasOwnProperty(i[0])) Globals.theme[i[0]] = i[1]
+                        if (Globals.theme.hasOwnProperty(i[0]))
+                            Globals.theme[i[0]] = i[1];
                     }
                 }
             }

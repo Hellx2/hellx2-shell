@@ -36,7 +36,8 @@ MouseArea {
 	}
     ShapePath {
         id: bticon
-        strokeColor: (!!adapter && adapter.enabled) ? (Globals.theme.extreme) : Globals.theme.inactive_item
+        strokeColor: (!!adapter && adapter.enabled) ? (Globals.theme.extreme)
+            : (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.button_bg)
         fillColor: "transparent"
         strokeWidth: 2
         startX: 6; startY: 6

@@ -58,32 +58,52 @@ PanelWindow {
                 acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
                 onClicked: m => {
                     if (m.button & Qt.LeftButton)
-                        if (windows.length > 0) windows[activeWin + 1 == windows.length ? 0 : activeWin + 1].activate()
-                        else Quickshell.execDetached(DesktopEntries.byId(modelData).command)
-                    else if (m.button & Qt.RightButton && windows.length > 0) windows[Math.max(activeWin, 0)].close();
-                    else if (m.button & Qt.MiddleButton) Globals.settings._pinnedApps.splice(Globals.settings._pinnedApps.indexOf(modelData), 1)
+                        if (windows.length > 0)
+                            windows[activeWin + 1 == windows.length ? 0 : activeWin + 1].activate();
+                        else
+                            Quickshell.execDetached(DesktopEntries.byId(modelData).command);
+                    else if (m.button & Qt.RightButton && windows.length > 0)
+                        windows[Math.max(activeWin, 0)].close();
+                    else if (m.button & Qt.MiddleButton)
+                        Globals.settings._pinnedApps.splice(Globals.settings._pinnedApps.indexOf(modelData), 1);
                 }
-                Behavior on y { NumberAnimation { duration: 100 } }
+                Behavior on y {
+                    NumberAnimation {
+                        duration: 100
+                    }
+                }
                 IconImage {
                     id: img
                     anchors.centerIn: parent
                     implicitSize: ma2.containsMouse ? 62.5 : 50
                     opacity: ma2.activeWin != -1 ? 1.0 : (ma2.containsMouse ? 0.9 : 0.6)
                     source: Quickshell.iconPath(DesktopEntries.byId(modelData)?.icon, true)
-                    Behavior on implicitSize  { NumberAnimation { duration: 100 } }
-                    Behavior on opacity { NumberAnimation { duration: 100 } }
+                    Behavior on implicitSize {
+                        NumberAnimation {
+                            duration: 100
+                        }
+                    }
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: 100
+                        }
+                    }
                     Rectangle {
+                        id: indicator
                         layer.enabled: true
                         layer.effect: DropShadow {
                             source: indicator
-                            horizontalOffset: -2; verticalOffset: 2
+                            horizontalOffset: -2
+                            verticalOffset: 2
                             radius: 8.0
                             color: Globals.theme.dark ? "#90000000" : "#90ffffff"
                         }
-                        id: indicator
                         visible: ma2.windows.length > 0
                         color: '#12b0ff'
-                        border { color: Qt.lighter(indicator.color, 1.1); width: 1 }
+                        border {
+                            color: Qt.lighter(indicator.color, 1.1)
+                            width: 1
+                        }
                         radius: height / 2
                         anchors.bottom: parent.bottom
                         anchors.right: parent.right
@@ -101,13 +121,16 @@ PanelWindow {
                 Rectangle {
                     anchors.top: img.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
-                    color: visible && ma2.activeWin != -1 ? Globals.theme.accent :
-                        (ma2.containsMouse ? Globals.theme.extreme : "#888888")
+                    color: visible && ma2.activeWin != -1 ? Globals.theme.accent : (ma2.containsMouse ? Globals.theme.extreme : "#888888")
                     width: (ma2.activeWin != -1 ? 20 : 7.5) * (ma2.containsMouse ? 1.5 : 1)
                     height: 4
                     radius: height / 2
                     visible: ma2.windows.length > 0
-                    Behavior on width { NumberAnimation { duration: 100 } }
+                    Behavior on width {
+                        NumberAnimation {
+                            duration: 100
+                        }
+                    }
                 }
             }
         }
@@ -122,8 +145,12 @@ PanelWindow {
                 fillColor: "transparent"
                 strokeColor: Globals.theme.spacer
                 strokeWidth: 1.0
-                startX: spacer.width / 2 - 0.5; startY: spacer.height * 1 / 8
-                PathLine { x: spacer.width / 2 - 0.5; y: spacer.height * 7 / 8 }
+                startX: spacer.width / 2 - 0.5
+                startY: spacer.height * 1 / 8
+                PathLine {
+                    x: spacer.width / 2 - 0.5
+                    y: spacer.height * 7 / 8
+                }
             }
         }
 
@@ -138,29 +165,47 @@ PanelWindow {
                 hoverEnabled: true
                 acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
                 onClicked: m => {
-                    if (m.button & Qt.LeftButton) modelData.activate()
-                    else if (m.button & Qt.RightButton) modelData.close()
-                    else Globals.settings._pinnedApps.push(modelData.appId)
+                    if (m.button & Qt.LeftButton)
+                        modelData.activate();
+                    else if (m.button & Qt.RightButton)
+                        modelData.close();
+                    else
+                        Globals.settings._pinnedApps.push(modelData.appId);
                 }
-                Behavior on y { NumberAnimation { duration: 100 } }
+                Behavior on y {
+                    NumberAnimation {
+                        duration: 100
+                    }
+                }
                 IconImage {
-                    id: img
+                    id: img1
                     anchors.centerIn: parent
                     implicitSize: ma1.containsMouse ? 62.5 : 50
-                    opacity: modelData.activated ? 1.0 : (ma1.containsMouse ? 0.9 : 0.6)
-                    source: Quickshell.iconPath(DesktopEntries.byId(modelData.appId)?.icon, true)
-                    Behavior on implicitSize { NumberAnimation { duration: 100 } }
-                    Behavior on opacity { NumberAnimation { duration: 100 } }
+                    opacity: ma1.modelData.activated ? 1.0 : (ma1.containsMouse ? 0.9 : 0.6)
+                    source: Quickshell.iconPath(DesktopEntries.byId(ma1.modelData.appId)?.icon, true)
+                    Behavior on implicitSize {
+                        NumberAnimation {
+                            duration: 100
+                        }
+                    }
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: 100
+                        }
+                    }
                 }
                 Rectangle {
-                    anchors.top: img.bottom
+                    anchors.top: img1.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
-                    color: modelData.activated ? Globals.theme.accent : (ma1.containsMouse ?
-                        Globals.theme.extreme : "#888888")
+                    color: modelData.activated ? Globals.theme.accent : (ma1.containsMouse ? Globals.theme.extreme : "#888888")
                     width: (modelData.activated ? 20 : 7.5) * (ma1.containsMouse ? 1.5 : 1)
                     height: 4
                     radius: height / 2
-                    Behavior on width { NumberAnimation { duration: 100 } }
+                    Behavior on width {
+                        NumberAnimation {
+                            duration: 100
+                        }
+                    }
                 }
             }
         }
