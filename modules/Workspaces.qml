@@ -4,43 +4,40 @@ import Quickshell
 import qs
 
 Rectangle {
-	id: root
+    id: root
     color: Globals.theme.active_item
     width: ws.width + 10
     height: 20
     radius: height / 2
-    property var output: null
     anchors.verticalCenter: parent.verticalCenter
 
-	Row {
+    Row {
         id: ws
         height: parent.height
-	    spacing: 3
-	    anchors.left: parent.left
-	    anchors.leftMargin: 8
+        spacing: 3
+        anchors.left: parent.left
+        anchors.leftMargin: 8
 
-	    Repeater {
-	        model: ScriptModel {
-	        	values: [...WindowManager.screenProjection(root.output).windowsets].sort((a, b) => a.coordinates[1] - b.coordinates[1])
-	        }
-	        MouseArea {
-		        required property var modelData
-		        onClicked: modelData.activate()
-		        width: modelData.active ? 22 : 11
-		        height: parent.height
-		        Rectangle {
-					width: parent.width
-		            color: modelData.active ? (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.accent, 1.4) :
-                    (modelData.coordinates[1] < WindowManager.screenProjection(root.output).windowsets.length - 1
-                        ? Globals.theme.extreme : Globals.theme.inactive_item)
-		            radius: height / 2
-		        	y: parent.height / 2 - height / 2
-		            height: 11
-		        }
-	        }
-	    }
-	    Text {
-	        text: " "
-	    }
-	}
+        Repeater {
+            model: ScriptModel {
+                values: [...(WindowManager.screenProjection(QsWindow.window?.screen)?.windowsets ?? [])].sort((a, b) => a.coordinates[1] - b.coordinates[1])
+            }
+            MouseArea {
+                required property var modelData
+                onClicked: modelData.activate()
+                width: modelData.active ? 22 : 11
+                height: parent.height
+                Rectangle {
+                    width: parent.width
+                    color: modelData.active ? (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.accent, 1.4) : (modelData.coordinates[1] < (WindowManager.screenProjection(QsWindow.window?.screen)?.windowsets ?? []).length - 1 ? Globals.theme.extreme : Globals.theme.inactive_item)
+                    radius: height / 2
+                    y: parent.height / 2 - height / 2
+                    height: 11
+                }
+            }
+        }
+        Text {
+            text: " "
+        }
+    }
 }

@@ -11,7 +11,6 @@ import qs
 
 PanelWindow {
     id: root
-    Keys.onEscapePressed: visible = false
     property bool addMode: false
     visible: false
     implicitWidth: 600
@@ -47,7 +46,6 @@ PanelWindow {
         stdout: StdioCollector {
             onStreamFinished: {
                 let x = this.text.trim();
-                console.warn(x);
                 if (!!x)
                     apps = x.split("\n");
                 else
@@ -55,62 +53,7 @@ PanelWindow {
             }
         }
     }
-
-    component IconBtn: MouseArea {
-        id: iconbtn_ma
-        width: _size
-        height: _size
-        hoverEnabled: true
-        layer.enabled: true
-        layer.samples: 5
-        property var lines: [[0, 0, 20, 20], [0, 20, 20, 0]]
-        property var circles: [] //[[0, 0, 5, 5]]
-        property var hoverColor: Globals.theme.accent
-        property var _size: 20
-        property var strokeWidth: 3
-        property var color: iconbtn_ma.containsMouse ? iconbtn_ma.hoverColor : Globals.theme.text_fg
-        Shape {
-            width: iconbtn_ma._size
-            height: iconbtn_ma._size
-            Variants {
-                id: vars
-                model: iconbtn_ma.lines
-                delegate: ShapePath {
-                    required property var modelData
-                    fillColor: "transparent"
-                    strokeColor: iconbtn_ma.color
-                    startX: modelData[0]
-                    startY: modelData[1]
-                    strokeWidth: iconbtn_ma.strokeWidth
-                    PathLine {
-                        x: modelData[2]
-                        y: modelData[3]
-                    }
-                }
-            }
-            Variants {
-                id: vars_circles
-                model: iconbtn_ma.circles
-                delegate: ShapePath {
-                    id: circle
-                    required property var modelData
-                    fillColor: "transparent"
-                    strokeColor: iconbtn_ma.color
-                    //startX: console.warn(strokeColor), modelData[0][0]; startY: modelData[0][1]
-                    strokeWidth: iconbtn_ma.strokeWidth
-                    PathAngleArc {
-                        centerX: circle.modelData[0]
-                        centerY: circle.modelData[1]
-                        radiusX: circle.modelData[2]
-                        radiusY: circle.modelData[3]
-                        startAngle: 0
-                        sweepAngle: 360
-                    }
-                }
-            }
-            data: [...vars.instances, ...vars_circles.instances]
-        }
-    }
+    Panel {}
 
     Rectangle {
         anchors {

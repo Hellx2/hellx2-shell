@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
@@ -12,13 +14,14 @@ import qs
 MouseArea {
     id: root
 
-    property var x1
     property bool showWindow: false
     property var mainDevice: Networking.devices.values.find(x => x instanceof WifiDevice)
     property var networks: []
 
-    width: parent.height
-    height: parent.height
+    property var win: QsWindow.window
+
+    width: 30
+    height: 30
     hoverEnabled: true
     acceptedButtons: Qt.LeftButton | Qt.MiddleButton
 
@@ -35,30 +38,6 @@ MouseArea {
         onTriggered: root.enabled = true
     }
 
-    Process {
-        id: networksProc
-        command: ["nmcli", "-c", "no", "-g", "in-use,bssid,ssid,signal", "device", "wifi", "list", "ifname", root.mainDevice.name]
-        running: true
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.networks = Object.values(this.text.trim().split("\n").map(x => x.replace(/\\:/g, ";").split(":").map(x => x.replace(/;/g, ":"))).map(x => ({
-                            connected: x[0] == "*",
-                            bssid: x[1],
-                            ssid: x[2],
-                            signal: x[3]
-                        })).reduce((acc, cur) => {
-                    if (acc[cur.ssid] == undefined)
-                        acc[cur.ssid] = cur;
-                    else {
-                        acc[cur.ssid].connected = acc[cur.ssid].connected || cur.connected;
-                        acc[cur.ssid].signal = Math.max(acc[cur.ssid].signal, cur.signal);
-                    }
-                    return acc;
-                }, {})).filter(x => x.bssid != "" && x.bssid != undefined && x.ssid != "" && x.ssid != undefined).sort((a, b) => a.connected && !b.connected ? -1 : (!a.connected && b.connected ? 1 : (a.signal < b.signal ? 1 : (a.signal > b.signal ? -1 : 0))));
-            }
-        }
-    }
     Rectangle {
         anchors.fill: parent
         radius: height / 2
@@ -68,18 +47,6 @@ MouseArea {
             anchors.centerIn: parent
             source: Quickshell.iconPath(Networking.wifiEnabled ? (root.mainDevice?.state == ConnectionState.Connected ? "nm-signal-" + (Math.round(root.mainDevice.networks.values[0]?.signalStrength * 4) * 25) : (root.mainDevice?.state == ConnectionState.Connecting ? "nm-stage01-connecting01" : "nm-no-connection-symbolic")) : "nm-no-connection-symbolic", true)
             implicitSize: parent.height * 0.8
-        }
-    }
-    property string wifiToConnectTo: ""
-
-    Process {
-        id: connectToWifi
-        command: ["nmcli", "device", "wifi", "connect", root.wifiToConnectTo, "ifname", root.mainDevice.name]
-        stderr: StdioCollector {
-            onStreamFinished: {
-                // TODO: Add secret checking
-                console.warn(this.text);
-            }
         }
     }
 
@@ -101,18 +68,12 @@ MouseArea {
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
 
             anchors {
-                top: root.QsWindow.window.anchors.top
-                bottom: root.QsWindow.window.anchors.bottom
+                top: root.win.anchors.top
+                bottom: root.win.anchors.bottom
                 left: true
             }
-            /*Timer {
-				running: Networking.wifiEnabled
-				repeat: true
-				interval: 5000
-				onTriggered: networksProc.running = true
-            }*/
             margins {
-                left: root.QsWindow.window.mapFromItem(root, 0, 0).x + root.QsWindow.window.margins.left + root.width / 2 - implicitWidth / 2
+                left: root.win.mapFromItem(root, 0, 0).x + root.win.margins.left + root.width / 2 - implicitWidth / 2
                 bottom: 10
                 top: 10
             }
@@ -143,8 +104,6 @@ MouseArea {
                         isSwitched: Networking.wifiEnabled
                         onIsSwitchedChanged: {
                             Networking.wifiEnabled = this.isSwitched;
-                            //root.networks = []
-                            //if (isSwitched) networksProc.running = true
                         }
                     }
                 }
@@ -192,7 +151,6 @@ MouseArea {
                                     contentItem: IconImage {
                                         anchors.centerIn: parent
                                         source: {
-                                            //console.warn(Math.round(modelData.signalStrength * 4) * 25)
                                             Quickshell.iconPath("nm-signal-" + (Math.round(modelData.signalStrength * 4) * 25), true);
                                         }
                                         implicitSize: 20
@@ -200,14 +158,10 @@ MouseArea {
                                     }
                                     onClicked: {
                                         if (modelData.connected)
-                                            //Quickshell.execDetached(["nmcli", "connection", "down", modelData.ssid])
                                             root.mainDevice.disconnect();
                                         else {
-                                            //root.wifiToConnectTo = modelData.bssid
-                                            //connectToWifi.running = true
                                             modelData.connect();
                                         }
-                                        //networksProc.running = true
                                         //if (modelData.paired) modelData.forget()
                                         //else modelData.pair()
                                     }

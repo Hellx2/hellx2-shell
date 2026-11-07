@@ -7,7 +7,6 @@ import qs
 
 Row {
     id: root
-    property string screen: "eDP-1"
     spacing: 5
     ScriptModel {
         id: apps
@@ -100,7 +99,7 @@ Row {
     Repeater {
         id: rep1
         model: ScriptModel {
-            values: NiriService.windows.filter(w => NiriService.workspaces[w.workspace_id].is_active && NiriService.workspaces[w.workspace_id].output == root.screen)
+            values: NiriService.windows.filter(w => NiriService.workspaces[w.workspace_id].is_active && NiriService.workspaces[w.workspace_id].output == QsWindow.window?.screen.name)
             //&& !Globals.settings._pinnedApps.includes(w.app_id))
         }
 

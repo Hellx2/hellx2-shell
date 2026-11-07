@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Shapes
@@ -12,6 +13,8 @@ import qs
 
 MouseArea {
     id: root
+
+    property var win: QsWindow.window
 
     height: 30
     width: 30
@@ -28,7 +31,6 @@ MouseArea {
     }
 
     readonly property BluetoothAdapter adapter: Bluetooth.defaultAdapter
-    property var x1
     property bool loaderActive: false
 
     Rectangle {
@@ -108,12 +110,12 @@ MouseArea {
             }
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
             anchors {
-                top: root.QsWindow.window.anchors.top
-                bottom: root.QsWindow.window.anchors.bottom
+                top: root.win.anchors.top
+                bottom: root.win.anchors.bottom
                 left: true
             }
             margins {
-                left: root.QsWindow.window.mapFromItem(root, 0, 0).x + root.QsWindow.window.margins.left + root.width / 2 - implicitWidth / 2
+                left: root.win.mapFromItem(root, 0, 0).x + root.win.margins.left + root.width / 2 - implicitWidth / 2
                 bottom: 10
                 top: 10
             }

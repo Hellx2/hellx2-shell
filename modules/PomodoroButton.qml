@@ -1,19 +1,25 @@
 import QtQuick
 import QtQuick.Shapes
+import Quickshell
 import qs.core
 import qs.rootmodules
 import qs
 
 MouseArea {
     id: btn1
-    property bool onTopBar: false
     hoverEnabled: true
     enabled: Pomodoro.buttonEnabled
     clip: true
     height: 30
     width: 30 + (containsMouse ? txt2.width : 0)
-    onClicked: Pomodoro.showPomodoro = !Pomodoro.showPomodoro
-    Component.onCompleted: Pomodoro.onTopBar = onTopBar
+    onClicked: {
+        let onTopBar = QsWindow.window.anchors.top;
+        if (Pomodoro.onTopBar != onTopBar) {
+            Pomodoro.onTopBar = onTopBar;
+            Pomodoro.showPomodoro = true;
+        } else
+            Pomodoro.showPomodoro = !Pomodoro.showPomodoro;
+    }
     Rectangle {
         anchors.fill: parent
         color: Globals.theme.button_bg
@@ -77,11 +83,6 @@ MouseArea {
                 }*/
             }
         }
-        /*NText {
-    		text: "🕑"
-    		fontSize: 16
-    		anchors.verticalCenter: parent.verticalCenter
-        }*/
         NText {
             id: txt2
             color: Pomodoro.col

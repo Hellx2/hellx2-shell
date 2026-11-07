@@ -5,6 +5,8 @@ import qs.rootmodules
 
 NButton {
     id: root
+    width: 30
+    height: 30
     property bool useLaunchpad: false
     background.width: 30
     contentItem: NText {
