@@ -8,7 +8,7 @@ import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Shapes
-import qs.common
+import qs.core
 import qs
 
 Singleton {
@@ -151,9 +151,7 @@ Singleton {
                                 width: 1
                             }
                             radius: 20
-                            color: col.GridView.isCurrentItem
-                            ? (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.active_item, parent.hovered ? 1.8 : 1.5)
-                                : (parent.hovered ? Globals.theme.button_bg_hover : Globals.theme.button_bg)
+                            color: col.GridView.isCurrentItem ? (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.active_item, parent.hovered ? 1.8 : 1.5) : (parent.hovered ? Globals.theme.button_bg_hover : Globals.theme.button_bg)
                             opacity: 0.7
                         }
                         onClicked: root.run(modelData.command)

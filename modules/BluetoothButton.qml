@@ -7,45 +7,62 @@ import Quickshell.Widgets
 import Quickshell.Bluetooth
 import Quickshell.Wayland
 
-import qs.common
+import qs.core
 import qs
 
 MouseArea {
-	id: root
+    id: root
 
-	height: 30
-	width: 30
+    height: 30
+    width: 30
 
-	acceptedButtons: Qt.LeftButton | Qt.MiddleButton
-	onClicked: (m) => {
-		if (m.button & Qt.LeftButton) loaderActive = !loaderActive
-		else {
-			if (root.adapter.state == BluetoothAdapterState.Blocked) Quickshell.execDetached(["rfkill", "unblock", "bluetooth"])
-			root.adapter.enabled = !root.adapter.enabled
-		}
-	}
+    acceptedButtons: Qt.LeftButton | Qt.MiddleButton
+    onClicked: m => {
+        if (m.button & Qt.LeftButton)
+            loaderActive = !loaderActive;
+        else {
+            if (root.adapter.state == BluetoothAdapterState.Blocked)
+                Quickshell.execDetached(["rfkill", "unblock", "bluetooth"]);
+            root.adapter.enabled = !root.adapter.enabled;
+        }
+    }
 
-	readonly property BluetoothAdapter adapter: Bluetooth.defaultAdapter
-	property var x1
-	property bool loaderActive: false
+    readonly property BluetoothAdapter adapter: Bluetooth.defaultAdapter
+    property var x1
+    property bool loaderActive: false
 
-	Rectangle {
-		anchors.fill: parent
-		color: (!!adapter && adapter.enabled) ? Globals.theme.accent : Globals.theme.button_bg
-		radius: height / 2
-	}
+    Rectangle {
+        anchors.fill: parent
+        color: (!!adapter && adapter.enabled) ? Globals.theme.accent : Globals.theme.button_bg
+        radius: height / 2
+    }
     ShapePath {
         id: bticon
-        strokeColor: (!!adapter && adapter.enabled) ? (Globals.theme.extreme)
-            : (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.button_bg)
+        strokeColor: (!!adapter && adapter.enabled) ? (Globals.theme.extreme) : (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.button_bg)
         fillColor: "transparent"
         strokeWidth: 2
-        startX: 6; startY: 6
-        PathLine { x: 15; y: 14 }
-        PathLine { x: 10; y: 18 }
-        PathLine { x: 10; y: 2 }
-        PathLine { x: 15; y: 6 }
-        PathLine { x: 6; y: 14 }
+        startX: 6
+        startY: 6
+        PathLine {
+            x: 15
+            y: 14
+        }
+        PathLine {
+            x: 10
+            y: 18
+        }
+        PathLine {
+            x: 10
+            y: 2
+        }
+        PathLine {
+            x: 15
+            y: 6
+        }
+        PathLine {
+            x: 6
+            y: 14
+        }
     }
     Shape {
         width: 20
@@ -56,12 +73,13 @@ MouseArea {
         data: bticon
     }
 
-	Connections {
-		target: root.adapter
-		function onStateChanged() {
-			if (root.adapter.state == BluetoothAdapterState.Enabled)
-				if (loader1.active) root.adapter.discovering = true
-		}
+    Connections {
+        target: root.adapter
+        function onStateChanged() {
+            if (root.adapter.state == BluetoothAdapterState.Enabled)
+                if (loader1.active)
+                    root.adapter.discovering = true;
+        }
     }
 
     Timer {
@@ -70,161 +88,162 @@ MouseArea {
         onTriggered: root.enabled = true
     }
 
+    LazyLoader {
+        id: loader1
+        active: root.loaderActive
+        onActiveChanged: root.adapter.discovering = active
 
-	LazyLoader {
-		id: loader1
-		active: root.loaderActive
-		onActiveChanged: root.adapter.discovering = active
+        PanelWindow {
+            implicitWidth: 400
+            implicitHeight: 500
 
-		PanelWindow {
-			implicitWidth: 400
-			implicitHeight: 500
+            Connections {
+                target: ToplevelManager
+                function onActiveToplevelChanged() {
+                    if (!!ToplevelManager.activeToplevel)
+                        root.loaderActive = false;
+                    root.enabled = false;
+                    enabledTimer.running = true;
+                }
+            }
+            WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+            anchors {
+                top: root.QsWindow.window.anchors.top
+                bottom: root.QsWindow.window.anchors.bottom
+                left: true
+            }
+            margins {
+                left: root.QsWindow.window.mapFromItem(root, 0, 0).x + root.QsWindow.window.margins.left + root.width / 2 - implicitWidth / 2
+                bottom: 10
+                top: 10
+            }
+            color: "transparent"
+            Rectangle {
+                anchors.fill: parent
+                color: Globals.theme.bgcol
+                radius: 10
+                border {
+                    width: 1
+                    color: Globals.theme.dark ? Qt.lighter(color) : Qt.darker(color)
+                }
+            }
+            Column {
+                anchors.fill: parent
+                Row {
+                    anchors.leftMargin: 10
+                    anchors.left: parent.left
+                    NText {
+                        text: root.adapter.enabled ? "Enabled" : "Disabled"
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    NSwitch {
+                        id: btn1
+                        isSwitched: root.adapter.enabled
 
-			Connections {
-			    target: ToplevelManager
-			    function onActiveToplevelChanged() {
-                    if (!!ToplevelManager.activeToplevel) root.loaderActive = false;
-                    root.enabled = false
-                    enabledTimer.running = true
-			    }
-			}
-			WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
-			anchors {
-				top: root.QsWindow.window.anchors.top
-				bottom: root.QsWindow.window.anchors.bottom
-				left: true
-			}
-			margins {
-				left: root.QsWindow.window.mapFromItem(root, 0, 0).x + root.QsWindow.window.margins.left + root.width / 2 - implicitWidth / 2
-				bottom: 10
-				top: 10
-			}
-			color: "transparent"
-			Rectangle {
-				anchors.fill: parent
-				color: Globals.theme.bgcol
-				radius: 10
-				border {
-					width: 1
-					color: Globals.theme.dark ? Qt.lighter(color) : Qt.darker(color)
-				}
-			}
-			Column {
-				anchors.fill: parent
-				Row {
-					anchors.leftMargin: 10
-					anchors.left: parent.left
-					NText {
-						text: root.adapter.enabled ? "Enabled" : "Disabled"
-						anchors.verticalCenter: parent.verticalCenter
-					}
-					NSwitch {
-						id: btn1
-						isSwitched: root.adapter.enabled
+                        onIsSwitchedChanged: {
+                            if (root.adapter.state == BluetoothAdapterState.Blocked)
+                                Quickshell.execDetached(["rfkill", "unblock", "bluetooth"]);
+                            root.adapter.enabled = isSwitched;
+                        }
+                    }
+                }
+                ListView {
+                    id: lv
+                    width: parent.width - 10
+                    height: parent.height - btn1.height
+                    anchors.margins: 10
+                    model: ScriptModel {
+                        values: root.adapter.devices.values.filter(x => x.deviceName && x.deviceName != "").sort((a, b) => a.paired && !b.paired ? -1 : (a.paired && b.paired ? 0 : 1))
+                    }
+                    layer.enabled: true
+                    layer.effect: OpacityMask {
+                        maskSource: Rectangle {
+                            width: lv.width
+                            height: lv.height
+                            radius: 10
+                        }
+                    }
+                    spacing: 5
+                    anchors.leftMargin: 5
+                    anchors.left: parent.left
+                    delegate: Rectangle {
+                        required property var modelData
+                        required property var index
 
-						onIsSwitchedChanged: {
-							if (root.adapter.state == BluetoothAdapterState.Blocked) Quickshell.execDetached(["rfkill", "unblock", "bluetooth"])
-							root.adapter.enabled = isSwitched
-						}
-					}
-				}
-				ListView {
-					id: lv
-					width: parent.width - 10
-					height: parent.height - btn1.height
-					anchors.margins: 10
-					model: ScriptModel {
-						values: root.adapter.devices.values.filter(x => x.deviceName && x.deviceName != "")
-							.sort((a, b) => a.paired && !b.paired ? -1 : (a.paired && b.paired ? 0 : 1))
-					}
-					layer.enabled: true
-					layer.effect: OpacityMask {
-						maskSource: Rectangle {
-							width: lv.width
-							height: lv.height
-							radius: 10
-						}
-					}
-					spacing: 5
-					anchors.leftMargin: 5
-					anchors.left: parent.left
-					delegate: Rectangle {
-						required property var modelData
-						required property var index
-
-						width: lv.width
-						height: 30
-						radius: 10
-						color: lv.currentIndex == index ? Globals.theme.active_item : Globals.theme.inactive_item
-						Item {
-							anchors.fill: parent
-							anchors.leftMargin: 5
-							anchors.rightMargin: 5
-							Rectangle {
-								id: icon
-								width: children[0].width + 2.5
-								height: children[0].height + 2.5
-								radius: height / 2
-								anchors.verticalCenter: parent.verticalCenter
-								anchors.left: parent.left
-								color: Globals.theme.bgcol
-								IconImage {
-									anchors.centerIn: parent
-									source: Quickshell.iconPath(modelData.icon, true)
-									implicitSize: 20
-								}
-							}
-							Button {
-								id: icon1
-								padding: 1.25
-								anchors.verticalCenter: parent.verticalCenter
-								anchors.left: icon.right
-								anchors.leftMargin: 5
-								background: Rectangle {
-									radius: height / 2
+                        width: lv.width
+                        height: 30
+                        radius: 10
+                        color: lv.currentIndex == index ? Globals.theme.active_item : Globals.theme.inactive_item
+                        Item {
+                            anchors.fill: parent
+                            anchors.leftMargin: 5
+                            anchors.rightMargin: 5
+                            Rectangle {
+                                id: icon
+                                width: children[0].width + 2.5
+                                height: children[0].height + 2.5
+                                radius: height / 2
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+                                color: Globals.theme.bgcol
+                                IconImage {
+                                    anchors.centerIn: parent
+                                    source: Quickshell.iconPath(modelData.icon, true)
+                                    implicitSize: 20
+                                }
+                            }
+                            Button {
+                                id: icon1
+                                padding: 1.25
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: icon.right
+                                anchors.leftMargin: 5
+                                background: Rectangle {
+                                    radius: height / 2
                                     color: modelData.paired ? Globals.theme.accent : Globals.theme.bgcol
-								}
-								contentItem: IconImage {
-									source: Quickshell.iconPath("link", true)
-									implicitSize: 20
-								}
-								onClicked: {
-									if (modelData.paired) modelData.forget()
-									else modelData.pair()
-								}
-							}
-							NText {
-								width: Math.min(implicitWidth, parent.width - icon.width - icon1.width - row1.implicitWidth - 15)
-								elide: Text.ElideRight
-								anchors.left: icon1.right
-								anchors.leftMargin: 5
-								anchors.verticalCenter: parent.verticalCenter
-								text: modelData.deviceName
-							}
-							Row {
-								id: row1
-								anchors.verticalCenter: parent.verticalCenter
-								anchors.right: parent.right
-								Button {
-									id: btn2
-									background: Rectangle {
-										radius: height / 2
-										color: btn2.hovered ? Globals.theme.button_bg_hover : Globals.theme.button_bg_down
-									}
-									contentItem: IconImage {
-										source: Quickshell.iconPath(modelData.state == BluetoothDeviceState.Connected
-											? "network-bluetooth-symbolic" : "network-bluetooth-inactive-symbolic", true)
-										implicitSize: 15
-									}
-									onClicked: {
-										modelData.connected = !modelData.connected
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+                                }
+                                contentItem: IconImage {
+                                    source: Quickshell.iconPath("link", true)
+                                    implicitSize: 20
+                                }
+                                onClicked: {
+                                    if (modelData.paired)
+                                        modelData.forget();
+                                    else
+                                        modelData.pair();
+                                }
+                            }
+                            NText {
+                                width: Math.min(implicitWidth, parent.width - icon.width - icon1.width - row1.implicitWidth - 15)
+                                elide: Text.ElideRight
+                                anchors.left: icon1.right
+                                anchors.leftMargin: 5
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: modelData.deviceName
+                            }
+                            Row {
+                                id: row1
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.right: parent.right
+                                Button {
+                                    id: btn2
+                                    background: Rectangle {
+                                        radius: height / 2
+                                        color: btn2.hovered ? Globals.theme.button_bg_hover : Globals.theme.button_bg_down
+                                    }
+                                    contentItem: IconImage {
+                                        source: Quickshell.iconPath(modelData.state == BluetoothDeviceState.Connected ? "network-bluetooth-symbolic" : "network-bluetooth-inactive-symbolic", true)
+                                        implicitSize: 15
+                                    }
+                                    onClicked: {
+                                        modelData.connected = !modelData.connected;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

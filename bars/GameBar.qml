@@ -5,7 +5,6 @@ import QtQuick
 import QtQuick.Layouts
 
 import qs.modules
-import qs.common
 import qs
 
 Bar {
@@ -30,12 +29,18 @@ Bar {
         anchors.leftMargin: 10
         spacing: 10
 
-        Launcher { anchors.verticalCenter: parent.verticalCenter }
+        Launcher {
+            anchors.verticalCenter: parent.verticalCenter
+        }
         Row {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 5
-            Workspaces { output: root.screen }
-            Windows { screen: root.screen.name }
+            Workspaces {
+                output: root.screen
+            }
+            Windows {
+                screen: root.screen.name
+            }
         }
     }
     Row {
@@ -53,16 +58,14 @@ Bar {
             property string statusIndicator: ""
 
             Row {
-                spacing: 6
                 id: mainrow
+                spacing: 6
 
                 Tray {}
                 //ModeSwitcher {}
                 Volume {}
                 Battery {}
-                SystemClock { id: clock; precision: SystemClock.Minutes }
-                NButton { content: Qt.formatDateTime(clock.date, "hh:mm") }
-                NText { text: " " }
+                Clock {}
             }
         }
     }

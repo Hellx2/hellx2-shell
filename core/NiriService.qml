@@ -29,7 +29,7 @@ Singleton {
     }
 
     function updateAllWorkspaces() {
-        root.allWorkspaces = Object.values(root.workspaces).sort((a,b) => a.idx - b.idx)
+        root.allWorkspaces = Object.values(root.workspaces).sort((a, b) => a.idx - b.idx);
     }
 
     DankSocket {
@@ -156,10 +156,11 @@ Singleton {
         for (const id in root.workspaces) {
             const workspace = root.workspaces[id];
             const got_activated = root.workspaces[id].id === data.id;
-            root.workspaces[id].is_active = got_activated
-            if (data.focused) root.workspaces[id].is_focused = got_activated
+            root.workspaces[id].is_active = got_activated;
+            if (data.focused)
+                root.workspaces[id].is_focused = got_activated;
         }
-        updateAllWorkspaces()
+        updateAllWorkspaces();
     }
 
     function handleWindowFocusChanged(data) {
@@ -186,7 +187,7 @@ Singleton {
                 }
                 root.workspaces[focusedWindow.workspace_id].active_window_id = focusedWindowId;
 
-                updateAllWorkspaces()
+                updateAllWorkspaces();
             }
         }
     }

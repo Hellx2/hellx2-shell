@@ -2,7 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import qs
-import qs.common
+import qs.core
 
 FloatingWindow {
     id: root
@@ -20,15 +20,14 @@ FloatingWindow {
         anchors.margins: 10
         spacing: 5
         model: Object.getOwnPropertyNames(Globals.settings).filter(x => {
-            return !x.startsWith("_") && !x.endsWith("Changed")
-            && x != "objectName" && typeof Globals.settings[x] !== "function"
+            return !x.startsWith("_") && !x.endsWith("Changed") && x != "objectName" && typeof Globals.settings[x] !== "function";
         })
         delegate: Row {
             NText {
                 text: modelData.replace(/(.)_(.)|([a-z])([A-Z0-9])/g, (_, p1, p2, p3, p4) => {
-                    return `${p1 || p3} ${p2?.toUpperCase() || p4 }`
-                }).replace(/^(.)/, (x) => {
-                    return x.toUpperCase()
+                    return `${p1 || p3} ${p2?.toUpperCase() || p4}`;
+                }).replace(/^(.)/, x => {
+                    return x.toUpperCase();
                 }) + ": "
                 width: 200
             }
@@ -40,17 +39,17 @@ FloatingWindow {
                 validator: RegularExpressionValidator {
                     regularExpression: {
                         if (typeof Globals.settings[modelData] == "number")
-                        return /\d{1,4}(\.\d?)/
+                            return /\d{1,4}(\.\d?)/;
                         else if ((/#[0-9a-f]{3,6}/i).test(Globals.settings[modelData])) {
-                            return /#[0-9a-f]{3,6}/i
-                        }
-                        else return /.*/
+                            return /#[0-9a-f]{3,6}/i;
+                        } else
+                            return /.*/;
                     }
                 }
                 leftPadding: 5
                 rightPadding: 5
                 onAccepted: {
-                    Globals.settings[modelData] = this.text
+                    Globals.settings[modelData] = this.text;
                 }
             }
         }

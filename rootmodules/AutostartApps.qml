@@ -6,7 +6,7 @@ import Quickshell.Widgets
 import QtCore
 import QtQuick
 import QtQuick.Shapes
-import qs.common
+import qs.core
 import qs
 
 PanelWindow {

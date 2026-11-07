@@ -1,6 +1,5 @@
 import QtQuick
 import qs.modules
-import qs.common
 
 Bar {
     id: root

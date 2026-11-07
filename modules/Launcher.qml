@@ -1,6 +1,6 @@
 import QtQuick
 import Quickshell.Io
-import qs.common
+import qs.core
 import qs.rootmodules
 
 NButton {
@@ -15,7 +15,9 @@ NButton {
     }
     bgradius: 100
     onClicked: {
-        if (root.useLaunchpad) Launchpad.showLaunchpad = !Launchpad.showLaunchpad
-        else AppMenu.showAppMenu = !AppMenu.showAppMenu
+        if (root.useLaunchpad)
+            Launchpad.showLaunchpad = !Launchpad.showLaunchpad;
+        else
+            AppMenu.showAppMenu = !AppMenu.showAppMenu;
     }
 }

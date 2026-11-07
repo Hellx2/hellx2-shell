@@ -7,7 +7,7 @@ import Quickshell.Services.Pipewire
 import Quickshell.Wayland
 import Quickshell.Widgets
 
-import qs.common
+import qs.core
 import qs
 
 Scope {
@@ -65,8 +65,8 @@ Scope {
                     active: root.currentOsd == 5 || root.currentOsd == 1 // Volume or Brightness OSD
 
                     PanelWindow {
-                    	WlrLayershell.layer: WlrLayer.Overlay
-                    	screen: Globals.theme.getPrimaryScreen()
+                        WlrLayershell.layer: WlrLayer.Overlay
+                        screen: Globals.theme.getPrimaryScreen()
                         anchors.bottom: true
                         margins.bottom: screen.height / 5
                         exclusiveZone: 0
@@ -136,32 +136,32 @@ Scope {
                             anchors.fill: parent
                             color: Globals.theme.bgcol
                             border {
-                            	width: 1
-                            	color: (Globals.theme.dark ? Qt.lighter : Qt.darker)(color)
+                                width: 1
+                                color: (Globals.theme.dark ? Qt.lighter : Qt.darker)(color)
                             }
                             radius: height / 2
                             Row {
-                            	anchors.fill: parent
-                            	spacing: 10
-                            	anchors.leftMargin: 20
-                            	anchors.rightMargin: 20
-	                            NText {
-   	                            	anchors.verticalCenter: parent.verticalCenter
-	                                fontSize: root.currentOsd == 2 ? (Mpris.players.values[0].isPlaying ? 25 : 30) : 30
-	                                width: 20
-	                                horizontalAlignment: Text.AlignHCenter
-	                                text: root.currentOsd == 2 ? (Mpris.players.values[0].isPlaying ? "▶" : "⏸") : (root.currentOsd == 3 ? "⇥" : "⇤")
-	                            }
+                                anchors.fill: parent
+                                spacing: 10
+                                anchors.leftMargin: 20
+                                anchors.rightMargin: 20
+                                NText {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    fontSize: root.currentOsd == 2 ? (Mpris.players.values[0].isPlaying ? 25 : 30) : 30
+                                    width: 20
+                                    horizontalAlignment: Text.AlignHCenter
+                                    text: root.currentOsd == 2 ? (Mpris.players.values[0].isPlaying ? "▶" : "⏸") : (root.currentOsd == 3 ? "⇥" : "⇤")
+                                }
                                 IconImage {
                                     anchors.verticalCenter: parent.verticalCenter
                                     source: Quickshell.iconPath(DesktopEntries.byId(Mpris.players.values[0].desktopEntry)?.icon, true)
                                     implicitSize: 25
                                 }
-	                            NText {
-	                            	anchors.verticalCenter: parent.verticalCenter
-	                            	fontSize: 16
-	                            	text: (Mpris.players.values[0].trackTitle || "Unknown")
-	                            }
+                                NText {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    fontSize: 16
+                                    text: (Mpris.players.values[0].trackTitle || "Unknown")
+                                }
                             }
                         }
                     }

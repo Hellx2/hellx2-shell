@@ -4,7 +4,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Widgets
-import qs.common
+import qs.core
 import qs
 
 Singleton {
@@ -28,18 +28,21 @@ Singleton {
             propagateComposedEvents: false
             onClicked: mainwin.showConfirmation = root.showPowerMenu = false
             property var menuKeyFunctions: []
-            property var confirmKeyFunction: (ev) => {
+            property var confirmKeyFunction: ev => {
                 if (ev.key == Qt.Key_Return || ev.key == Qt.Key_Enter) {
-                    root.showPowerMenu = mainwin.showConfirmation = false
-                    Quickshell.execDetached(mainwin.cmd)
+                    root.showPowerMenu = mainwin.showConfirmation = false;
+                    Quickshell.execDetached(mainwin.cmd);
                 }
                 if (ev.key == Qt.Key_Backspace) {
-                    mainwin.showConfirmation = false
+                    mainwin.showConfirmation = false;
                 }
             }
-            Keys.onPressed: (ev) => {
-                if(!mainwin.showConfirmation) for (let i of menuKeyFunctions) i(ev);
-                else confirmKeyFunction(ev)
+            Keys.onPressed: ev => {
+                if (!mainwin.showConfirmation)
+                    for (let i of menuKeyFunctions)
+                        i(ev);
+                else
+                    confirmKeyFunction(ev);
             }
         }
         visible: root.showPowerMenu
@@ -85,8 +88,8 @@ Singleton {
                             }
                             width: parent.width * 0.475
                             onClicked: {
-                                root.showPowerMenu = mainwin.showConfirmation = false
-                                Quickshell.execDetached(mainwin.cmd)
+                                root.showPowerMenu = mainwin.showConfirmation = false;
+                                Quickshell.execDetached(mainwin.cmd);
                             }
                         }
                         NButton {
@@ -117,42 +120,36 @@ Singleton {
                 }
 
                 Column {
+                    id: col
                     anchors.centerIn: parent
                     spacing: 12.5
-                    id: col
                     NText {
                         text: "Power Menu"
                         fontSize: 16
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
-                    property var model: [
-                        ["Lock", ["loginctl", "lock-session"], "system-lock-screen-symbolic"],
-                        ["Suspend", ["systemctl", "suspend", "-i"], "system-suspend-symbolic"],
-                        ["Log Out", ["niri", "msg", "action", "quit", "-s"], "system-log-out-symbolic"],
-                        ["Reboot", ["systemctl", "reboot", "-i"], "system-reboot-symbolic"],
-                        ["Shutdown", ["systemctl", "poweroff", "-i"], "system-shutdown-symbolic"],
-                    ]
+                    property var model: [["Lock", ["loginctl", "lock-session"], "system-lock-screen-symbolic"], ["Suspend", ["systemctl", "suspend", "-i"], "system-suspend-symbolic"], ["Log Out", ["niri", "msg", "action", "quit", "-s"], "system-log-out-symbolic"], ["Reboot", ["systemctl", "reboot", "-i"], "system-reboot-symbolic"], ["Shutdown", ["systemctl", "poweroff", "-i"], "system-shutdown-symbolic"],]
                     ListView {
+                        id: rep1
                         height: parent.model.length * 60 - 10
                         width: mainrect.width - 40
                         spacing: 10
                         acceptedButtons: Qt.NoButton
-                        id: rep1
                         model: parent.model.length
                         focus: true
                         Component.onCompleted: {
                             for (let i = 0; i < col.model.length; i++) {
-                                keysArea.menuKeyFunctions.push((ev) => {
+                                keysArea.menuKeyFunctions.push(ev => {
                                     if (ev.key == 0x30 + i + 1) {
-                                        rep1.run(i)
+                                        rep1.run(i);
                                     }
-                                })
+                                });
                             }
                         }
                         function run(i: int) {
-                            mainwin.showConfirmation = true
-                            mainwin.action = col.model[i][0].toLowerCase()
-                            mainwin.cmd = col.model[i][1]
+                            mainwin.showConfirmation = true;
+                            mainwin.action = col.model[i][0].toLowerCase();
+                            mainwin.cmd = col.model[i][1];
                         }
                         delegate: MouseArea {
                             id: ma
@@ -160,9 +157,8 @@ Singleton {
                             width: mainrect.width - 40
                             height: 50
                             hoverEnabled: true
-                            onClicked: rep1.run(modelData) 
-                            Component.onCompleted: {
-                                                            }
+                            onClicked: rep1.run(modelData)
+                            Component.onCompleted: {}
                             Rectangle {
                                 anchors.fill: parent
                                 radius: 10

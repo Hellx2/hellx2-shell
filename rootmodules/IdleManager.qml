@@ -1,20 +1,21 @@
 pragma Singleton
 import Quickshell
 import Quickshell.Wayland
-import qs.common
 import qs
 
 Singleton {
     id: root
     property bool running: true
 
-    component Monitor : IdleMonitor {
+    component Monitor: IdleMonitor {
         required property list<string> timeoutCmd
         property list<string> resumeCmd: []
         enabled: root.running
         onIsIdleChanged: {
-            if(isIdle) Quickshell.execDetached(timeoutCmd)
-            else if (resumeCmd != []) Quickshell.execDetached(resumeCmd)
+            if (isIdle)
+                Quickshell.execDetached(timeoutCmd);
+            else if (resumeCmd != [])
+                Quickshell.execDetached(resumeCmd);
         }
     }
 

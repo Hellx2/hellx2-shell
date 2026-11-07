@@ -7,7 +7,7 @@ import QtQuick
 import QtQuick.Shapes
 import QtCore
 
-import qs.common
+import qs.core
 import qs
 
 Singleton {
@@ -39,9 +39,7 @@ Singleton {
 
     Process {
         id: pomodoroNotification
-        command: ["notify-send", root.isBreak
-        ? `Take a ${root.breakNumber % root.longBreakOn == 0 ? "long" : "short"} break!`
-        : "Back to work!"]
+        command: ["notify-send", root.isBreak ? `Take a ${root.breakNumber % root.longBreakOn == 0 ? "long" : "short"} break!` : "Back to work!"]
         running: false
     }
 
@@ -64,7 +62,8 @@ Singleton {
                     root.breakNumber += 1;
                     root.breakNumberChanged();
                     root.countdown = root.breakNumber % root.longBreakOn == 0 ? root.longBreak : root.shortBreak;
-                } else root.countdown = root.defaultCountdown;
+                } else
+                    root.countdown = root.defaultCountdown;
                 pomodoroNotification.running = true;
             }
 
@@ -72,9 +71,7 @@ Singleton {
         }
     }
 
-    property var arcWidth: Math.min(root.countdown / (!root.isBreak ? root.defaultCountdown :
-        (root.breakNumber % root.longBreakOn == 0 ? root.longBreak : root.shortBreak)) * 100, 100)
-
+    property var arcWidth: Math.min(root.countdown / (!root.isBreak ? root.defaultCountdown : (root.breakNumber % root.longBreakOn == 0 ? root.longBreak : root.shortBreak)) * 100, 100)
 
     LazyLoader {
         active: root.showPomodoro
@@ -86,11 +83,11 @@ Singleton {
                 function onActiveToplevelChanged() {
                     if (!!ToplevelManager.activeToplevel) {
                         root.showPomodoro = false;
-                        root.buttonEnabled = false
+                        root.buttonEnabled = false;
                         enabledTimer.running = true;
                     }
-			    }
-			}
+                }
+            }
 
             implicitWidth: 400
             implicitHeight: 500
@@ -167,7 +164,7 @@ Singleton {
                     width: 4 / 10 * panel1.width
                     NInput {
                         text: String(Math.floor(root.countdown / 3600)).padStart(2, 0)
-                        onTextEdited: root.countdown = Number(text) * 3600 + (root.countdown % 3600);
+                        onTextEdited: root.countdown = Number(text) * 3600 + (root.countdown % 3600)
                         color: root.col
                         fontSize: 2 / 40 * Math.min(panel1.width, panel1.height)
                         horizontalAlignment: Text.AlignHCenter
@@ -182,8 +179,7 @@ Singleton {
                     }
                     NInput {
                         text: String(Math.floor((root.countdown % 3600) / 60)).padStart(2, 0)
-                        onTextEdited: root.countdown = root.countdown - (root.countdown % 3600)
-                            + Number(text) * 60 + (root.countdown % 60);
+                        onTextEdited: root.countdown = root.countdown - (root.countdown % 3600) + Number(text) * 60 + (root.countdown % 60)
                         color: root.col
                         fontSize: 2 / 40 * Math.min(panel1.width, panel1.height)
                         horizontalAlignment: Text.AlignHCenter
@@ -198,7 +194,7 @@ Singleton {
                     }
                     NInput {
                         text: String(root.countdown % 60).padStart(2, 0)
-                        onTextEdited: root.countdown = root.countdown - (root.countdown % 60) + Number(text);
+                        onTextEdited: root.countdown = root.countdown - (root.countdown % 60) + Number(text)
                         color: root.col
                         fontSize: 2 / 40 * Math.min(panel1.width, panel1.height)
                         horizontalAlignment: Text.AlignHCenter
@@ -235,22 +231,14 @@ Singleton {
                             }
                         }
 
-                        // Pause Button pt. 1
-                        component PauseLine : ShapePath {
-                            required property int index
-                            strokeColor: root.col
-                            fillColor: root.col
-                            startX: playPauseBtn.width * (1 + index * 2) / 8
-                            startY: playPauseBtn.width * 5 / 16
-                            strokeWidth: playPauseBtn.width * 1 / 8
-                            PathLine {
-                                x: playPauseBtn.width * (1 + index * 2) / 8
-                                y: playPauseBtn.width * 3 / 8 + playPauseBtn.width * 5 / 16
-                            }
+                        PauseLine {
+                            id: path2
+                            index: 1
                         }
-
-                        PauseLine { id: path2; index: 1 }
-                        PauseLine { id: path3; index: 2 }
+                        PauseLine {
+                            id: path3
+                            index: 2
+                        }
 
                         Shape {
                             data: countdownTimer.running ? [path2, path3] : [path1]
@@ -288,6 +276,20 @@ Singleton {
                     }
                 }
             }
+        }
+    }
+
+    // Pause Button pt. 1
+    component PauseLine: ShapePath {
+        required property int index
+        strokeColor: root.col
+        fillColor: root.col
+        startX: playPauseBtn.width * (1 + index * 2) / 8
+        startY: playPauseBtn.width * 5 / 16
+        strokeWidth: playPauseBtn.width * 1 / 8
+        PathLine {
+            x: playPauseBtn.width * (1 + index * 2) / 8
+            y: playPauseBtn.width * 3 / 8 + playPauseBtn.width * 5 / 16
         }
     }
 }

@@ -2,11 +2,11 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 
-import qs.common
+import qs.core
 import qs
 
 Row {
-	id: root
+    id: root
     property string screen: "eDP-1"
     spacing: 5
     ScriptModel {
@@ -18,17 +18,16 @@ Row {
         values: ToplevelManager.toplevels.values.filter(x => Globals.settings._pinnedApps.includes(x.appId))
     }
 
-
     Repeater {
         model: ScriptModel {
             values: Globals.settings._pinnedApps
         }
         MouseArea {
+            //bgcolor: modelData
+            id: btn
             height: root.height - 2.5
             required property var modelData
             acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
-            //bgcolor: modelData
-            id: btn
             width: 25 + indicator.width + 5 //+ (activeWin == -1 ? 0 : txt1.width + 5)
             //height: 25
             property var windows: pinnedApps.values.filter(x => x.appId == modelData)
@@ -40,10 +39,14 @@ Row {
             }
             onClicked: m => {
                 if (m.button & Qt.LeftButton)
-                if (windows.length > 0) windows[activeWin + 1 == windows.length ? 0 : activeWin + 1].activate()
-                else Quickshell.execDetached(DesktopEntries.byId(modelData).command)
-                else if (m.button & Qt.RightButton && windows.length > 0) windows[Math.max(activeWin, 0)].close();
-                else if (m.button & Qt.MiddleButton) Globals.settings._pinnedApps.splice(Globals.settings._pinnedApps.indexOf(modelData), 1)
+                    if (windows.length > 0)
+                        windows[activeWin + 1 == windows.length ? 0 : activeWin + 1].activate();
+                    else
+                        Quickshell.execDetached(DesktopEntries.byId(modelData).command);
+                else if (m.button & Qt.RightButton && windows.length > 0)
+                    windows[Math.max(activeWin, 0)].close();
+                else if (m.button & Qt.MiddleButton)
+                    Globals.settings._pinnedApps.splice(Globals.settings._pinnedApps.indexOf(modelData), 1);
             }
             Row {
                 anchors.verticalCenter: parent.verticalCenter
@@ -69,7 +72,10 @@ Row {
                     //visible: btn.windows.length > 0
                     anchors.verticalCenter: parent.verticalCenter
                     color: activeWin == -1 ? '#00b0aa' : '#12b0ff'
-                    border { color: Qt.lighter(indicator.color, 1.1); width: 1 }
+                    border {
+                        color: Qt.lighter(indicator.color, 1.1)
+                        width: 1
+                    }
                     radius: height / 2
                     //anchors.bottom: parent.bottom
                     //anchors.right: parent.right
@@ -87,13 +93,14 @@ Row {
         }
     }
 
-    Spacer { strokeColor: rep1.model.values.length > 0 ? Globals.theme.spacer : "transparent"} //visible: rep1.model.values.length > 0 }
+    Spacer {
+        strokeColor: rep1.model.values.length > 0 ? Globals.theme.spacer : "transparent"
+    } //visible: rep1.model.values.length > 0 }
 
     Repeater {
         id: rep1
         model: ScriptModel {
-            values: NiriService.windows.filter(w => NiriService.workspaces[w.workspace_id].is_active
-            && NiriService.workspaces[w.workspace_id].output == root.screen)
+            values: NiriService.windows.filter(w => NiriService.workspaces[w.workspace_id].is_active && NiriService.workspaces[w.workspace_id].output == root.screen)
             //&& !Globals.settings._pinnedApps.includes(w.app_id))
         }
 
@@ -108,11 +115,13 @@ Row {
                 color: modelData.is_focused ? Globals.theme.active_item : Globals.theme.inactive_item
             }
             onClicked: m => {
-                if (m.button & Qt.LeftButton) NiriService.focusWindow(modelData.id)
-                else if (m.button & Qt.RightButton) NiriService.closeWindow(modelData.id);
+                if (m.button & Qt.LeftButton)
+                    NiriService.focusWindow(modelData.id);
+                else if (m.button & Qt.RightButton)
+                    NiriService.closeWindow(modelData.id);
                 else if (m.button & Qt.MiddleButton) {
                     if (!Globals.settings._pinnedApps.includes(modelData.app_id))
-                    Globals.settings._pinnedApps.push(modelData.app_id)
+                        Globals.settings._pinnedApps.push(modelData.app_id);
                 }
             }
 

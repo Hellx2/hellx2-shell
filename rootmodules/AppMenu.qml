@@ -8,7 +8,7 @@ import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Controls
 import QtCore
-import qs.common
+import qs.core
 import qs
 
 Singleton {
@@ -30,16 +30,19 @@ Singleton {
     Connections {
         target: ToplevelManager
         function onActiveToplevelChanged() {
-            if (ToplevelManager.activeToplevel != null) root.showAppMenu = false
+            if (ToplevelManager.activeToplevel != null)
+                root.showAppMenu = false;
         }
     }
     property var x: 20
     property var y: 20
     function run(entry) {
-        let hist = JSON.parse(history)
-        if (!!hist[entry.id]) hist[entry.id] += 1
-        else hist[entry.id] = 1
-        history = JSON.stringify(hist)
+        let hist = JSON.parse(history);
+        if (!!hist[entry.id])
+            hist[entry.id] += 1;
+        else
+            hist[entry.id] = 1;
+        history = JSON.stringify(hist);
 
         Quickshell.execDetached(entry.command);
         showAppMenu = false;
@@ -104,8 +107,8 @@ Singleton {
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 NInput {
-                	bgcolor: "transparent"
                     id: mainInput
+                    bgcolor: "transparent"
                     focus: true
                     font.bold: false
                     width: parent.width - 30
@@ -139,16 +142,16 @@ Singleton {
                     height: parent.height
                     model: ScriptModel {
                         values: root.model.sort((a, b) => {
-                            let hist = JSON.parse(root.history)
+                            let hist = JSON.parse(root.history);
                             let A = a.name.toUpperCase();
                             let B = b.name.toUpperCase();
                             let tmp = ((a, b) => {
-                                let rv = (!!hist[a.id] && (!hist[b.id] || (hist[a.id] > hist[b.id])))
-                                ? -1 : (!!hist[b.id] && (!hist[a.id] || hist[b.id] > hist[a.id]) ? 1 : 0)
-                                return rv
-                            })(a, b)
-                            if (tmp != 0) return tmp
-                            return A < B ? -1 : (A > B ? 1 : 0)
+                                    let rv = (!!hist[a.id] && (!hist[b.id] || (hist[a.id] > hist[b.id]))) ? -1 : (!!hist[b.id] && (!hist[a.id] || hist[b.id] > hist[a.id]) ? 1 : 0);
+                                    return rv;
+                                })(a, b);
+                            if (tmp != 0)
+                                return tmp;
+                            return A < B ? -1 : (A > B ? 1 : 0);
                         }).filter(x => [x.id, x.name].filter(a => a.toLowerCase().includes(mainInput.text.toLowerCase())).length > 0)
                         onValuesChanged: lv.currentIndex = 0
                     }
@@ -173,7 +176,9 @@ Singleton {
                                 source: Quickshell.iconPath(modelData.icon, true)
                                 implicitSize: 20
                             }
-                            NText { text: `${modelData?.name}` }
+                            NText {
+                                text: `${modelData?.name}`
+                            }
                             NText {
                                 text: modelData.genericName != "" ? `(${modelData.genericName})` : ""
                                 font.italic: true

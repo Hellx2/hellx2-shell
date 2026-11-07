@@ -5,7 +5,7 @@ import QtQuick
 import QtQuick.Shapes
 import Qt5Compat.GraphicalEffects
 
-import qs.common
+import qs.core
 import qs.modules
 import qs
 

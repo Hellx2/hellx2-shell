@@ -2,7 +2,6 @@ import QtQuick
 import Quickshell
 import Quickshell.Services.Mpris
 import qs.modules
-import qs.common
 import qs
 
 Bar {
@@ -55,9 +54,11 @@ Bar {
 
                 PlayerWidget {}
 
-                Spacer { visible: !!Mpris.players.values[0] }
+                Spacer {
+                    visible: !!Mpris.players.values[0]
+                }
 
-				UpdateChecker {}
+                UpdateChecker {}
                 Tray {}
                 PomodoroButton {}
                 Volume {}
@@ -73,7 +74,7 @@ Bar {
                     x1: () => QsWindow.itemPosition(this).x
                 }
 
-				Spacer {}
+                Spacer {}
                 Battery {}
                 Spacer {}
                 Clock {}

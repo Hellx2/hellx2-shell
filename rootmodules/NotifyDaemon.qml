@@ -3,7 +3,7 @@ import Qt5Compat.GraphicalEffects
 import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.Notifications
-import qs.common
+import qs.core
 import qs
 
 Scope {
@@ -16,21 +16,21 @@ Scope {
         repeat: false
         onTriggered: {
             for (let i of root.currentNotifications)
-                i?.expire()
-            root.currentNotifications = []
+                i?.expire();
+            root.currentNotifications = [];
         }
     }
 
     function clear(notification) {
-        currentNotifications.splice(currentNotifications.indexOf(notification), 1)
+        currentNotifications.splice(currentNotifications.indexOf(notification), 1);
     }
 
     onCurrentNotificationsChanged: {
         if (currentNotifications.length > 5) {
-            currentNotifications.shift()
+            currentNotifications.shift();
         }
         if (currentNotifications.length > 0) {
-            clearTimer.restart()
+            clearTimer.restart();
         }
     }
 
@@ -39,14 +39,14 @@ Scope {
         imageSupported: true
         actionsSupported: true
         onNotification: a => {
-            a.tracked = true
-            root.currentNotifications.push(a)
-            root.currentNotificationsChanged()
+            a.tracked = true;
+            root.currentNotifications.push(a);
+            root.currentNotificationsChanged();
         }
     }
 
     PanelWindow {
-    	screen: Globals.settings.getPrimaryScreen()
+        screen: Globals.settings.getPrimaryScreen()
         anchors {
             top: true
             right: true
@@ -66,22 +66,23 @@ Scope {
             Repeater {
                 model: root.currentNotifications
                 delegate: MouseArea {
-                    required property var modelData
                     id: mouse1
+                    required property var modelData
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
                     function close() {
-                        if (modelData.tracked) modelData.tracked = false
+                        if (modelData.tracked)
+                            modelData.tracked = false;
                     }
                     Connections {
                         target: modelData
                         function onClosed() {
-                            visible = false
-                            root.clear(modelData)
+                            visible = false;
+                            root.clear(modelData);
                         }
                     }
                     onClicked: m => {
                         if (m.button == Qt.RightButton) {
-                            close()
+                            close();
                         }
                     }
                     height: mainItem.height + (col2.visible ? col2.height : 0)
@@ -99,42 +100,42 @@ Scope {
                         Item {
                             anchors.fill: parent
                             Item {
-                                width: parent.width
                                 id: mainItem
+                                width: parent.width
                                 height: Math.max(icon.height, text1.height + text2.height + text3.height + 20)
                                 Rectangle {
-                                	id: icon
-                                	color: "transparent"
-                                	anchors.margins: 10
+                                    id: icon
+                                    color: "transparent"
+                                    anchors.margins: 10
                                     anchors.verticalCenter: parent.verticalCenter
                                     radius: 5
                                     width: 100
                                     height: 100
                                     Image {
-                                    	id: img
-	                                    source: modelData.image
-	                                    width: parent.width - 20
-	                                    height: parent.height - 20
-	                                    anchors.centerIn: parent
-	                                    mipmap: true
-	                                    layer.enabled: true
-	                                    layer.effect: OpacityMask {
-		                                	maskSource: Rectangle {
-		                                		width: img.width
-		                                		height: img.height
-		                                		radius: 10
-		                                	}
-		                                }
-	                                }
+                                        id: img
+                                        source: modelData.image
+                                        width: parent.width - 20
+                                        height: parent.height - 20
+                                        anchors.centerIn: parent
+                                        mipmap: true
+                                        layer.enabled: true
+                                        layer.effect: OpacityMask {
+                                            maskSource: Rectangle {
+                                                width: img.width
+                                                height: img.height
+                                                radius: 10
+                                            }
+                                        }
+                                    }
                                 }
                                 Column {
+                                    id: col1
                                     anchors.leftMargin: 10
                                     anchors.rightMargin: 10
                                     anchors.topMargin: 10
                                     anchors.left: icon.right
                                     anchors.top: parent.top
                                     width: parent.width - icon.width - 20
-                                    id: col1
                                     NText {
                                         id: text1
                                         text: modelData.appName.toUpperCase()
@@ -160,55 +161,59 @@ Scope {
                                 }
                             }
                             Column {
-                            	id: col2
-                            	leftPadding: 10
-                            	rightPadding: 10
-                            	spacing: 5
-                            	anchors.top: mainItem.bottom
-                            	visible: modelData.actions.length > 0
-                            	width: parent.width - 20
-                            	height: mainRepeater.count * 35 - 5
+                                id: col2
+                                leftPadding: 10
+                                rightPadding: 10
+                                spacing: 5
+                                anchors.top: mainItem.bottom
+                                visible: modelData.actions.length > 0
+                                width: parent.width - 20
+                                height: mainRepeater.count * 35 - 5
 
-                            	function getRows(model) {
-                            		let rows = [[]];
-                            		let index = 0;
-                            		for (let i of model) {
-                            			let temp = 0;
-                            			if (rows[index].length == 0) {
-                            				rows[index].push(i);
-                            				continue;
-                            			}
-                            			// This ratio was calculated for JetBrains Mono and only that font, others will need to be implemented somehow
-                            			for (let j of [...rows[index], i]) temp += j.text.length * Globals.theme.text_size / 1.6 + 5 + 2 * Globals.theme.button_sidepad;
-                            			if (temp - 5 > col2.width) index++;
-                            			if (index == rows.length) rows.push([]);
-                            			rows[index].push(i);
-                            		}
-                            		return rows;
-                            	}
+                                function getRows(model) {
+                                    let rows = [[]];
+                                    let index = 0;
+                                    for (let i of model) {
+                                        let temp = 0;
+                                        if (rows[index].length == 0) {
+                                            rows[index].push(i);
+                                            continue;
+                                        }
+                                        // This ratio was calculated for JetBrains Mono and only that font, others will need to be implemented somehow
+                                        for (let j of [...rows[index], i])
+                                            temp += j.text.length * Globals.theme.text_size / 1.6 + 5 + 2 * Globals.theme.button_sidepad;
+                                        if (temp - 5 > col2.width)
+                                            index++;
+                                        if (index == rows.length)
+                                            rows.push([]);
+                                        rows[index].push(i);
+                                    }
+                                    return rows;
+                                }
 
-                            	Repeater {
-                            		id: mainRepeater
-                            		model: col2.getRows(modelData.actions)
-                            		Row {
-                            			spacing: 5
-                            			anchors.horizontalCenter: parent.horizontalCenter
-                            			required property var modelData
-                            			Repeater {
-                            				model: modelData
-                            				NButton {
-                            					elide: Text.ElideRight
-                            					width: Math.min(implicitWidth, col2.width - 20)
-		                                        required property var modelData
-		                                        content: modelData.text
-		                                        onClicked: {
-		                                            modelData.invoke()
-		                                            if (mouse1.modelData && !mouse1.modelData.resident) mouse1.close()
-		                                        }
-		                                    }
-                            			}
-                            		}
-                            	}
+                                Repeater {
+                                    id: mainRepeater
+                                    model: col2.getRows(modelData.actions)
+                                    Row {
+                                        spacing: 5
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        required property var modelData
+                                        Repeater {
+                                            model: modelData
+                                            NButton {
+                                                elide: Text.ElideRight
+                                                width: Math.min(implicitWidth, col2.width - 20)
+                                                required property var modelData
+                                                content: modelData.text
+                                                onClicked: {
+                                                    modelData.invoke();
+                                                    if (mouse1.modelData && !mouse1.modelData.resident)
+                                                        mouse1.close();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                             /*Grid {
                                 columns: 2

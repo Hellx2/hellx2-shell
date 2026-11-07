@@ -4,7 +4,7 @@ import Quickshell.Wayland
 import Quickshell.Widgets
 import QtQuick
 import QtCore
-import qs.common
+import qs.core
 import qs
 
 Scope {

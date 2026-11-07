@@ -2,7 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Services.Polkit
-import qs.common
+import qs.core
 import qs
 
 PanelWindow {

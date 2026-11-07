@@ -2,7 +2,7 @@ import Quickshell
 import Quickshell.Io
 import QtQuick
 
-import qs.common
+import qs.core
 import qs
 
 PanelWindow {
@@ -27,7 +27,7 @@ PanelWindow {
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
-                root.themes = this.text.trim().split("\n")
+                root.themes = this.text.trim().split("\n");
             }
         }
     }
@@ -71,8 +71,8 @@ PanelWindow {
             width: root.width - 10
             height: 30
             onClicked: {
-                root.visible = false
-                Globals.settings.theme = Quickshell.shellPath("themes/") + modelData
+                root.visible = false;
+                Globals.settings.theme = Quickshell.shellPath("themes/") + modelData;
             }
             Rectangle {
                 anchors.fill: parent

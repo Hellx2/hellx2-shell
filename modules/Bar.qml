@@ -3,19 +3,19 @@ import Quickshell.Wayland
 import QtQuick
 import Qt5Compat.GraphicalEffects
 
-import qs.common
+import qs.core
 import qs
 import qs.rootmodules
 
 PanelWindow {
     id: root
 
-	WlrLayershell.namespace: "bar"
-	WlrLayershell.layer: AppMenu.showAppMenu ? WlrLayer.Overlay : WlrLayer.Top
+    WlrLayershell.namespace: "bar"
+    WlrLayershell.layer: AppMenu.showAppMenu ? WlrLayer.Overlay : WlrLayer.Top
 
     required property var modelData
     screen: modelData
-	
+
     property var bgcolor: Globals.theme.bgcol
     property bool fillWidth: true
     property bool topOfScreen: false
@@ -43,8 +43,8 @@ PanelWindow {
     }
 
     Rectangle {
-    	id: bgrect
-    	opacity: 0.9
+        id: bgrect
+        opacity: 0.9
         anchors.fill: parent
         color: root.bgcolor
         radius: root.radius

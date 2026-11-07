@@ -1,5 +1,5 @@
 import Quickshell
-import qs.common
+import qs.core
 import QtQuick
 
 NButton {

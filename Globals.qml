@@ -1,9 +1,7 @@
 pragma Singleton
 
 import Quickshell
-import Quickshell.Io
 import QtCore
-import qs.common
 
 Singleton {
     id: root

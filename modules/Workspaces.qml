@@ -30,7 +30,7 @@ Rectangle {
 		        height: parent.height
 		        Rectangle {
 					width: parent.width
-		            color: modelData.active ? Qt.darker(Globals.theme.accent, 1.4) :
+		            color: modelData.active ? (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.accent, 1.4) :
                     (modelData.coordinates[1] < WindowManager.screenProjection(root.output).windowsets.length - 1
                         ? Globals.theme.extreme : Globals.theme.inactive_item)
 		            radius: height / 2

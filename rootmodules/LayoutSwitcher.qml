@@ -3,7 +3,7 @@ import QtQuick.Shapes
 import Quickshell
 import Quickshell.Io
 import qs
-import qs.common
+import qs.core
 
 PanelWindow {
     id: root
@@ -20,10 +20,9 @@ PanelWindow {
             color: Qt.lighter(color, 2.0)
             width: 1
         }
-
     }
 
-    component Mode : Rectangle {
+    component Mode: Rectangle {
         id: mode
         property string text
         property string layout
@@ -38,8 +37,9 @@ PanelWindow {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                if (!!mode.layout) Globals.theme.mode = mode.layout
-                root.visible = false
+                if (!!mode.layout)
+                    Globals.theme.mode = mode.layout;
+                root.visible = false;
             }
         }
         NText {
@@ -124,7 +124,6 @@ PanelWindow {
                     width: 0.5
                 }
             }
-
         }
         Mode {
             text: "Game"
