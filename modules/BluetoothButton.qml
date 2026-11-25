@@ -35,12 +35,12 @@ MouseArea {
 
     Rectangle {
         anchors.fill: parent
-        color: (!!adapter && adapter.enabled) ? Globals.theme.accent : Globals.theme.button_bg
+        color: adapter?.enabled ? Globals.theme.accent : Globals.theme.button_bg
         radius: height / 2
     }
     ShapePath {
         id: bticon
-        strokeColor: (!!adapter && adapter.enabled) ? (Globals.theme.extreme) : (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.button_bg)
+        strokeColor: (adapter?.enabled) ? (Globals.theme.extreme) : (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.button_bg)
         fillColor: "transparent"
         strokeWidth: 2
         startX: 6

@@ -38,7 +38,7 @@ PanelWindow {
             anchors.fill: parent
             onClicked: {
                 if (!!mode.layout)
-                    Globals.theme.mode = mode.layout;
+                    Globals.settings.mode = mode.layout;
                 root.visible = false;
             }
         }

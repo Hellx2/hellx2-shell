@@ -36,6 +36,7 @@ MouseArea {
             id: vars
             model: root.lines
             delegate: ShapePath {
+                id: line
                 required property var modelData
                 fillColor: "transparent"
                 strokeColor: root.color
@@ -43,8 +44,8 @@ MouseArea {
                 startY: modelData[1]
                 strokeWidth: root.strokeWidth
                 PathLine {
-                    x: modelData[2]
-                    y: modelData[3]
+                    x: line.modelData[2]
+                    y: line.modelData[3]
                 }
             }
         }

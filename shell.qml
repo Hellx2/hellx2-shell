@@ -30,8 +30,9 @@ Scope {
 
     property bool loadApp: false
     Timer {
+        id: startTimer
         interval: 1000
-        running: true
+        running: false
         repeat: false
         onTriggered: root.loadApp = true
     }
@@ -43,9 +44,12 @@ Scope {
         let a = DesktopEntries.applications;
         let settings = JSON.parse(persistentSettings.settings);
         for (let i of Object.entries(settings)) {
-            if (Globals.settings[i[0]])
+            if (Globals.settings.hasOwnProperty(i[0]))
                 Globals.settings[i[0]] = i[1];
         }
+        //root.loadApp = true;
+        themeTimer.running = true;
+        //startTimer.running = true;
     }
 
     Settings {
@@ -61,6 +65,43 @@ Scope {
             }
 
             return JSON.stringify(x);
+        }
+    }
+
+    Timer {
+        id: themeTimer
+        interval: 400
+        running: false
+        onTriggered: {
+            themeloader.active = true;
+            startTimer.running = true;
+        }
+    }
+
+    LazyLoader {
+        id: themeloader
+        active: false
+        FileView {
+            id: themefile
+            path: Qt.resolvedUrl(Globals.settings.theme)
+            blockLoading: true
+            blockAllReads: true
+            watchChanges: true
+            onLoaded: {
+                let a = JSON.parse(this.text());
+                for (let i of Object.entries(a)) {
+                    if (Globals.theme.hasOwnProperty(i[0]))
+                        Globals.theme[i[0]] = i[1];
+                    console.warn(i[0], i[1]);
+                }
+            }
+            onFileChanged: {
+                let a = JSON.parse(this.text());
+                for (let i of Object.entries(a)) {
+                    if (Globals.theme.hasOwnProperty(i[0]))
+                        Globals.theme[i[0]] = i[1];
+                }
+            }
         }
     }
 
@@ -92,10 +133,53 @@ Scope {
     property var background: bg
     property var osd: osd1
     property var autostartEditor: autostart
+    property var modes: ({
+            "school": {
+                "bars": [
+                    {
+                        "position": "bottom",
+                        "leftModules": ["launcher", "workspaces", "currentWindow", "spacer", "windows"],
+                        "rightModules": ["player", "spacer", "tray", "pomodoro", "volume", "spacer", "tailscale", "bluetooth", "network", "spacer", "battery", "spacer", "clock"]
+                    }
+                ]
+            },
+            "home": {
+                "extraModules": ["dock"],
+                "bars": [
+                    {
+                        "position": "top",
+                        "leftModules": [
+                            {
+                                "type": "launcher",
+                                "props": {
+                                    "useLaunchpad": true
+                                }
+                            },
+                            "workspaces", "currentWindow"],
+                        "rightModules": ["tray", "pomodoro", "volume", "spacer", "tailscale", "network", "bluetooth", "spacer", "battery", "spacer", "clock"]
+                    }
+                ]
+            },
+            "game": {
+                "bars": [
+                    {
+                        "position": "bottom",
+                        "width": 1000,
+                        "leftModules": ["launcher", "workspaces", "windows"],
+                        "rightModules": ["tray", "volume", "battery", "clock"]
+                    }
+                ]
+            }
+        })
+
+    property var extraModules: ({
+            "dock": "rootmodules/Dock.qml"
+        })
 
     LazyLoader {
         active: root.loadApp
         Scope {
+            // Preload modules by accessing basic properties
             Component.onCompleted: {
                 AppMenu.showAppMenu = false;
                 Launchpad.showLaunchpad = false;
@@ -104,50 +188,30 @@ Scope {
                 SystemUpdater.updateChecking = true;
             }
 
-            FileView {
-                path: Qt.resolvedUrl(Globals.settings.theme)
-                blockLoading: true
-                watchChanges: true
-                onLoaded: {
-                    let a = JSON.parse(this.text());
-                    for (let i of Object.entries(a)) {
-                        if (Globals.theme.hasOwnProperty(i[0]))
-                            Globals.theme[i[0]] = i[1];
-                    }
+            Variants {
+                model: [...(root.modes[Globals.settings.mode]["extraModules"] ?? [])]
+                delegate: Loader {
+                    required property var modelData
+                    source: Quickshell.shellPath(root.extraModules[modelData])
                 }
-                onFileChanged: {
-                    let a = JSON.parse(this.text());
-                    for (let i of Object.entries(a)) {
-                        if (Globals.theme.hasOwnProperty(i[0]))
-                            Globals.theme[i[0]] = i[1];
+            }
+
+            Variants {
+                model: root.modes[Globals.settings.mode]["bars"]
+                delegate: Variants {
+                    id: v1
+                    required property var modelData
+                    model: Quickshell.screens
+                    delegate: Bar {
+                        leftModules: v1.modelData["leftModules"]
+                        rightModules: v1.modelData["rightModules"]
+                        fillWidth: v1.modelData["width"] == undefined
+                        implicitWidth: !!v1.modelData["width"] ? v1.modelData["width"] : implicitWidth
+                        topOfScreen: v1.modelData["position"] == "top"
                     }
                 }
             }
 
-            Loader {
-                active: Globals.settings.mode == "school"
-                sourceComponent: Variants {
-                    model: Quickshell.screens
-                    delegate: BottomBar {}
-                }
-            }
-            Loader {
-                active: Globals.settings.mode == "home"
-                sourceComponent: Scope {
-                    Dock {}
-                    Variants {
-                        model: Quickshell.screens
-                        delegate: TopBar {}
-                    }
-                }
-            }
-            Loader {
-                active: Globals.settings.mode == "game"
-                sourceComponent: Variants {
-                    model: Quickshell.screens
-                    delegate: GameBar {}
-                }
-            }
             PKAgent {}
             NotifyDaemon {}
         }
