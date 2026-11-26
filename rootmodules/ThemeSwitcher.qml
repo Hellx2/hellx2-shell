@@ -3,7 +3,6 @@ import Quickshell.Io
 import QtQuick
 
 import qs.core
-import qs
 
 PanelWindow {
     id: root

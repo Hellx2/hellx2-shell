@@ -1,7 +1,8 @@
 import QtQuick
 import Quickshell.WindowManager
 import Quickshell
-import qs
+
+import qs.core
 
 Rectangle {
     id: root

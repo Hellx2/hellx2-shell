@@ -3,7 +3,6 @@ import Quickshell
 import Quickshell.Wayland
 import Quickshell.Services.Polkit
 import qs.core
-import qs
 
 PanelWindow {
     id: root

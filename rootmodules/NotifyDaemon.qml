@@ -1,10 +1,8 @@
 import QtQuick
 import Qt5Compat.GraphicalEffects
 import Quickshell
-import Quickshell.Widgets
 import Quickshell.Services.Notifications
 import qs.core
-import qs
 
 Scope {
     id: root

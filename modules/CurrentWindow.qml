@@ -2,7 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 
-import qs
+import qs.core
 
 Rectangle {
     height: 27.5

@@ -13,6 +13,7 @@ import Quickshell.Io
 //import qs.bars
 import qs.modules
 import qs.rootmodules
+import qs.core
 
 Scope {
     id: root

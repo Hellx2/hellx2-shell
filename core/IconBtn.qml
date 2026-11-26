@@ -4,8 +4,6 @@ import QtQuick
 import QtQuick.Shapes
 import Quickshell
 
-import qs
-
 MouseArea {
     id: root
     width: _size

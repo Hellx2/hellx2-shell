@@ -9,7 +9,6 @@ import Quickshell.Bluetooth
 import Quickshell.Wayland
 
 import qs.core
-import qs
 
 MouseArea {
     id: root

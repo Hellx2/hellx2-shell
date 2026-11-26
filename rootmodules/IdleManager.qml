@@ -1,7 +1,7 @@
 pragma Singleton
 import Quickshell
 import Quickshell.Wayland
-import qs
+import qs.core
 
 Singleton {
     id: root

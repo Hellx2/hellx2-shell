@@ -3,7 +3,6 @@ import QtQuick.Shapes
 import Quickshell
 import qs.core
 import qs.rootmodules
-import qs
 
 MouseArea {
     id: btn1

@@ -5,7 +5,6 @@ import Quickshell.Widgets
 import QtQuick
 import QtCore
 import qs.core
-import qs
 
 Scope {
     id: root

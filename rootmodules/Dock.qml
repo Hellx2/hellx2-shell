@@ -6,8 +6,6 @@ import QtQuick.Shapes
 import Qt5Compat.GraphicalEffects
 
 import qs.core
-import qs.modules
-import qs
 
 PanelWindow {
     id: root

@@ -7,7 +7,6 @@ import QtCore
 import QtQuick
 import QtQuick.Shapes
 import qs.core
-import qs
 
 PanelWindow {
     id: root

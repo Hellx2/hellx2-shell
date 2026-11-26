@@ -9,7 +9,6 @@ import Quickshell.Networking
 import Quickshell.Wayland
 import Quickshell.Widgets
 import qs.core
-import qs
 
 MouseArea {
     id: root

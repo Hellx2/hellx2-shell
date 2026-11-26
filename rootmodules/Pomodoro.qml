@@ -8,7 +8,6 @@ import QtQuick.Shapes
 import QtCore
 
 import qs.core
-import qs
 
 Singleton {
     id: root

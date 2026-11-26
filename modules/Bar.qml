@@ -3,12 +3,9 @@ pragma ComponentBehavior: Bound
 import Quickshell
 import Quickshell.Wayland
 import QtQuick
-import Qt5Compat.GraphicalEffects
 
 import qs.core
-import qs
 import qs.rootmodules
-import qs.modules
 
 PanelWindow {
     id: root

@@ -4,7 +4,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Mpris
 import QtQuick
-import qs
+import qs.core
 
 Singleton {
     // Not used for anything, just something to set for this

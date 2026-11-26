@@ -1,8 +1,6 @@
 import QtQuick
-import QtQuick.Shapes
 import Quickshell
 import Quickshell.Io
-import qs
 import qs.core
 
 PanelWindow {

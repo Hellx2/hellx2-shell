@@ -3,7 +3,6 @@ import Quickshell
 import Quickshell.Wayland
 
 import qs.core
-import qs
 
 Row {
     id: root

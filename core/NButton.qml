@@ -2,8 +2,6 @@ import QtQuick
 import QtQuick.Controls
 import Quickshell
 
-import qs
-
 Button {
     id: root
     property string content: ""

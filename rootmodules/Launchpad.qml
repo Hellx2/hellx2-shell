@@ -9,7 +9,6 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Shapes
 import qs.core
-import qs
 
 Singleton {
     id: root

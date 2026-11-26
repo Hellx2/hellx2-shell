@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Shapes
 import Quickshell.Services.UPower
 import qs.core
-import qs
 
 // TODO: Make this open a more advanced menu when clicked that shows
 //       battery remaining, full battery life, and some kind of control

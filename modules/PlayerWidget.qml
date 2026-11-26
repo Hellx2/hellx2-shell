@@ -3,7 +3,6 @@ import Quickshell
 import Quickshell.Services.Mpris
 import Quickshell.Widgets
 import qs.core
-import qs
 
 NButton {
     visible: !!Mpris.players.values[0]

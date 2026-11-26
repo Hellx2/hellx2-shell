@@ -5,7 +5,6 @@ import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Widgets
 import qs.core
-import qs
 
 Singleton {
     id: root

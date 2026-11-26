@@ -3,7 +3,6 @@ import Quickshell.Services.Pipewire
 import Quickshell
 import Quickshell.Widgets
 import qs.core
-import qs
 
 MouseArea {
     id: root
