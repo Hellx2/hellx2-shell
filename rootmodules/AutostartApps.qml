@@ -52,7 +52,9 @@ PanelWindow {
             }
         }
     }
-    Panel {}
+    Panel {
+        panelName: "autostart"
+    }
 
     Rectangle {
         anchors {

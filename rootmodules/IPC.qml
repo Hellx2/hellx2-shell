@@ -13,6 +13,13 @@ Singleton {
     property var root
 
     IpcHandler {
+        function toggle(panelName: string) {
+            PanelManager.toggleActivePanel(panelName);
+        }
+        target: "panel"
+    }
+
+    IpcHandler {
         function settingsToggle() {
             root.settings_ui.visible = !root.settings_ui.visible;
         }

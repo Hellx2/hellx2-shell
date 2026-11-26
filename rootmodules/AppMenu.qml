@@ -19,6 +19,14 @@ Singleton {
     // string and an object constantly.
     property var history: '{"audacity": 1}'
 
+    Panel {
+        panelName: "appMenu"
+        width: 500
+        height: 500
+        anchorLeft: true
+        anchorBottom: true
+    }
+
     Settings {
         id: settings
         property alias history: root.history
