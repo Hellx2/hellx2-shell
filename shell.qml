@@ -34,7 +34,7 @@ Scope {
     property bool loadApp: false
     Timer {
         id: startTimer
-        interval: 1000
+        interval: 500
         running: false
         repeat: false
         onTriggered: root.loadApp = true
@@ -130,6 +130,7 @@ Scope {
         id: autostart
     }
 
+    property var default_settings: defaultSettings
     property var settings_ui: settingsui
     property var layout_switcher: layoutSwitcher
     property var theme_switcher: themeSwitcher

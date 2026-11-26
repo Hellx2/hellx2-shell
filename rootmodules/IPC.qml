@@ -43,12 +43,6 @@ Singleton {
     }
 
     IpcHandler {
-        function setPrimaryScreen(value: string) {
-            Globals.settings.primaryScreen = value;
-        }
-        function getPrimaryScreen(): string {
-            return Globals.settings.primaryScreen;
-        }
         function set(prop: string, value: string): string {
             if (Globals.settings.hasOwnProperty(prop)) {
                 if (!prop.startsWith("_") && !prop.endsWith("Changed") && prop != "objectName" && typeof Globals.settings[prop] !== "function")
@@ -61,22 +55,13 @@ Singleton {
         function get(prop: string): string {
             return Globals.settings[prop];
         }
-        function reset(prop: string) {
+        function reset(prop: string): string {
             if (Globals.settings.hasOwnProperty(prop)) {
-                Globals.settings[prop] = defaultSettings[prop];
+                Globals.settings[prop] = root.default_settings[prop];
                 return "Success";
             } else
                 return `Error: Invalid setting '${prop}'!`;
         }
-        /*function setMode(mode: string) {
-			if (["home", "school", "game"].includes(mode))
-				Globals.settings.mode = mode;
-			else
-				console.error(`Unknown mode '${mode}', ignoring.`);
-		}
-		function getMode(): string {
-			return Globals.settings.mode;
-        }*/
         target: "settings"
     }
 

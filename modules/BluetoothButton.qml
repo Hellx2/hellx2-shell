@@ -180,7 +180,7 @@ MouseArea {
                             anchors.leftMargin: 5
                             anchors.rightMargin: 5
                             Rectangle {
-                                id: icon
+                                id: icon1
                                 width: children[0].width + 2.5
                                 height: children[0].height + 2.5
                                 radius: height / 2
@@ -194,10 +194,10 @@ MouseArea {
                                 }
                             }
                             Button {
-                                id: icon1
+                                id: icon2
                                 padding: 1.25
                                 anchors.verticalCenter: parent.verticalCenter
-                                anchors.left: icon.right
+                                anchors.left: icon1.right
                                 anchors.leftMargin: 5
                                 background: Rectangle {
                                     radius: height / 2
@@ -215,9 +215,9 @@ MouseArea {
                                 }
                             }
                             NText {
-                                width: Math.min(implicitWidth, parent.width - icon.width - icon1.width - row1.implicitWidth - 15)
+                                width: Math.min(implicitWidth, parent.width - icon1.width - icon2.width - row1.implicitWidth - 15)
                                 elide: Text.ElideRight
-                                anchors.left: icon1.right
+                                anchors.left: icon2.right
                                 anchors.leftMargin: 5
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: modelData.deviceName
