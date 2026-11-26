@@ -63,7 +63,7 @@ Row {
                             id: trayIcon
                             mipmap: true
                             anchors.centerIn: parent
-                            source: console.warn(modelData.icon), modelData.icon
+                            source: modelData.icon
                             width: 25
                             height: 25
                         }

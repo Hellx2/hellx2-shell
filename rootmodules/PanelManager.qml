@@ -10,7 +10,7 @@ Singleton {
 
     function register(name: string, panel: Panel) {
         root.panels[name] = panel;
-        console.warn(Object.keys(root.panels));
+        //console.warn(Object.keys(root.panels));
     }
 
     /*Variants {
