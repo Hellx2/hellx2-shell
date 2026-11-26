@@ -146,7 +146,7 @@ Scope {
                                         Column {
                                             padding: 4
                                             IconImage {
-                                                source: Quickshell.iconPath(desktopIcon.icon)
+                                                source: Quickshell.iconPath(desktopIcon.icon, true)
                                                 implicitSize: 64
                                             }
                                             NText {

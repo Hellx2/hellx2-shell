@@ -3,12 +3,14 @@
 //@ pragma Env QS_DROP_EXPENSIVE_FONTS = 1
 //@ pragma AppId io.github.hellx2.hellx2shell
 
+pragma ComponentBehavior: Bound
+
 import QtCore
 import QtQuick
 import Quickshell
 import Quickshell.Io
 
-import qs.bars
+//import qs.bars
 import qs.modules
 import qs.rootmodules
 
@@ -40,6 +42,7 @@ Scope {
     Component.onCompleted: {
         IPC.initialize = true;
         IPC.root = root;
+        //ScreenTimeManager.lastTime = Date.now() / 1000;
         //Globals.mainSettings = JSON.parse(Globals.settingsInst.mainSettings)
         let a = DesktopEntries.applications;
         let settings = JSON.parse(persistentSettings.settings);
@@ -92,7 +95,6 @@ Scope {
                 for (let i of Object.entries(a)) {
                     if (Globals.theme.hasOwnProperty(i[0]))
                         Globals.theme[i[0]] = i[1];
-                    console.warn(i[0], i[1]);
                 }
             }
             onFileChanged: {

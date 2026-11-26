@@ -180,7 +180,7 @@ Singleton {
                                         radius: height / 2
                                         color: "#fff"
                                         IconImage {
-                                            source: Quickshell.iconPath(col.model[modelData][2])
+                                            source: Quickshell.iconPath(col.model[modelData][2], true)
                                             implicitSize: 35
                                             anchors.centerIn: parent
                                         }
