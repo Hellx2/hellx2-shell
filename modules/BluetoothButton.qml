@@ -10,13 +10,10 @@ import Quickshell.Wayland
 
 import qs.core
 
-MouseArea {
+QButton {
     id: root
 
     property var win: QsWindow.window
-
-    height: 30
-    width: 30
 
     acceptedButtons: Qt.LeftButton | Qt.MiddleButton
     onClicked: m => {
@@ -32,11 +29,7 @@ MouseArea {
     readonly property BluetoothAdapter adapter: Bluetooth.defaultAdapter
     property bool loaderActive: false
 
-    Rectangle {
-        anchors.fill: parent
-        color: adapter?.enabled ? Globals.theme.accent : Globals.theme.button_bg
-        radius: height / 2
-    }
+    bgcolor: adapter?.enabled ? Globals.theme.accent : Globals.theme.button_bg
     ShapePath {
         id: bticon
         strokeColor: (adapter?.enabled) ? (Globals.theme.extreme) : (Globals.theme.dark ? Qt.lighter : Qt.darker)(Globals.theme.button_bg)
@@ -65,14 +58,8 @@ MouseArea {
             y: 14
         }
     }
-    Shape {
-        width: 20
-        height: 20
-        anchors.centerIn: parent
-        layer.enabled: true
-        layer.samples: 5
-        data: bticon
-    }
+
+    shapeData: [bticon]
 
     Connections {
         target: root.adapter

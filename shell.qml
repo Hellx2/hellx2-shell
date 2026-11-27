@@ -129,6 +129,9 @@ Scope {
     AutostartApps {
         id: autostart
     }
+    AppMenu {
+        id: appMenu
+    }
 
     property var default_settings: defaultSettings
     property var settings_ui: settingsui
@@ -185,7 +188,6 @@ Scope {
         Scope {
             // Preload modules by accessing basic properties
             Component.onCompleted: {
-                AppMenu.showAppMenu = false;
                 Launchpad.showLaunchpad = false;
                 PowerMenu.showPowerMenu = false;
                 IdleManager.running = true;
