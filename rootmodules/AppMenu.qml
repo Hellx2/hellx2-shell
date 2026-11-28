@@ -13,10 +13,13 @@ import qs.core
 Panel {
     id: root
     panelName: "appMenu"
-    width: 500
-    height: 500
+    implicitWidth: 500
+    implicitHeight: 500
     anchorLeft: true
     anchorBottom: true
+    ignoreExclusion: false
+
+    onVisibleChanged: mainInput.text = ""
 
     // For some reason, settings objects can't really store
     // anything other than primitive types like numbers and

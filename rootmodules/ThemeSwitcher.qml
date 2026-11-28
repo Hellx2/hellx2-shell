@@ -3,30 +3,25 @@ import Quickshell.Io
 import QtQuick
 
 import qs.core
+import qs.rootmodules
 
-PanelWindow {
+Panel {
     id: root
-    implicitWidth: 600
-    implicitHeight: 400
-
-    visible: false
-
-    color: "transparent"
-
-    Rectangle {
-        anchors.fill: parent
-        color: Globals.theme.bgcol
-        radius: 12
-    }
+    panelName: "themeSwitcher"
 
     property var themes: []
 
     Process {
+        id: themesGen
         command: ["ls", Quickshell.shellPath("themes/")]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
-                root.themes = this.text.trim().split("\n");
+                root.themes = this.text.trim().split("\n").map(x => ({
+                            "icon": (Globals.settings.theme == Quickshell.shellPath("themes/") + x) ? "cancel" : "",
+                            "text": x,
+                            "data": x
+                        }));
             }
         }
     }
@@ -54,7 +49,7 @@ PanelWindow {
         z: 5
     }
 
-    ListView {
+    ListBox {
         model: root.themes
         spacing: 5
         anchors.margins: 5
@@ -64,29 +59,10 @@ PanelWindow {
             right: parent.right
         }
         height: parent.height - 70
-        delegate: MouseArea {
-            required property var modelData
-            property bool active: Globals.settings.theme == Quickshell.shellPath("themes/") + modelData
-            width: root.width - 10
-            height: 30
-            onClicked: {
-                root.visible = false;
-                Globals.settings.theme = Quickshell.shellPath("themes/") + modelData;
-            }
-            Rectangle {
-                anchors.fill: parent
-                color: active ? Globals.theme.active_item : Globals.theme.inactive_item
-                radius: 10
-
-                NText {
-                    text: (active ? "[*] " : "") + "themes/" + modelData
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: 5
-                    width: parent.width
-                    elide: Text.ElideLeft
-                }
-            }
+        onBtnClick: data => {
+            PanelManager.clearActivePanel();
+            Globals.settings.theme = Quickshell.shellPath("themes/") + JSON.parse(data);
+            themesGen.running = true;
         }
     }
 }

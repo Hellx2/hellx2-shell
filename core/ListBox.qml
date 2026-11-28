@@ -7,6 +7,8 @@ import Quickshell.Widgets
 ListView {
     id: root
     property int bgradius: 10
+    property int iconSize: 20
+    property int fontSize: 13
     spacing: 5
 
     property var defaultIcon: ""
@@ -31,25 +33,27 @@ ListView {
         bgradius: 5
         onClicked: root.currentIndex = index
         onDoubleClicked: {
-            console.warn(JSON.stringify(modelData))
-            root.btnClick(JSON.stringify(modelData.data))
+            console.warn(JSON.stringify(modelData));
+            root.btnClick(JSON.stringify(modelData.data));
         }
 
         width: root.width
         contentItem: Row {
-            spacing: 5
+            spacing: iconSize / 4
             IconImage {
-                source: Quickshell.iconPath(nbtn.modelData?.icon || defaultIcon, true)
-                implicitSize: 20
+                source: Quickshell.iconPath(nbtn.modelData?.icon || root.defaultIcon, true)
+                implicitSize: root.iconSize
             }
             NText {
+                anchors.verticalCenter: parent.verticalCenter
                 text: `${nbtn.modelData?.text}`
+                fontSize: root.fontSize
             }
             NText {
+                anchors.verticalCenter: parent.verticalCenter
                 text: (nbtn.modelData?.subtext ?? "") != "" ? `(${nbtn.modelData?.subtext})` : ""
                 font.italic: true
                 fontSize: 12
-                anchors.verticalCenter: parent.verticalCenter
             }
         }
         bgcolor: ListView.isCurrentItem ? Globals.theme.accent : (hovered ? Globals.theme.button_bg_hover : Globals.theme.button_bg)

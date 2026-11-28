@@ -114,32 +114,23 @@ Scope {
     SettingsUI {
         id: settingsui
     }
-    LayoutSwitcher {
-        id: layoutSwitcher
-    }
+    LayoutSwitcher {}
     Background {
         id: bg
     }
     OSD {
         id: osd1
     }
-    ThemeSwitcher {
-        id: themeSwitcher
-    }
-    AutostartApps {
-        id: autostart
-    }
-    AppMenu {
-        id: appMenu
-    }
+    ThemeSwitcher {}
+    AutostartApps {}
+    AppMenu {}
+    PowerMenu {}
+    Launchpad {}
 
     property var default_settings: defaultSettings
     property var settings_ui: settingsui
-    property var layout_switcher: layoutSwitcher
-    property var theme_switcher: themeSwitcher
     property var background: bg
     property var osd: osd1
-    property var autostartEditor: autostart
     property var modes: ({
             "school": {
                 "bars": [
@@ -188,8 +179,6 @@ Scope {
         Scope {
             // Preload modules by accessing basic properties
             Component.onCompleted: {
-                Launchpad.showLaunchpad = false;
-                PowerMenu.showPowerMenu = false;
                 IdleManager.running = true;
                 SystemUpdater.updateChecking = true;
             }

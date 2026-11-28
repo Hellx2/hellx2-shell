@@ -3,22 +3,11 @@ import Quickshell
 import Quickshell.Io
 import qs.core
 
-PanelWindow {
+Panel {
     id: root
+    panelName: "layoutSwitcher"
     implicitWidth: 650
     implicitHeight: 425
-    color: "transparent"
-    visible: false
-
-    Rectangle {
-        radius: 20
-        color: Globals.theme.bgcol
-        anchors.fill: parent
-        border {
-            color: Qt.lighter(color, 2.0)
-            width: 1
-        }
-    }
 
     component Mode: Rectangle {
         id: mode
@@ -37,7 +26,7 @@ PanelWindow {
             onClicked: {
                 if (!!mode.layout)
                     Globals.settings.mode = mode.layout;
-                root.visible = false;
+                PanelManager.clearActivePanel();
             }
         }
         NText {
@@ -66,6 +55,8 @@ PanelWindow {
         padding: 18.5
         columnSpacing: 18.5
         rowSpacing: 10
+        // TODO: Replace this with a repeater or similar structure relative to the bars
+        // defined in each mode's configuration.
         Mode {
             text: "School"
             layout: "school"

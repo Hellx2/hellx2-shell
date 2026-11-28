@@ -8,39 +8,17 @@ import QtQuick
 import QtQuick.Shapes
 import qs.core
 
-PanelWindow {
+Panel {
     id: root
+    panelName: "autostart"
+
     property bool addMode: false
-    visible: false
-    implicitWidth: 600
-    implicitHeight: 400
-    WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
-    Connections {
-        target: ToplevelManager
-        enabled: root.visible
-        function onActiveToplevelChanged() {
-            if (!!ToplevelManager.activeToplevel)
-                root.visible = false;
-        }
-    }
-
-    color: "transparent"
-
-    Rectangle {
-        anchors.fill: parent
-        color: Globals.theme.bgcol
-        radius: 10
-        border {
-            width: 1
-            color: Qt[Globals.theme.dark ? "lighter" : "darker"](color)
-        }
-    }
-
     property var apps: []
+    property string autostartFolder: Quickshell.env("HOME") + "/.config/autostart"
 
     Process {
         id: getAutostartItems
-        command: ["ls", Quickshell.env("HOME") + "/.config/autostart"]
+        command: ["find", autostartFolder, "-iname", "*.desktop"]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
@@ -51,9 +29,6 @@ PanelWindow {
                     apps = [];
             }
         }
-    }
-    Panel {
-        panelName: "autostart"
     }
 
     Rectangle {
@@ -87,7 +62,7 @@ PanelWindow {
 
                 FileView {
                     id: fv
-                    path: root.addMode ? null : Quickshell.env("HOME") + "/.config/autostart/" + lv_rc.modelData
+                    path: root.addMode ? null : lv_rc.modelData
                     onLoaded: {
                         for (let a of this.text().trim().split("\n")) {
                             let b = a.split(/^([^=]+)=/).slice(1);
@@ -105,13 +80,13 @@ PanelWindow {
 
                 Process {
                     id: deleteProc
-                    command: ["rm", Quickshell.env("HOME") + "/.config/autostart/" + lv_rc.modelData]
+                    command: ["rm", lv_rc.modelData]
                     onExited: getAutostartItems.running = true
                 }
 
                 Process {
                     id: addProc
-                    command: ["cp", new URL(StandardPaths.locate(StandardPaths.ApplicationsLocation, lv_rc.modelData?.id + ".desktop")).pathname, Quickshell.env("HOME") + "/.config/autostart/"]
+                    command: ["cp", new URL(StandardPaths.locate(StandardPaths.ApplicationsLocation, lv_rc.modelData?.id + ".desktop")).pathname, autostartFolder]
                     onExited: {
                         root.addMode = false;
                         getAutostartItems.running = true;

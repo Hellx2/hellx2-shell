@@ -13,8 +13,8 @@ Singleton {
     property var root
 
     IpcHandler {
-        function toggle(panelName: string) {
-            PanelManager.toggleActivePanel(panelName);
+        function toggle(panelName: string): bool {
+            return PanelManager.toggleActivePanel(panelName);
         }
         target: "panel"
     }
@@ -23,23 +23,7 @@ Singleton {
         function settingsToggle() {
             root.settings_ui.visible = !root.settings_ui.visible;
         }
-        function autostartEditToggle() {
-            root.autostartEditor.visible = !root.autostartEditor.visible;
-        }
         target: "ui"
-    }
-
-    IpcHandler {
-        target: "layoutSwitcher"
-        function open() {
-            root.layout_switcher.visible = true;
-        }
-        function close() {
-            root.layout_switcher.visible = false;
-        }
-        function toggle() {
-            root.layout_switcher.visible = !root.layout_switcher.visible;
-        }
     }
 
     IpcHandler {
@@ -66,18 +50,6 @@ Singleton {
     }
 
     IpcHandler {
-        function toggle() {
-            AppMenu.showAppMenu = !AppMenu.showAppMenu;
-        }
-        function open() {
-            AppMenu.showAppMenu = true;
-        }
-        function close() {
-            AppMenu.showAppMenu = false;
-        }
-        target: "apps"
-    }
-    IpcHandler {
         target: "wallpaper"
         function set(path: string) {
             root.background.backgroundPath = path;
@@ -86,34 +58,9 @@ Singleton {
 
     IpcHandler {
         function toggle() {
-            Launchpad.showLaunchpad = !Launchpad.showLaunchpad;
-        }
-        function open() {
-            Launchpad.showLaunchpad = true;
-        }
-        function close() {
-            Launchpad.showLaunchpad = false;
-        }
-        target: "launchpad"
-    }
-
-    IpcHandler {
-        function toggle() {
             Pomodoro.showPomodoro = !Pomodoro.showPomodoro;
         }
         target: "pomodoro"
-    }
-    IpcHandler {
-        function show() {
-            PowerMenu.showPowerMenu = true;
-        }
-        function hide() {
-            PowerMenu.showPowerMenu = false;
-        }
-        function toggle() {
-            PowerMenu.showPowerMenu = !PowerMenu.showPowerMenu;
-        }
-        target: "powermenu"
     }
 
     Timer {
@@ -169,18 +116,5 @@ Singleton {
             setBrightnessProc.running = true;
         }
         target: "brightness"
-    }
-
-    IpcHandler {
-        target: "themeSwitcher"
-        function open() {
-            root.theme_switcher.visible = true;
-        }
-        function close() {
-            root.theme_switcher.visible = false;
-        }
-        function toggle() {
-            root.theme_switcher.visible = !root.theme_switcher.visible;
-        }
     }
 }

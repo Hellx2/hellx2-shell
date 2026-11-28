@@ -10,7 +10,16 @@ Singleton {
     property var panels: ({})
     property string activePanel
 
+    // To prevent the toplevel event from triggering and immediately
+    // closing the open panel whenever switching to a different panel.
+    Timer {
+        id: switchTimer
+        interval: 100
+        onTriggered: tlconn.enabled = true
+    }
+
     Connections {
+        id: tlconn
         target: ToplevelManager
         function onActiveToplevelChanged() {
             if (ToplevelManager.activeToplevel != null)
@@ -20,12 +29,13 @@ Singleton {
 
     function register(name: string, panel: Panel) {
         root.panels[name] = panel;
-        //console.warn(Object.keys(root.panels));
     }
 
     function setActivePanel(name: string): bool {
         if (panels.hasOwnProperty(name)) {
+            tlconn.enabled = false;
             activePanel = name;
+            switchTimer.running = true;
             return true;
         } else
             return false;
@@ -43,8 +53,4 @@ Singleton {
     function clearActivePanel() {
         activePanel = "";
     }
-
-    /*Variants {
-        model: panels
-    }*/
 }
