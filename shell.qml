@@ -131,44 +131,6 @@ Scope {
     property var settings_ui: settingsui
     property var background: bg
     property var osd: osd1
-    property var modes: ({
-            "school": {
-                "bars": [
-                    {
-                        "position": "bottom",
-                        "leftModules": ["launcher", "workspaces", "currentWindow", "spacer", "windows"],
-                        "rightModules": ["player", "spacer", "tray", "pomodoro", "volume", "spacer", "tailscale", "bluetooth", "network", "spacer", "battery", "spacer", "clock"]
-                    }
-                ]
-            },
-            "home": {
-                "extraModules": ["dock"],
-                "bars": [
-                    {
-                        "position": "top",
-                        "leftModules": [
-                            {
-                                "type": "launcher",
-                                "props": {
-                                    "useLaunchpad": true
-                                }
-                            },
-                            "workspaces", "currentWindow"],
-                        "rightModules": ["tray", "pomodoro", "volume", "spacer", "tailscale", "network", "bluetooth", "spacer", "battery", "spacer", "clock"]
-                    }
-                ]
-            },
-            "game": {
-                "bars": [
-                    {
-                        "position": "bottom",
-                        "width": 1000,
-                        "leftModules": ["launcher", "workspaces", "windows"],
-                        "rightModules": ["tray", "volume", "battery", "clock"]
-                    }
-                ]
-            }
-        })
 
     property var extraModules: ({
             "dock": "rootmodules/Dock.qml"
@@ -184,7 +146,7 @@ Scope {
             }
 
             Variants {
-                model: [...(root.modes[Globals.settings.mode]["extraModules"] ?? [])]
+                model: [...(Globals.settings.modes[Globals.settings.mode]["extraModules"] ?? [])]
                 delegate: Loader {
                     required property var modelData
                     source: Quickshell.shellPath(root.extraModules[modelData])
@@ -192,7 +154,7 @@ Scope {
             }
 
             Variants {
-                model: root.modes[Globals.settings.mode]["bars"]
+                model: Globals.settings.modes[Globals.settings.mode]["bars"]
                 delegate: Variants {
                     id: v1
                     required property var modelData

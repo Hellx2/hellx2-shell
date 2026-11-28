@@ -39,6 +39,7 @@ Panel {
     }
 
     NText {
+        id: txt1
         text: "Layouts"
         fontSize: 24
         anchors.top: parent.top
@@ -49,95 +50,57 @@ Panel {
     }
 
     Grid {
-        anchors.bottom: parent.bottom
+        anchors.top: txt1.bottom
         columns: 3
         rows: 3
         padding: 18.5
         columnSpacing: 18.5
         rowSpacing: 10
-        // TODO: Replace this with a repeater or similar structure relative to the bars
-        // defined in each mode's configuration.
-        Mode {
-            text: "School"
-            layout: "school"
-            Rectangle {
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    bottom: parent.bottom
-                    leftMargin: 5
-                    rightMargin: 5
-                    bottomMargin: 5
+        Repeater {
+            model: Object.entries(Globals.settings.modes)
+            Mode {
+                id: modeObj
+                required property var modelData
+                text: `${modelData[0][0].toUpperCase()}${modelData[0].slice(1)}`
+                layout: modelData[0]
+                Repeater {
+                    model: modeObj.modelData[1].bars
+                    Rectangle {
+                        required property var modelData
+                        radius: console.warn(modelData), 5
+                        height: 10
+                        color: (Globals.theme.dark ? Qt.lighter : Qt.darker)(modeObj.color, 2)
+                        border {
+                            width: 0.5
+                            color: Qt.lighter(color, 1.1)
+                        }
+                        anchors {
+                            left: parent.left
+                            right: parent.right
+                            bottom: modelData.position == "bottom" ? parent.bottom : undefined
+                            top: modelData.position == "top" ? parent.top : undefined
+                            bottomMargin: 5
+                            topMargin: 5
+                            rightMargin: !!modelData.width ? (1920 - modelData.width) / 1920 * modeObj.width / 2 : 5
+                            leftMargin: !!modelData.width ? (1920 - modelData.width) / 1920 * modeObj.width / 2 : 5
+                        }
+                    }
                 }
-                height: 10
-                radius: 5
-                color: Qt.lighter(parent.color, 2)
-                border {
-                    color: Qt.lighter(color, 1.1)
-                    width: 0.5
-                }
-            }
-        }
-        Mode {
-            text: "Home"
-            layout: "home"
-            Rectangle {
-                anchors {
-                    bottom: parent.bottom
-                    bottomMargin: 5
-                    horizontalCenter: parent.horizontalCenter
-                }
-                width: parent.width / 2
-                height: 15
-                radius: 10
-                color: Qt.lighter(parent.color, 2)
-                border {
-                    color: Qt.lighter(color, 1.1)
-                    width: 0.5
-                }
-            }
-            Rectangle {
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    top: parent.top
-                    leftMargin: 5
-                    rightMargin: 5
-                    topMargin: 5
-                }
-                height: 10
-                radius: 5
-                color: Qt.lighter(parent.color, 2)
-                border {
-                    color: Qt.lighter(color, 1.1)
-                    width: 0.5
+                Rectangle {
+                    color: (Globals.theme.dark ? Qt.lighter : Qt.darker)(modeObj.color, 2)
+                    visible: modeObj.modelData[1]?.extraModules?.includes("dock") ?? false
+                    width: modeObj.width / 3
+                    height: 15
+                    radius: height / 2
+                    anchors.bottom: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.bottomMargin: 5
+                    border {
+                        width: 0.5
+                        color: Qt.lighter(color, 1.1)
+                    }
                 }
             }
         }
-        Mode {
-            text: "Game"
-            layout: "game"
-            Rectangle {
-                anchors {
-                    bottom: parent.bottom
-                    bottomMargin: 5
-                    horizontalCenter: parent.horizontalCenter
-                }
-                width: parent.width / 2
-                height: 10
-                radius: 10
-                color: Qt.lighter(parent.color, 2)
-                border {
-                    color: Qt.lighter(color, 1.1)
-                    width: 0.5
-                }
-            }
-        }
-        Mode {}
-        Mode {}
-        Mode {}
-        Mode {}
-        Mode {}
-        Mode {}
     }
 }

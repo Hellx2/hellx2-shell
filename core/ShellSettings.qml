@@ -24,6 +24,45 @@ QtObject {
         return Quickshell.screens.find(x => x.name == root.primaryScreen) || Quickshell.screens[Quickshell.screens.length - 1];
     }
 
+    property var modes: ({
+            "school": {
+                "bars": [
+                    {
+                        "position": "bottom",
+                        "leftModules": ["launcher", "workspaces", "currentWindow", "spacer", "windows"],
+                        "rightModules": ["player", "spacer", "tray", "pomodoro", "volume", "spacer", "tailscale", "bluetooth", "network", "spacer", "battery", "spacer", "clock"]
+                    }
+                ]
+            },
+            "home": {
+                "extraModules": ["dock"],
+                "bars": [
+                    {
+                        "position": "top",
+                        "leftModules": [
+                            {
+                                "type": "launcher",
+                                "props": {
+                                    "useLaunchpad": true
+                                }
+                            },
+                            "workspaces", "currentWindow"],
+                        "rightModules": ["tray", "pomodoro", "volume", "spacer", "tailscale", "network", "bluetooth", "spacer", "battery", "spacer", "clock"]
+                    }
+                ]
+            },
+            "game": {
+                "bars": [
+                    {
+                        "position": "bottom",
+                        "width": 1000,
+                        "leftModules": ["launcher", "workspaces", "windows"],
+                        "rightModules": ["tray", "volume", "battery", "clock"]
+                    }
+                ]
+            }
+        })
+
     /*
 	    */
 }
