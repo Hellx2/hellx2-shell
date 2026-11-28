@@ -4,10 +4,8 @@ import qs.core
 import qs.rootmodules
 
 NButton {
-    id: root
     width: 30
     height: 30
-    property bool useLaunchpad: false
     background.width: 30
     contentItem: NText {
         topPadding: -1.5
@@ -16,10 +14,5 @@ NButton {
         text: "᎒᎒᎒"
     }
     bgradius: 100
-    onClicked: {
-        if (root.useLaunchpad)
-            Launchpad.showLaunchpad = !Launchpad.showLaunchpad;
-        else
-            AppMenu.showAppMenu = !AppMenu.showAppMenu;
-    }
+    onClicked: PanelManager.toggleActivePanel((Globals.settings.layouts[Globals.settings.mode].useLaunchpad ?? false) ? "launchpad" : "appMenu")
 }

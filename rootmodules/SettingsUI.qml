@@ -34,7 +34,13 @@ FloatingWindow {
                 id: input1
                 width: 300
                 bgcolor: Globals.theme.dark ? Qt.lighter(root.color, 1.5) : Qt.darker(root.color, 1.2)
-                text: Globals.settings[modelData]
+                text: {
+                    let x = Globals.settings[modelData];
+                    if (typeof x === "object")
+                        return JSON.stringify(x);
+                    else
+                        return x;
+                }
                 validator: RegularExpressionValidator {
                     regularExpression: {
                         if (typeof Globals.settings[modelData] == "number")
@@ -48,7 +54,10 @@ FloatingWindow {
                 leftPadding: 5
                 rightPadding: 5
                 onAccepted: {
-                    Globals.settings[modelData] = this.text;
+                    if (typeof Globals.settings[modelData] === 'object')
+                        Globals.settings[modelData] = JSON.parse(this.text);
+                    else
+                        Globals.settings[modelData] = this.text;
                 }
             }
         }

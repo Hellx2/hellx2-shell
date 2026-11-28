@@ -146,7 +146,7 @@ Scope {
             }
 
             Variants {
-                model: [...(Globals.settings.modes[Globals.settings.mode]["extraModules"] ?? [])]
+                model: [...(Globals.settings.layouts[Globals.settings.mode]["extraModules"] ?? [])]
                 delegate: Loader {
                     required property var modelData
                     source: Quickshell.shellPath(root.extraModules[modelData])
@@ -154,7 +154,7 @@ Scope {
             }
 
             Variants {
-                model: Globals.settings.modes[Globals.settings.mode]["bars"]
+                model: Globals.settings.layouts[Globals.settings.mode]["bars"]
                 delegate: Variants {
                     id: v1
                     required property var modelData

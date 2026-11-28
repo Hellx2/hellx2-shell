@@ -57,11 +57,14 @@ Panel {
         columnSpacing: 18.5
         rowSpacing: 10
         Repeater {
-            model: Object.entries(Globals.settings.modes)
+            model: Object.entries(Globals.settings.layouts)
             Mode {
                 id: modeObj
                 required property var modelData
-                text: `${modelData[0][0].toUpperCase()}${modelData[0].slice(1)}`
+                text: {
+                    let x = modelData[0].replace(/([A-Z])/, " $1").trim();
+                    return `${x[0].toUpperCase()}${x.slice(1)}`
+                }
                 layout: modelData[0]
                 Repeater {
                     model: modeObj.modelData[1].bars

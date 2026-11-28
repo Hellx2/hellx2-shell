@@ -7,15 +7,16 @@ import QtQuick
 PanelWindow {
     id: root
     property int bgradius: 10
-    Component.onCompleted: PanelManager.register(panelName, this)
     property bool ignoreExclusion: true
     required property string panelName
+
     visible: PanelManager.activePanel == root.panelName
+
+    Component.onCompleted: PanelManager.register(panelName, this)
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
     WlrLayershell.exclusionMode: root.ignoreExclusion ? ExclusionMode.Ignore : ExclusionMode.Normal
     WlrLayershell.layer: WlrLayer.Overlay
-    //Keys.onEscapePressed: PanelManager.clearActivePanel()
-    //
+
     implicitHeight: 400
     implicitWidth: 600
 
