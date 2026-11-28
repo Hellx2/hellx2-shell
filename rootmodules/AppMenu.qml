@@ -72,7 +72,7 @@ Panel {
                 }
                 font.family: Globals.theme.text_font
 
-                onAccepted: root.run(JSON.parse(lv.model.values[lv.currentIndex].data))
+                onAccepted: root.run(lv.model.values[lv.currentIndex]?.data)
             }
         }
         Row {
@@ -91,22 +91,22 @@ Panel {
                         let A = a.name.toUpperCase();
                         let B = b.name.toUpperCase();
                         return ((a, b) => {
-                            let rv = (!!hist[a.id] && (!hist[b.id] || (hist[a.id] > hist[b.id]))) ? -1 : ((!hist[a.id] || hist[b.id] > hist[a.id]) ? 1 : 0);
-                            return rv;
-                        })(a, b) || (A < B ? -1 : (A > B ? 1 : 0));
+                                let rv = (!!hist[a.id] && (!hist[b.id] || (hist[a.id] > hist[b.id]))) ? -1 : ((!hist[a.id] || hist[b.id] > hist[a.id]) ? 1 : 0);
+                                return rv;
+                            })(a, b) || (A < B ? -1 : (A > B ? 1 : 0));
                     }).filter(x => [x.id, x.name].filter(a => a.toLowerCase().includes(mainInput.text.toLowerCase())).length > 0).map(x => ({
-                        "icon": x.icon,
-                        "text": x.name,
-                        "subtext": x.genericName,
-                        "actions": x.actions,
-                        "data": {
-                            "command": x.command,
-                            "id": x.id
-                        },
-                    }))
+                                "icon": x.icon,
+                                "text": x.name,
+                                "subtext": x.genericName,
+                                "actions": x.actions,
+                                "data": {
+                                    "command": x.command,
+                                    "id": x.id
+                                }
+                            }))
                     onValuesChanged: lv.currentIndex = 0
                 }
-                onBtnClick: data => root.run(JSON.parse(data));
+                onBtnClick: data => root.run(JSON.parse(data))
             }
             Rectangle {
                 height: parent.height
@@ -118,8 +118,8 @@ Panel {
                 }
                 color: Qt.lighter(Globals.theme.bgcol)
                 ListBox {
-                    defaultIcon: lv.model.values[lv.currentIndex]?.icon
                     id: lv1
+                    defaultIcon: lv.model.values[lv.currentIndex]?.icon
                     anchors.centerIn: parent
                     width: parent.width - 2
                     height: parent.height - 2
@@ -129,14 +129,18 @@ Panel {
                             "icon": "",
                             "data": lv.model.values[lv.currentIndex]?.data
                         },
-                        ...(lv.model.values[lv.currentIndex]?.actions?.map(x => ({"text": x.name, "icon": x.icon, "data": {
-                            "command": x.command,
-                            "id": lv.model.values[lv.currentIndex]?.data?.id
-                        }})) ?? [])] : []
+                        ...(lv.model.values[lv.currentIndex]?.actions?.map(x => ({
+                                        "text": x.name,
+                                        "icon": x.icon,
+                                        "data": {
+                                            "command": x.command,
+                                            "id": lv.model.values[lv.currentIndex]?.data?.id
+                                        }
+                                    })) ?? [])] : []
                     onBtnClick: data => root.run({
-                        id: lv.model.values[lv.currentIndex]?.id,
-                        command: JSON.parse(data)
-                    })
+                            id: lv.model.values[lv.currentIndex]?.id,
+                            command: JSON.parse(data)
+                        })
                 }
             }
         }
