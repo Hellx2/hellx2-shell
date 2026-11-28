@@ -3,7 +3,6 @@ pragma Singleton
 import Quickshell.Wayland
 import Quickshell
 import QtQuick
-import qs.core
 
 Singleton {
     id: root

@@ -4,9 +4,6 @@ import Quickshell
 import Quickshell.Wayland
 import QtQuick
 
-import qs.rootmodules
-import qs.core
-
 PanelWindow {
     id: root
     property int bgradius: 10
